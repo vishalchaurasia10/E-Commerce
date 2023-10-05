@@ -21,7 +21,7 @@ const Navbar = () => {
                 })}
             </div>
             <div className="center w-1/3 flex items-center justify-center">
-                <Image className='h-16 w-16' src="/assets/icon.svg" alt="logo" width={100} height={100} />
+                <Image className='h-14 w-14' src="/assets/icon.svg" alt="logo" width={100} height={100} />
             </div>
             <div className="right w-1/3 flex items-center justify-end space-x-6">
                 <div className="input flex items-center justify-center">

@@ -8,7 +8,7 @@ import { LuSearch } from 'react-icons/lu';
 
 const Navbar = () => {
     return (
-        <nav className='flex items-center justify-center w-full px-40 py-2'>
+        <nav className='flex sticky top-0 bg-white z-50 left-0 items-center justify-center w-full px-40 py-2'>
             <div className="left w-1/3 flex items-center justify-start space-x-8">
                 {navbarData.map((item, index) => {
                     return (
@@ -24,7 +24,7 @@ const Navbar = () => {
                 <Image className='h-14 w-14' src="/assets/icon.svg" alt="logo" width={100} height={100} />
             </div>
             <div className="right w-1/3 flex items-center justify-end space-x-6">
-                <div className="input flex items-center justify-center">
+                <div className="flex items-center justify-center">
                     <LuSearch className='text-2xl relative left-5 bottom-1' />
                     <input className='outline-none border-b-2 border-black placeholder:text-sm placeholder:text-black pl-7 pb-2' type="text" placeholder='Search' />
                 </div>

@@ -25,3 +25,16 @@ export const navbarData = [
         expand: true
     }
 ]
+
+export const categoryFields = [
+    {
+        name: 'title',
+        type: 'text',
+        placeholder: 'Enter category name',
+    },
+    {
+        name: 'type',
+        type: 'text',
+        placeholder: 'Enter category type',
+    }
+]

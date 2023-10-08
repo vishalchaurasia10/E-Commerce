@@ -13,10 +13,12 @@
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0"
   },
   "devDependencies": {
     "autoprefixer": "^10",
+    "daisyui": "^3.9.2",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "postcss": "^8",

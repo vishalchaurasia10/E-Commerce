@@ -1,6 +1,7 @@
 import FeaturedProduct from "./components/Featured/FeaturedProduct";
 import Category from "./components/categories/Category";
 import Banner from "./components/content/Banner";
+import WhyChoose from "./components/content/WhyChoose";
 import Carousel from "./components/elements/Carousel";
 import Team from "./components/elements/Team";
 
@@ -12,6 +13,7 @@ export default function Home() {
       <Category />
       <Team />
       <Carousel />
+      <WhyChoose />
     </>
   )
 }

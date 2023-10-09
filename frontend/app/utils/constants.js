@@ -56,3 +56,18 @@ export const whyChooseUsData = [
         code: 'Use Code: FOREVER20'
     }
 ]
+
+export const companyUrls = [
+    {
+        path: '/assets/companies/1.svg',
+    },
+    {
+        path: '/assets/companies/2.svg',
+    },
+    {
+        path: '/assets/companies/3.svg',
+    },
+    {
+        path: '/assets/companies/4.svg',
+    }
+]

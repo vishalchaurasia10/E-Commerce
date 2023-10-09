@@ -11,7 +11,7 @@ const WhyChoose = () => {
                     return (
                         <div
                             key={index}
-                            className={`w-80 flex-col flex border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400`}
+                            className={`md:w-80 flex-col flex border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400`}
                         >
                             <div className=' flex flex-col items-center justify-center'>
                                 <img src={item.path} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />

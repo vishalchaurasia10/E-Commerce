@@ -3,6 +3,7 @@ import Category from "./components/categories/Category";
 import Banner from "./components/content/Banner";
 import WhyChoose from "./components/content/WhyChoose";
 import Carousel from "./components/elements/Carousel";
+import Company from "./components/elements/Company";
 import Team from "./components/elements/Team";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Team />
       <Carousel />
       <WhyChoose />
+      <Company />
     </>
   )
 }

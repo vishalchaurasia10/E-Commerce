@@ -37,7 +37,7 @@ const Category = () => {
                     </div>
                 </Link>
             </div>
-            <div className="themeCategories h-60 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
+            <div className="themeCategories flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="first lg:w-1/2 flex space-x-4">
                     {themeCategories.slice(0, 2).map((category, index) => (
                         <Link className="" key={index} href={`/category/${category.title}`}>

@@ -70,12 +70,12 @@ exports.deleteCategory = async (req, res) => {
 
 exports.searchCategories = async (req, res) => {
     try {
-        const { name, type } = req.query;
+        const { title, type } = req.query;
         const searchCriteria = {};
 
-        if (name) {
+        if (title) {
             // If name is provided, add it to the search criteria
-            searchCriteria.title = { $regex: new RegExp(name, 'i') }; // Case-insensitive search
+            searchCriteria.title = { $regex: new RegExp(title, 'i') }; // Case-insensitive search
         }
 
         if (type) {
@@ -86,11 +86,11 @@ exports.searchCategories = async (req, res) => {
         const categories = await Category.find(searchCriteria);
 
         if (categories.length === 0) {
-            return res.status(404).json({ error: 'No categories found for the specified criteria' });
+            return res.status(404).json({ message: 'No categories found for the specified criteria' });
         }
 
         res.status(200).json(categories);
     } catch (error) {
-        res.status(500).json({ error: 'Error searching for categories' });
+        res.status(500).json({ message: error.message });
     }
 };

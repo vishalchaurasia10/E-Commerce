@@ -12,6 +12,12 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      screens: {
+        'sm': '576px',   // Small devices (e.g., phones) - 576px and up
+        'md': '768px',   // Medium devices (e.g., tablets) - 768px and up
+        'lg': '992px',   // Large devices (e.g., laptops) - 992px and up
+        'xl': '1200px',  // Extra large devices (e.g., desktops) - 1200px and up
+      },
     },
   },
   daisyui: {

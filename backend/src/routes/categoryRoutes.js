@@ -6,6 +6,9 @@ const uploadMiddleware = require('../middlewares/uploadMiddleware');
 // Create a new category
 router.post('/', categoryController.createCategory);
 
+// Search categories by either title or type
+router.get('/search', categoryController.searchCategories);
+
 // Get all categories
 router.get('/', categoryController.getAllCategories);
 
@@ -17,9 +20,6 @@ router.put('/:categoryId', categoryController.updateCategory);
 
 // Delete a category by ID
 router.delete('/:categoryId', categoryController.deleteCategory);
-
-// Search categories by either title or type
-router.get('/search', categoryController.searchCategories);
 
 // Handle file upload
 router.post('/upload', uploadMiddleware.single('file'), (req, res) => {

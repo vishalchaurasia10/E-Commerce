@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-const Grid = ({ data }) => {
+const Grid = ({ initialUrl, data }) => {
     return (
         <>
             <div className="wrapper flex flex-col space-y-4 py-5">
@@ -14,7 +14,7 @@ const Grid = ({ data }) => {
                                 <div className="pagesThumbnail justify-center flex relative">
                                     <Image
                                         className="h-full w-full"
-                                        src={`/assets/women/${index + 1}.png`}
+                                        src={`${initialUrl}${index + 1}.png`}
                                         height={500}
                                         width={500}
                                         alt="themeImage"

@@ -94,3 +94,18 @@ export const womenData = [
         title: 'Hoodies & Sweatshirts',
     }
 ]
+
+export const menData = [
+    {
+        path: '/tshirt',
+        title: 'T-Shirt',
+    },
+    {
+        path: '/oversizedtshirt',
+        title: 'Oversized T-Shirt',
+    },
+    {
+        path: '/hoodies&sweatshirts',
+        title: 'Hoodies & Sweatshirts',
+    }
+]

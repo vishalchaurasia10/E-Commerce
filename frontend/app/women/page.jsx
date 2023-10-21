@@ -7,7 +7,7 @@ const page = () => {
     return (
         <>
             <Banner url='bannerWomen.png' />
-            <Grid data={womenData} />
+            <Grid initialUrl='/assets/women/' data={womenData} />
         </>
     )
 }

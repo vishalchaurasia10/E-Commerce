@@ -4,6 +4,7 @@ import Banner from "./components/content/Banner";
 import WhyChoose from "./components/content/WhyChoose";
 import Carousel from "./components/elements/Carousel";
 import Company from "./components/elements/Company";
+import Contact from "./components/elements/Contact";
 import Team from "./components/elements/Team";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <Carousel />
       <WhyChoose />
       <Company />
+      <Contact />
     </>
   )
 }

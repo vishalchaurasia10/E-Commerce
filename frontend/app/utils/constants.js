@@ -109,3 +109,26 @@ export const menData = [
         title: 'Hoodies & Sweatshirts',
     }
 ]
+
+export const themesData = [
+    {
+        path: '/fitness',
+        title: 'Fitness',
+    },
+    {
+        path: '/valentinespecial',
+        title: 'Valentine Special',
+    },
+    {
+        path: '/halloween',
+        title: 'Halloween',
+    },
+    {
+        path: '/travel',
+        title: 'Travel',
+    },
+    {
+        path: '/zodiactshirt',
+        title: 'Zodiac T-Shirt',
+    }
+]

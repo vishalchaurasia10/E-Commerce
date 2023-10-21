@@ -33,7 +33,7 @@ const Grid = ({ initialUrl, data }) => {
                                 <div className="pagesThumbnail justify-center flex relative">
                                     <img
                                         className="h-full w-full"
-                                        src={`/assets/women/${index + 4}.png`}
+                                        src={`${initialUrl}${index + 4}.png`}
                                         height={500}
                                         width={500}
                                         alt="shopwomen"

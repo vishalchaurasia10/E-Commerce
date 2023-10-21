@@ -1,10 +1,14 @@
 import React from 'react'
+import Banner from '../components/content/Banner'
+import Grid from '../components/elements/Grid'
+import { womenData } from '../utils/constants'
 
 const page = () => {
     return (
-        <div>
-            women
-        </div>
+        <>
+            <Banner url='bannerWomen.png' />
+            <Grid data={womenData} />
+        </>
     )
 }
 

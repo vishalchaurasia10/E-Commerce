@@ -10,7 +10,7 @@ import Team from "./components/elements/Team";
 export default function Home() {
   return (
     <>
-      <Banner />
+      <Banner url='bannerHome.svg' />
       {/* <FeaturedProduct /> */}
       <Category />
       <Team />

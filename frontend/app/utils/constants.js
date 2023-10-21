@@ -71,3 +71,26 @@ export const companyUrls = [
         path: '/assets/companies/4.svg',
     }
 ]
+
+export const womenData = [
+    {
+        path: '/tshirt',
+        title: 'T-Shirt',
+    },
+    {
+        path: '/oversizedtshirt',
+        title: 'Oversized T-Shirt',
+    },
+    {
+        path: '/dress',
+        title: 'Dress',
+    },
+    {
+        path: '/croptop',
+        title: 'Crop Top',
+    },
+    {
+        path: '/hoodies&sweatshirts',
+        title: 'Hoodies & Sweatshirts',
+    }
+]

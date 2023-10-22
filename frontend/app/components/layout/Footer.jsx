@@ -20,7 +20,11 @@ const Footer = () => {
                 <ul className='flex flex-col lg:flex-row lg:list-disc lg:space-x-8 space-y-2 lg:space-y-0  font-bold lg:font-medium'>
                     <li>Home</li>
                     <li>Collection</li>
-                    <li>Terms And Conditions</li>
+                    <li>
+                        <Link href='/termsandcondition'>
+                            Terms And Conditions
+                        </Link>
+                    </li>
                     <li>Shipping and Tracking</li>
                     <li>
                         <Link href='/aboutus'>

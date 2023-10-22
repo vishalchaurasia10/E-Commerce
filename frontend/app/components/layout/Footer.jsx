@@ -18,7 +18,11 @@ const Footer = () => {
                     <Image className='h-16 w-16' src="/assets/icon.svg" alt="logo" width={100} height={100} />
                 </Link>
                 <ul className='flex flex-col lg:flex-row lg:list-disc lg:space-x-8 space-y-2 lg:space-y-0  font-bold lg:font-medium'>
-                    <li>Home</li>
+                    <li>
+                        <Link href='/'>
+                            Home
+                        </Link>
+                    </li>
                     <li>Collection</li>
                     <li>
                         <Link href='/termsandcondition'>

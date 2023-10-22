@@ -31,20 +31,3 @@ const Accordian = () => {
 }
 
 export default Accordian
-{/* <div key={index} className="collapse collapse-arrow text-white">
-                        <input type="radio" name="my-accordion-2" />
-                        <div className={`${bebas_neue.className} collapse-title text-3xl font-medium bg-[#4D7E86]`}>
-                            {item.title}
-                        </div>
-                        <div className="collapse-content bg-[#4D7E86] mt-1 mb-3 p-4 px-8">
-                            <ul className='list-disc'>
-                                {item.description.map((desc, index) => {
-                                    return (
-                                        <li key={index}>
-                                            {desc}
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
-                    </div> */}

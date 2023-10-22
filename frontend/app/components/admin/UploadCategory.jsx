@@ -61,7 +61,7 @@ const UploadCategory = () => {
     return (
         <>
             <Toaster />
-            <div className={`min-h-screen relative w-full flex items-center justify-center bg-[#607c84]`}>
+            <div className={`py-24 relative w-full flex items-center justify-center bg-[#607c84]`}>
                 <div className="uploadContent relative z-20 w-full lg:mx-40 flex items-center justify-center space-x-8">
                     <div className='uploadForm w-full mx-2 bg-[rgba(255,255,255,0.1)] text-white flex flex-col lg:flex-row space-y-8 lg:space-y-0 rounded-xl p-4 md:p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
                         <div className="images flex items-center lg:order-2 lg:ml-8 lg:w-1/2 rounded-xl">

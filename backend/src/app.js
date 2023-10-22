@@ -17,7 +17,7 @@ app.use('/api/categories', require('./routes/categoryRoutes'));
 // app.use('/api/banners', require('./routes/bannerRoutes'));
 // app.use('/api/announcements', require('./routes/announcementRoutes'));
 // app.use('/api/featuredproducts', require('./routes/featuredProductsRoutes'));
-// app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/products', require('./routes/productsRoutes'));
 
 app.listen(port, () => {
     console.log(`The Daily Scoop listening on port ${port}`)

@@ -22,7 +22,11 @@ const Footer = () => {
                     <li>Collection</li>
                     <li>Terms And Conditions</li>
                     <li>Shipping and Tracking</li>
-                    <li>About Us</li>
+                    <li>
+                        <Link href='/aboutus'>
+                            About Us
+                        </Link>
+                    </li>
                 </ul>
                 <div className="icons flex lg:items-center lg:justify-center space-x-2 text-[#528289]">
                     <FaFacebook className='text-lg' />

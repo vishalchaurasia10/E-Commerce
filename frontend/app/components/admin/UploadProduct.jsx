@@ -15,6 +15,7 @@ const UploadProduct = () => {
         title: '',
         category: '',
         price: '',
+        featured: false,
         size: [],
         color: '',
         description: '',
@@ -26,6 +27,13 @@ const UploadProduct = () => {
             ...productDetails,
             [e.target.name]: e.target.value
         })
+    }
+
+    const handleRadioChange = (e) => {
+        setProductDetails({
+            ...productDetails,
+            [e.target.name]: e.target.value === 'true' // Convert the string value to a boolean
+        });
     }
 
     const checkValidity = () => {
@@ -101,7 +109,7 @@ const UploadProduct = () => {
             }
         }
         if (fileIds.length !== 0) {
-            const result = await uploadProductDocument(productDetails.title, productDetails.category, fileIds, productDetails.price, productDetails.size, productDetails.color, productDetails.description, productDetails.otherDetails)
+            const result = await uploadProductDocument(productDetails.title, productDetails.category, fileIds, productDetails.price, productDetails.size, productDetails.color, productDetails.description, productDetails.otherDetails, productDetails.featured)
             if (result.status === 'success') {
                 toast.success(result.message)
                 setProductDetails({
@@ -114,6 +122,7 @@ const UploadProduct = () => {
                     otherDetails: []
                 })
                 setInputFields([{ id: 1 }])
+                fileInput.value = ''
             } else {
                 toast.error(result.message)
             }
@@ -160,13 +169,39 @@ const UploadProduct = () => {
                                 onChange={handleChange}
                                 value={productDetails.category}
                                 className="p-2 border-b border-[rgba(255,255,255,0.5)] w-full outline-none bg-transparent">
-                                <option disabled selected>Select the category</option>
+                                <option disabled value=''>Select the category</option>
                                 {categoryOption.map((category) => {
                                     return (
                                         <option className='text-black' key={category._id} value={category._id}>{category.title}</option>
                                     )
                                 })}
                             </select>
+                            <div className="featured">
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text text-white">Featured Product</span>
+                                        <input
+                                            type="radio"
+                                            name="featured"
+                                            value='true'
+                                            onChange={handleRadioChange}
+                                            className="radio checked:bg-[#607c84]"
+                                            checked={productDetails.featured === true} />
+                                    </label>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text text-white">Not a Featured a Product</span>
+                                        <input
+                                            type="radio"
+                                            name="featured"
+                                            value='false'
+                                            className="radio checked:bg-[#607c84]"
+                                            onChange={handleRadioChange}
+                                            checked={productDetails.featured === false} />
+                                    </label>
+                                </div>
+                            </div>
                             <div className="priceColor flex w-full space-x-4">
                                 <input
                                     required

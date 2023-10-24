@@ -20,14 +20,14 @@ export const uploadProductImages = async (file) => {
     }
 }
 
-export const uploadProductDocument = async (title, category, imageId, price, size, color, description, otherDetails) => {
+export const uploadProductDocument = async (title, category, imageId, price, size, color, description, otherDetails, featured) => {
     try {
         const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ title, category, imageId, price, size, color, description, otherDetails }),
+            body: JSON.stringify({ title, category, imageId, price, size, color, description, otherDetails, featured }),
         });
         const data = await result.json();
         if (result.status === 201) {

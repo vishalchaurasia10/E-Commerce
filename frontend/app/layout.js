@@ -1,6 +1,7 @@
 import Announcement from './components/layout/Announcement'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
+import FeaturedState from './context/FeaturedProducts/FeaturedState'
 import './globals.css'
 import { roboto } from './utils/fonts'
 
@@ -13,10 +14,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${roboto.className}`}>
-        <Announcement />
-        <Navbar />
-        {children}
-        <Footer />
+        <FeaturedState>
+          <Announcement />
+          <Navbar />
+          {children}
+          <Footer />
+        </FeaturedState>
       </body>
     </html>
   )

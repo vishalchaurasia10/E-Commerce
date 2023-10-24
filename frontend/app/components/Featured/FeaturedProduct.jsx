@@ -1,49 +1,41 @@
-import { bebas_neue } from '@/app/utils/fonts'
-import React from 'react'
-import Card from '../elements/Card'
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
+'use client'
+import { bebas_neue, roboto } from '@/app/utils/fonts'
+import React, { useContext, useEffect } from 'react'
+import FeaturedContext from '@/app/context/FeaturedProducts/featuredContext'
 
 const FeaturedProduct = () => {
-    const details = [
-        {
-            url: '/assets/featured/featured01.svg',
-            title: 'Slay Bear Lavender Oversized Back Print T-shirt',
-            price: 549.00
-        },
-        {
-            url: '/assets/featured/featured02.svg',
-            title: 'Cosmic Dude Alien Space Adventure Oversized T-shirt',
-            price: 549.00
-        },
-        {
-            url: '/assets/featured/featured01.svg',
-            title: 'Slay Bear Lavender Oversized Back Print T-shirt',
-            price: 549.00
-        },
-        {
-            url: '/assets/featured/featured02.svg',
-            title: 'Cosmic Dude Alien Space Adventure Oversized T-shirt',
-            price: 549.00
-        },
-    ]
+
+    const { featuredProducts, getFeaturedProducts } = useContext(FeaturedContext)
+
+    useEffect(() => {
+        getFeaturedProducts()
+        // eslint-disable-next-line
+    }, [])
+
     return (
-        <div className='w-full flex flex-col items-center justify-center py-10 px-20'>
-            <h1 className={`${bebas_neue.className} text-6xl py-10`}>Featured Products</h1>
-            <div className="control flex items-center justify-end w-full space-x-2">
-                <BsArrowLeft className='text-4xl rounded-full border border-black p-1' />
-                <BsArrowRight className='text-4xl rounded-full border border-black p-1' />
+        <>
+            <div className='overflow-x-hidden lg:w-3/4 mx-auto py-5 lg:py-10'>
+                <h2 className={`${bebas_neue.className} text-6xl w-full text-center py-4 `}>Featured Product</h2>
+                <div className="carousel carousel-end w-screen space-x-4 py-5">
+                    {featuredProducts.map((product, index) => (
+                        <div
+                            key={product._id}
+                            id={`slide${index + 1}`}
+                            className={`carousel-item w-60`}
+                        >
+                            <div className='flex flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
+                                <img src={`http://localhost:8000/uploads/products/${product.imageId[0]}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
+                                <h3 className={`${roboto.className} px-4 pt-2 text-black font-medium`}>{product.title}</h3>
+                                <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="button flex items-center justify-center py-5">
+                    <button className='bg-[#2C3E50] py-2 px-8 text-white'>View All</button>
+                </div>
             </div>
-            <div className="slider flex items-center justify-center space-x-4 py-8">
-                {details.map((detail, index) => {
-                    return (
-                        <Card detail={detail} index={index} />
-                    )
-                })}
-            </div>
-            <button className='bg-[#2C3E50] text-white py-2 px-4 my-2'>
-                View All
-            </button>
-        </div>
+        </>
     )
 }
 

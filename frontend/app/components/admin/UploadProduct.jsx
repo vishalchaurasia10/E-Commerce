@@ -172,7 +172,10 @@ const UploadProduct = () => {
                                 <option disabled value=''>Select the category</option>
                                 {categoryOption.map((category) => {
                                     return (
-                                        <option className='text-black' key={category._id} value={category._id}>{category.title}</option>
+                                        <option className='text-black' key={category._id} value={category._id}>
+                                            <span>{category.type} : </span>
+                                            <span>{category.title}</span>
+                                        </option>
                                     )
                                 })}
                             </select>

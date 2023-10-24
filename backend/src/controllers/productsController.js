@@ -86,3 +86,15 @@ exports.uploadProductImages = async (req, res) => {
         res.status(500).json({ message: 'Error uploading file' });
     }
 }
+
+exports.getFeaturedProducts = async (req, res) => {
+    try {
+        const featuredProducts = await Products.find({ featured: true });
+        if (!featuredProducts) {
+            return res.status(404).json({ message: 'Featured products not found' });
+        }
+        return res.status(200).json(featuredProducts);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error fetching featured products' });
+    }
+}

@@ -1,4 +1,5 @@
 const Products = require('../models/Products');
+const Category = require('../models/Category');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
@@ -96,5 +97,33 @@ exports.getFeaturedProducts = async (req, res) => {
         return res.status(200).json(featuredProducts);
     } catch (error) {
         return res.status(500).json({ message: 'Error fetching featured products' });
+    }
+}
+
+exports.getProductsByType = async (req, res) => {
+    try {
+        const type = req.params.type;
+
+        // Find all categories with the specified type
+        const categories = await Category.find({ type });
+
+        if (!categories || categories.length === 0) {
+            return res.status(404).json({ message: 'Categories not found' });
+        }
+
+        // Collect the category IDs from the found categories
+        const categoryIds = categories.map(category => category._id);
+
+        // Find all products that have one of the matching category IDs
+        const products = await Products.find({ category: { $in: categoryIds } });
+
+        if (!products || products.length === 0) {
+            return res.status(404).json({ message: 'Products not found' });
+        }
+
+        res.status(200).json({ products });
+    } catch (error) {
+        console.error('Error fetching products by type:', error);
+        res.status(500).json({ message: 'Error fetching products' });
     }
 }

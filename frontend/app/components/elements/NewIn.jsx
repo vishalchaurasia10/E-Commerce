@@ -8,7 +8,7 @@ const NewIn = ({ type }) => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${type}`
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/type/${type}`
             const res = await fetch(url)
             const data = await res.json()
             if (res.status == 200)

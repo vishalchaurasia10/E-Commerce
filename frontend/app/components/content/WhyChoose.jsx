@@ -5,7 +5,7 @@ import React from 'react'
 const WhyChoose = () => {
     return (
         <div className='py-10 px-5'>
-            <h1 className={`${bebas_neue.className} text-6xl w-full text-center py-5 lg:py-10`}>WHy Choose Forever Trending ?</h1>
+            <h1 className={`${bebas_neue.className} text-6xl w-full text-center py-5 lg:py-10`}>Why Choose Forever Trending ?</h1>
             <div className='flex flex-col md:flex-row justify-center items-center md:items-stretch space-y-4 md:space-y-0 md:space-x-4'>
                 {whyChooseUsData.map((item, index) => {
                     return (

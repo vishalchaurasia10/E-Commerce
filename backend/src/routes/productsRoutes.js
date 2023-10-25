@@ -12,7 +12,9 @@ router.get('/', productsController.getAllProducts);
 router.get('/featured', productsController.getFeaturedProducts)
 
 // Get a single product by ID
-router.get('/:type', productsController.getProductsByType);
+router.get('/:productId', productsController.getProductById);
+
+router.get('/type/:type', productsController.getProductsByType);
 
 // Update a product by ID
 router.put('/:productId', productsController.updateProduct);

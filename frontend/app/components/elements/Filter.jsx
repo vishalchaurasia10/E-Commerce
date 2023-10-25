@@ -1,43 +1,11 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions'
 import { roboto } from '@/app/utils/fonts'
 
-const Filter = ({ localData, setLocalData }) => {
-    const { products, setProducts } = useContext(ProductContext)
-    const [categories, setCategories] = useState([])
-    const [selectedCategory, setSelectedCategory] = useState(null);
-
+const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategoriesFromType }) => {
+    const { products } = useContext(ProductContext)
     const types = ['men', 'women', 'themes']
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            const data = await getAllCategories()
-            setCategories(data.categories)
-        }
-        fetchCategories()
-    }, [])
-
-    const getCategoriesFromType = (type) => {
-        return categories.filter((category) => category.type === type)
-    }
-
-    const filterProducts = (category) => {
-        setSelectedCategory(category._id); // Set the selected category ID
-        const filteredProducts = products.filter((product) => product.category === category._id);
-        setLocalData(filteredProducts); // Update the products state with filtered products
-    };
-
-    const filterProductsByType = (type) => {
-        const categories = getCategoriesFromType(type);
-        const categoryIds = categories.map((category) => category._id); // Extract category IDs
-
-        const filteredProducts = products.filter((product) => categoryIds.includes(product.category));
-        setLocalData(filteredProducts); // Update the products state with filtered products
-    };
-
-
 
     return (
         <>
@@ -94,7 +62,7 @@ const Filter = ({ localData, setLocalData }) => {
                                             <h3 className={`${roboto.className} font-extrabold capitalize`}>{type}</h3>
                                             {
                                                 getCategoriesFromType(type).map((category) => (
-                                                    <ul onClick={() => filterProducts(category)} className='list-disc pl-8 cursor-pointer' key={category._id}>
+                                                    <ul onClick={() => filterProducts(category._id)} className='list-disc pl-8 cursor-pointer' key={category._id}>
                                                         <li className='' htmlFor={category.title}>{category.title}
                                                             <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="category" id="category" />
                                                         </li>

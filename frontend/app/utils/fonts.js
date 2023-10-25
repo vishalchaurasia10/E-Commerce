@@ -6,11 +6,10 @@ export const roboto = Roboto({
 })
 
 export const bebas_neue = Bebas_Neue({
-    weight: '400',
+    weight: ['400'],
     subsets: ['latin'],
 })
 
 export const jost = Jost({
-    weight: ['300', '400', '500', '700', '900'],
     subsets: ['latin'],
 })

@@ -23,7 +23,11 @@ const Footer = () => {
                             Home
                         </Link>
                     </li>
-                    <li>Collection</li>
+                    <li>
+                        <Link href='/collection'>
+                            Collection
+                        </Link>
+                    </li>
                     <li>
                         <Link href='/termsandcondition'>
                             Terms And Conditions

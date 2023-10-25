@@ -37,7 +37,7 @@ const Category = () => {
                         <h3 className={`${bebas_neue.className} text-white bottom-10 text-6xl absolute`}>Shop women</h3>
                     </div>
                 </Link>
-                <Link className='w-full lg:w-1/2' href='/women'>
+                <Link className='w-full lg:w-1/2' href='/men'>
                     <div className="pagesThumbnail justify-center flex relative">
                         <img
                             className="h-full w-full"

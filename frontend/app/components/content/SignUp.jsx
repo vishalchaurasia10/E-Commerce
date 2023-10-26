@@ -1,21 +1,24 @@
 'use client'
 import { bebas_neue, roboto } from '@/app/utils/fonts'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { FcGoogle } from 'react-icons/fc'
 import authContext from '@/app/context/Auth/authContext'
 
 const SignUp = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '', confirmPassword: '' })
-    const { signUp } = authContext()
+    const { signUp } = useContext(authContext)
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
     const handleSignUp = () => {
-        if (credentials.password !== credentials.confirmPassword) {
+        if (credentials.password === '' || credentials.email === '' || credentials.confirmPassword === '') {
+            toast.error('Please fill all the details')
+            return
+        } else if (credentials.password !== credentials.confirmPassword) {
             toast.error('Password does not match')
             return
         } else if (credentials.password.length < 8) {
@@ -23,6 +26,7 @@ const SignUp = () => {
             return
         }
         signUp(credentials.email, credentials.password)
+        setCredentials({ email: '', password: '', confirmPassword: '' })
     }
 
 
@@ -52,8 +56,8 @@ const SignUp = () => {
                     onChange={(e) => handleChange(e)}
                     value={credentials.confirmPassword}
                     type="password"
-                    name='password'
-                    id='password'
+                    name='confirmPassword'
+                    id='confirmPassword'
                     placeholder='Confirm Password' />
                 <button onClick={handleSignUp} className={`${roboto.className} w-full py-2 bg-[#2C3E50] text-white`}>Sign Up</button>
                 <p className='text-sm'>

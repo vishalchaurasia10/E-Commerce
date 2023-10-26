@@ -8,20 +8,20 @@ exports.verifyUserToken = async (req, res, next) => {
     try {
         let token = req.headers.authorization;
         if (!token) {
-            return res.status(401).json({ message: 'Access Denied / Unauthorized request' });
+            return res.status(401).json({ error: 'Access Denied / Unauthorized request' });
         }
         token = token.split(' ')[1]
         if (token === 'null' || !token) {
-            return res.status(401).json({ message: 'Access Denied / Unauthorized request' });
+            return res.status(401).json({ errpr: 'Access Denied / Unauthorized request' });
         }
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         if (!verified) {
-            return res.status(401).json({ message: 'Access Denied / Unauthorized request' });
+            return res.status(401).json({ error: 'Access Denied / Unauthorized request' });
         }
         req.user = verified;
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Please authenticate' });
+        res.status(401).json({ error: 'Please authenticate' });
     }
 }
 
@@ -32,7 +32,7 @@ exports.createUser = async (req, res) => {
 
         const userAlreadyExists = await User.findOne({ email });
         if (userAlreadyExists) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ error: 'User already exists' });
         }
 
         // Hash the password
@@ -46,7 +46,7 @@ exports.createUser = async (req, res) => {
 
         res.status(201).json(savedUser);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 

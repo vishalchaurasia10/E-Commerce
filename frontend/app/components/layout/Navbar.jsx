@@ -33,8 +33,11 @@ const Navbar = () => {
                     <LuSearch className='text-2xl relative left-5 bottom-1' />
                     <input className='outline-none w-32 md:w-auto border-b-2 border-black placeholder:text-sm placeholder:text-black pl-7 pb-2' type="text" placeholder='Search' />
                 </div>
-                <div className='w-16 flex space-x-2 xl:space-x-4'>
-                    <BiSolidUser className='text-2xl font-bold' />
+                <div className=' flex items-center space-x-2 xl:space-x-4'>
+                    <Link href='/sign-in'>
+                        <button className='px-3 py-1 bg-[#2C3E50] text-white whitespace-nowrap'>Sign In</button>
+                    </Link>
+                    {/* <BiSolidUser className='text-2xl font-bold' /> */}
                     <PiShoppingCart className='text-2xl' />
                 </div>
                 <label htmlFor="my-drawer-4" >

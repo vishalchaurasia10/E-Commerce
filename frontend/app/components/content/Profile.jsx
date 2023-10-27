@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { RiPencilFill } from 'react-icons/ri'
 import authContext from '@/app/context/Auth/authContext'
 
-const Profile = ({ user }) => {
+const Profile = ({ user, setShowSidebar, showSidebar }) => {
     const { updateUserDetails } = useContext(authContext)
     const [hasChanged, setHasChanged] = useState(false);
     const [localState, setLocalState] = useState({
@@ -30,7 +30,10 @@ const Profile = ({ user }) => {
     }
 
     return (
-        <div className='h-full py-10 px-5 border border-[#4D7E86]'>
+        <div className='h-full py-6 lg:py-10 px-3 lg:px-5 border border-[#4D7E86]'>
+            <div className="hamburger pb-3 lg:hidden">
+                <svg onClick={() => setShowSidebar(!showSidebar)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block relative bg-white z-50 w-8 h-8 stroke-current lg:hidden"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </div>
             <div className="profileDetails mb-8">
                 <div className='flex items-center space-x-2 mb-6'>
                     <h1 className='font-bold text-2xl'>Profile Details</h1>

@@ -3,11 +3,11 @@ import { navbarData } from '@/app/utils/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useContext } from 'react'
-import { BiSolidUser } from 'react-icons/bi'
 import { PiShoppingCart } from 'react-icons/pi'
 import { LuSearch } from 'react-icons/lu';
 import { roboto } from '@/app/utils/fonts'
 import authContext from '@/app/context/Auth/authContext'
+import { FaUser } from 'react-icons/fa'
 
 const Navbar = () => {
 
@@ -40,7 +40,11 @@ const Navbar = () => {
                 <div className=' flex items-center space-x-2 xl:space-x-4'>
                     {user && user._id ?
                         <Link href='/profile'>
-                            <BiSolidUser className='text-2xl font-bold' />
+                            {user?.profileImageId ?
+                                <Image className='rounded-full w-8 h-8' src={`http://localhost:8000/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
+                                :
+                                <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] rounded-full p-[0.15rem] text-3xl font-bold' />
+                            }
                         </Link>
                         :
                         <Link href='/sign-in'>

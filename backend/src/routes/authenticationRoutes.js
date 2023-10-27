@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const authenticationController = require('../controllers/authenticationController');
+const uploadProfileImageMiddleware = require('../middlewares/uploadProfileImageMiddleware')
 
 // Register a new user
 router.post('/register', authenticationController.createUser);
@@ -11,6 +12,9 @@ router.post('/login', authenticationController.loginUser);
 
 // Get all users
 router.get('/', authenticationController.getAllUsers);
+
+//upload profile image of user
+router.post('/upload/:userId', uploadProfileImageMiddleware.single('file'), authenticationController.uploadProfileImage)
 
 // verify the JWT token sent by the user
 router.get('/verifyjwt', authenticationController.verifyUserToken, (req, res) => {

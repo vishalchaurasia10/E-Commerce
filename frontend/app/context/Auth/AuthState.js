@@ -14,6 +14,10 @@ const AuthState = (props) => {
         verifyAccessToken();
     }, []);
 
+    useEffect(() => {
+        console.log(user)
+    }, [])
+
     const signUp = async (email, password) => {
         try {
             const user = {
@@ -117,6 +121,32 @@ const AuthState = (props) => {
         }
     }
 
+    const uploadProfileImage = async (userId, file) => {
+        try {
+            if (!file) {
+                return { status: 'failure', message: 'No file Selected' }
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/upload/${userId}`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (result.status === 200) {
+                const data = await result.json();
+                toast.success(data.message)
+                setUser((prevUser) => ({ ...prevUser, profileImageId: data.fileId }));
+            } else {
+                return { status: 'failure', message: 'Error uploading file' };
+            }
+        } catch (error) {
+            return { status: 'failure', message: error.message };
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -126,6 +156,7 @@ const AuthState = (props) => {
                     signIn,
                     verifyAccessToken,
                     updateUserDetails,
+                    uploadProfileImage,
                     user
                 }}>
                 {props.children}

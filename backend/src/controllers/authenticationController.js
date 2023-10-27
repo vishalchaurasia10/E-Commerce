@@ -65,14 +65,20 @@ exports.getUserById = async (req, res) => {
     try {
         const userId = req.params.userId;
         const user = await User.findById(userId);
+
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json(user);
+
+        // Omit the user password from the response
+        const { password, ...userWithoutPassword } = user.toObject();
+
+        res.status(200).json(userWithoutPassword);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching user' });
     }
 }
+
 
 // Update a user by ID
 exports.updateUser = async (req, res) => {
@@ -128,7 +134,7 @@ exports.loginUser = async (req, res) => {
             { expiresIn: '30d' }
         );
 
-        res.status(200).header("auth-token", accessToken).send({ "token": accessToken });
+        res.status(200).header("auth-token", accessToken).send({ "token": accessToken, "user": user });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

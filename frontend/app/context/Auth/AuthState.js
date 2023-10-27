@@ -56,7 +56,8 @@ const AuthState = (props) => {
             if (data.token) {
                 toast.success('Logged in successfully!');
                 localStorage.setItem('accessToken', data.token);
-                router.push('/');
+                setUser(data.user);
+                router.push('/profile');
             } else {
                 toast.error(data.error)
             }
@@ -75,10 +76,44 @@ const AuthState = (props) => {
             });
             const data = await response.json();
             if (data.user) {
-                setUser(data.user._id);
+                const userId = data.user._id;
+                fetchUserDetails(userId);
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const fetchUserDetails = async (userId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`);
+            const data = await response.json();
+            if (data._id) {
+                setUser(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const updateUserDetails = async (userId, updatedUser) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedUser),
+            });
+            const data = await response.json();
+            if (data._id) {
+                setUser(data);
+                toast.success('User updated successfully!');
+            } else {
+                toast.error(data.error);
+            }
+        } catch (error) {
+            toast.error(error.message);
         }
     }
 
@@ -89,7 +124,9 @@ const AuthState = (props) => {
                 value={{
                     signUp,
                     signIn,
-                    verifyAccessToken
+                    verifyAccessToken,
+                    updateUserDetails,
+                    user
                 }}>
                 {props.children}
             </AuthContext.Provider>

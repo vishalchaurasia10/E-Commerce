@@ -1,15 +1,24 @@
 'use client'
 import { bebas_neue, roboto } from '@/app/utils/fonts'
 import Link from 'next/link'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import authContext from '@/app/context/Auth/authContext'
 import { toast, Toaster } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const SignIn = () => {
 
     const [credentials, setCredentials] = useState({ email: '', password: '' })
     const { signIn } = useContext(authContext)
+    const { user } = useContext(authContext)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (user) {
+            router.push('/profile')
+        }
+    }, [user])
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })

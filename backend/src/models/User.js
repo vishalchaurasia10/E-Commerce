@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     profileImageId: {
         type: String,
     },
-    phoneNo: {
+    phoneNumber: {
         type: String,
         minlength: 10,
         maxlength: 10,
@@ -46,12 +46,12 @@ const userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 50,
     },
-    pincode: {
+    pinCode: {
         type: String,
         minlength: 6,
         maxlength: 6,
     },
-    appartemntSuit: {
+    apartment: {
         type: String,
         minlength: 3,
     },

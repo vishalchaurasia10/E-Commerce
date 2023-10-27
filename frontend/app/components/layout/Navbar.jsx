@@ -1,13 +1,17 @@
+'use client'
 import { navbarData } from '@/app/utils/constants'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useContext } from 'react'
 import { BiSolidUser } from 'react-icons/bi'
 import { PiShoppingCart } from 'react-icons/pi'
 import { LuSearch } from 'react-icons/lu';
 import { roboto } from '@/app/utils/fonts'
+import authContext from '@/app/context/Auth/authContext'
 
 const Navbar = () => {
+
+    const { user } = useContext(authContext)
 
     return (
         <nav className='flex sticky top-0 bg-white z-50 left-0 items-center justify-center w-full lg:px-10 xl:px-20 px-4 py-2'>
@@ -34,10 +38,15 @@ const Navbar = () => {
                     <input className='outline-none w-32 md:w-auto border-b-2 border-black placeholder:text-sm placeholder:text-black pl-7 pb-2' type="text" placeholder='Search' />
                 </div>
                 <div className=' flex items-center space-x-2 xl:space-x-4'>
-                    <Link href='/sign-in'>
-                        <button className='px-3 py-1 bg-[#2C3E50] text-white whitespace-nowrap'>Sign In</button>
-                    </Link>
-                    {/* <BiSolidUser className='text-2xl font-bold' /> */}
+                    {user && user._id ?
+                        <Link href='/profile'>
+                            <BiSolidUser className='text-2xl font-bold' />
+                        </Link>
+                        :
+                        <Link href='/sign-in'>
+                            <button className='px-3 py-1 bg-[#2C3E50] text-white whitespace-nowrap'>Sign In</button>
+                        </Link>
+                    }
                     <PiShoppingCart className='text-2xl' />
                 </div>
                 <label htmlFor="my-drawer-4" >

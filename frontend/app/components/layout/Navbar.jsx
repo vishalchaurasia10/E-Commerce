@@ -8,10 +8,12 @@ import { LuSearch } from 'react-icons/lu';
 import { roboto } from '@/app/utils/fonts'
 import authContext from '@/app/context/Auth/authContext'
 import { FaUser } from 'react-icons/fa'
+import CartContext from '@/app/context/Cart/cartContext'
 
 const Navbar = () => {
 
     const { user } = useContext(authContext)
+    const { cartCount } = useContext(CartContext)
 
     return (
         <nav className='flex sticky top-0 bg-white z-50 left-0 items-center justify-center w-full lg:px-10 xl:px-20 px-4 py-2'>
@@ -51,7 +53,10 @@ const Navbar = () => {
                             <button className='px-3 py-1 bg-[#2C3E50] text-white whitespace-nowrap'>Sign In</button>
                         </Link>
                     }
-                    <PiShoppingCart className='text-2xl' />
+                    <Link href='/cart' className='indicator'>
+                        {cartCount > 0 && <span className="indicator-item badge badge-secondary">{cartCount}</span>}
+                        <PiShoppingCart className='text-2xl' />
+                    </Link>
                 </div>
                 <label htmlFor="my-drawer-4" >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current lg:hidden"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>

@@ -14,10 +14,6 @@ const AuthState = (props) => {
         verifyAccessToken();
     }, []);
 
-    useEffect(() => {
-        console.log(user)
-    }, [])
-
     const signUp = async (email, password) => {
         try {
             const user = {

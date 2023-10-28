@@ -2,6 +2,7 @@ import Announcement from './components/layout/Announcement'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
 import AuthState from './context/Auth/AuthState'
+import CartState from './context/Cart/CartState'
 import FeaturedState from './context/FeaturedProducts/FeaturedState'
 import ProductState from './context/Products/ProductState'
 import './globals.css'
@@ -19,10 +20,12 @@ export default function RootLayout({ children }) {
         <AuthState>
           <ProductState>
             <FeaturedState>
-              <Announcement />
-              <Navbar />
-              {children}
-              <Footer />
+              <CartState>
+                <Announcement />
+                <Navbar />
+                {children}
+                <Footer />
+              </CartState >
             </FeaturedState>
           </ProductState>
         </AuthState>

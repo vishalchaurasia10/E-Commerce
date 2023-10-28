@@ -177,8 +177,6 @@ exports.uploadProfileImage = async (req, res) => {
 
         const userId = req.params.userId;
 
-        console.log(userId);
-
         // Check if the user already has a profile image
         const user = await User.findById(userId);
         if (user.profileImageId) {

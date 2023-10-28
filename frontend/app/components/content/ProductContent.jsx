@@ -1,9 +1,26 @@
 'use client'
 import { bebas_neue, jost, roboto } from '@/app/utils/fonts'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
+import CartContext from '@/app/context/Cart/cartContext'
 
 const ProductContent = ({ product }) => {
+    const [quantity, setQuantity] = useState(1)
+    const [selectedSize, setSelectedSize] = useState(product.size[0]);
+    const { cart, addToCart } = useContext(CartContext)
+
+    const handleQuantity = (action) => {
+        if (action === 'add') {
+            setQuantity(quantity + 1);
+        } else if (action === 'remove' && quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+    };
+
+    const handleAddToCart = () => {
+        addToCart(product, selectedSize, quantity)
+    }
+
     return (
         <>
             <div className='flex flex-col space-y-3'>
@@ -15,7 +32,12 @@ const ProductContent = ({ product }) => {
                     <div className="buttons flex flex-wrap">
                         {
                             product.size.map((size, index) => (
-                                <button className='border mr-4 mb-3 border-black px-4 py-1' key={index}>{size}</button>
+                                <button
+                                    onClick={() => setSelectedSize(size)}
+                                    className={`border mr-4 mb-3 border-black px-4 py-1 ${size === selectedSize ? 'bg-[#2C3E50] text-white' : ''}`}
+                                    key={index}>
+                                    {size}
+                                </button>
                             ))
                         }
                     </div>
@@ -27,13 +49,13 @@ const ProductContent = ({ product }) => {
                 <div className="quantity space-y-2">
                     <p className={`${roboto.className} text-lg font-bold`}>Quantity</p>
                     <div className="buttons border border-black w-fit flex items-center px-2">
-                        <FiMinus className='cursor-pointer' />
-                        <button className='px-3 py-1'>1</button>
-                        <FiPlus className='cursor-pointer' />
+                        <FiMinus onClick={() => handleQuantity('remove')} className='cursor-pointer' />
+                        <button className='px-3 py-1'>{quantity}</button>
+                        <FiPlus onClick={() => handleQuantity('add')} className='cursor-pointer' />
                     </div>
                 </div>
                 <div className="buttons flex flex-col space-y-3">
-                    <button className='bg-[#2C3E50] text-white py-3'>Add To Cart</button>
+                    <button onClick={handleAddToCart} className='bg-[#2C3E50] text-white py-3'>Add To Cart</button>
                     <button className='bg-[#4D7E86] text-white py-3'>Buy It Now</button>
                 </div>
                 <div className="otherDetails">

@@ -7,6 +7,7 @@ import CartContext from '@/app/context/Cart/cartContext'
 const ProductContent = ({ product }) => {
     const [quantity, setQuantity] = useState(1)
     const [selectedSize, setSelectedSize] = useState(product.size[0]);
+    const [selectedColor, setSelectedColor] = useState(product.color.split(',')[0]);
     const { cart, addToCart } = useContext(CartContext)
 
     const handleQuantity = (action) => {
@@ -18,7 +19,7 @@ const ProductContent = ({ product }) => {
     };
 
     const handleAddToCart = () => {
-        addToCart(product, selectedSize, quantity)
+        addToCart(product, selectedSize, quantity, selectedColor)
     }
 
     return (
@@ -44,7 +45,16 @@ const ProductContent = ({ product }) => {
                 </div>
                 <div className="color">
                     <div className={`${roboto.className} text-lg font-bold`}>Color</div>
-                    <div className={`border border-black rounded-full w-6 h-6`}></div>
+                    {
+                        product.color.split(',').map((color, index) => (
+                            <button
+                                onClick={() => setSelectedColor(color)}
+                                key={index}
+                                className={`rounded-full w-6 h-6 mr-2 border border-black ${color === selectedColor ? 'border-2' : ''}`}
+                                style={{ backgroundColor: `#${color}` }}
+                            ></button>
+                        ))
+                    }
                 </div>
                 <div className="quantity space-y-2">
                     <p className={`${roboto.className} text-lg font-bold`}>Quantity</p>

@@ -20,11 +20,11 @@ const Navbar = () => {
             <div className="left w-1/3 hidden lg:flex items-center justify-start space-x-8">
                 {navbarData.map((item, index) => {
                     return (
-                        <>
-                            <Link key={index} href={item.path}>
+                        <React.Fragment key={index}>
+                            <Link href={item.path}>
                                 {item.title}
                             </Link>
-                        </>
+                        </React.Fragment>
                     )
                 })}
             </div>
@@ -54,7 +54,7 @@ const Navbar = () => {
                         </Link>
                     }
                     <Link href='/cart' className='indicator'>
-                        {cartCount > 0 && <span className="indicator-item badge badge-secondary">{cartCount}</span>}
+                        {cartCount > 0 && <span className="indicator-item badge badge-secondary bg-[#4D7E86] text-white border border-[#4D7E86]">{cartCount}</span>}
                         <PiShoppingCart className='text-2xl' />
                     </Link>
                 </div>
@@ -67,11 +67,11 @@ const Navbar = () => {
                 <ul className="menu p-4 w-60 min-h-full bg-base-200 space-y-3 text-base-content px-8 py-10">
                     {navbarData.map((item, index) => {
                         return (
-                            <>
-                                <Link className={`${roboto.className} text-xl font-bold`} key={index} href={item.path}>
+                            <React.Fragment key={index}>
+                                <Link className={`${roboto.className} text-xl font-bold`} href={item.path}>
                                     {item.title}
                                 </Link>
-                            </>
+                            </React.Fragment>
                         )
                     })}
                 </ul>

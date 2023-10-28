@@ -17,13 +17,13 @@ const CartState = (props) => {
         setCartCount(totalCount);
     }, []);
 
-    const addToCart = (product, size, quantity) => {
+    const addToCart = (product, size, quantity, color) => {
         // Retrieve the current cart data from local storage or initialize an empty array
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
         // Check if the product is already in the cart
         const existingProductIndex = existingCart.findIndex(
-            (item) => item._id === product._id && item.size === size
+            (item) => item.product._id === product._id && item.size === size && item.color === color
         );
 
         if (existingProductIndex !== -1) {
@@ -31,7 +31,7 @@ const CartState = (props) => {
             existingCart[existingProductIndex].quantity += quantity;
         } else {
             // Product is not in the cart, add it
-            existingCart.push({ id: product._id, size, quantity });
+            existingCart.push({ product, size, quantity, color });
         }
 
         // Save the updated cart data to local storage
@@ -49,19 +49,64 @@ const CartState = (props) => {
 
 
 
-    const removeFromCart = (product) => {
-        setCart(cart.filter((item) => item.id !== product.id));
-        toast.success('Product removed from cart');
-        updateCartCount();
-    }
+    const removeFromCart = (product, size, color) => {
+        // Retrieve the current cart data from local storage or initialize an empty array
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    const updateCartCount = () => {
-        let itemCount = 0;
-        cart.forEach((item) => {
-            itemCount += item.quantity;
-        });
-        setCartCount(itemCount); // Update the cartCount state
+        // Find the index of the item to remove
+        const itemIndex = existingCart.findIndex(
+            (item) => item.product._id === product._id && item.size === size && item.color === color
+        );
+
+        if (itemIndex !== -1) {
+            // Remove the item from the cart
+            existingCart.splice(itemIndex, 1);
+
+            // Save the updated cart data to local storage
+            localStorage.setItem('cart', JSON.stringify(existingCart));
+
+            // Update the state with the new cart data
+            setCart(existingCart);
+
+            // Calculate and set the updated cart count
+            const totalCount = existingCart.reduce((total, item) => total + item.quantity, 0);
+            setCartCount(totalCount);
+
+            toast.success('Product removed from cart');
+        }
     };
+
+
+    const decreaseQuantity = (product, size, color) => {
+        // Retrieve the current cart data from local storage or initialize an empty array
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Find the item in the cart
+        const item = existingCart.find(
+            (item) => item.product._id === product._id && item.size === size && item.color === color
+        );
+
+        if (item) {
+            // Decrease the quantity of the item by 1
+            if (item.quantity > 1) {
+                item.quantity--;
+            } else {
+                // If the quantity is 1, remove the item from the cart
+                existingCart.splice(existingCart.indexOf(item), 1);
+            }
+
+            // Save the updated cart data to local storage
+            localStorage.setItem('cart', JSON.stringify(existingCart));
+
+            // Update the state with the new cart data
+            setCart(existingCart);
+
+            // Calculate and set the updated cart count
+            const totalCount = existingCart.reduce((total, item) => total + item.quantity, 0);
+            setCartCount(totalCount);
+        }
+    };
+
 
 
     return (
@@ -72,6 +117,7 @@ const CartState = (props) => {
                     cart,
                     addToCart,
                     removeFromCart,
+                    decreaseQuantity,
                     cartCount,
                 }}>
                 {props.children}

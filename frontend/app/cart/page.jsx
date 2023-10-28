@@ -1,10 +1,13 @@
 import React from 'react'
+import Cart from '../components/content/Cart'
+import YouMayAlsoLike from '../components/layout/YouMayAlsoLike'
 
 const page = () => {
     return (
-        <div>
-            cart
-        </div>
+        <>
+            <Cart />
+            <YouMayAlsoLike />
+        </>
     )
 }
 

@@ -143,6 +143,12 @@ const AuthState = (props) => {
         }
     }
 
+    const signOut = () => {
+        localStorage.removeItem('accessToken');
+        setUser(null);
+        router.push('/sign-in');
+    }
+
     return (
         <>
             <Toaster />
@@ -153,6 +159,7 @@ const AuthState = (props) => {
                     verifyAccessToken,
                     updateUserDetails,
                     uploadProfileImage,
+                    signOut,
                     user
                 }}>
                 {props.children}

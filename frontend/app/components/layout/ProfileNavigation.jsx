@@ -5,12 +5,13 @@ import { BsBox } from 'react-icons/bs'
 import { FaUser } from 'react-icons/fa'
 import { SlLocationPin } from 'react-icons/sl'
 import { AiOutlineUser } from 'react-icons/ai'
+import { GoSignOut } from 'react-icons/go'
 import authContext from '@/app/context/Auth/authContext'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const ProfileNavigation = ({ user }) => {
-    const [profileImage, setProfileImage] = useState(null)
-    const { uploadProfileImage } = useContext(authContext)
+    const { uploadProfileImage, signOut } = useContext(authContext)
     const handleProfileImageUpload = async () => {
         const fileInput = document.getElementById('profileImage');
         const file = fileInput.files[0];
@@ -38,10 +39,12 @@ const ProfileNavigation = ({ user }) => {
                     <p title={user?.phoneNumber} className="number text-sm">{user?.phoneNumber}</p>
                 </div>
             </div>
-            <div className="profile flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
-                <AiOutlineUser className='border border-black rounded-full text-xl' />
-                <p>My Profile</p>
-            </div>
+            <Link href='/profile' className='w-full'>
+                <div className="profile flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
+                    <AiOutlineUser className='border border-black rounded-full text-xl' />
+                    <p>My Profile</p>
+                </div>
+            </Link>
             <div className="orders flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
                 <BsBox className=' text-xl' />
                 <p>My Orders</p>
@@ -49,6 +52,10 @@ const ProfileNavigation = ({ user }) => {
             <div className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
                 <SlLocationPin className=' text-xl' />
                 <p>Track My Order</p>
+            </div>
+            <div title='Signout' onClick={signOut} className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
+                <GoSignOut className=' text-xl' />
+                <p>Sign Out</p>
             </div>
         </div>
     )

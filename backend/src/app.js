@@ -4,10 +4,24 @@ var cors = require('cors')
 const dotenv = require('dotenv');
 const session = require('express-session');
 const passport = require('./middlewares/passportConfig');
+const { default: mongoose } = require('mongoose');
 
 dotenv.config({ path: './config.env' })
 
 connectToMongo();
+
+const db = mongoose.connection;
+db.collection('products').createIndex({
+    title: 'text',
+    description: 'text',
+    // Add more fields as needed
+}, (error) => {
+    if (error) {
+        console.error('Error creating text index:', error);
+    } else {
+        console.log('Compound text index created successfully.');
+    }
+});
 
 const app = express()
 app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: false }));

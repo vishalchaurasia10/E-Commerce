@@ -11,6 +11,9 @@ router.get('/', productsController.getAllProducts);
 
 router.get('/featured', productsController.getFeaturedProducts)
 
+// Search products
+router.get('/search', productsController.searchProducts);
+
 // Get a single product by ID
 router.get('/:productId', productsController.getProductById);
 

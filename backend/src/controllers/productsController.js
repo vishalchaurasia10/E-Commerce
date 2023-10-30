@@ -127,3 +127,17 @@ exports.getProductsByType = async (req, res) => {
         res.status(500).json({ message: 'Error fetching products' });
     }
 }
+
+exports.searchProducts = async (req, res) => {
+    try {
+        const { query } = req.query;
+        const products = await Products.find({ $text: { $search: query } });
+        if (!products) {
+            return res.status(404).json({ message: 'Products not found' });
+        }
+        res.status(200).json(products);
+    } catch (error) {
+        console.error('Error searching products:', error);
+        res.status(500).json({ message: 'Error searching products' });
+    }
+}

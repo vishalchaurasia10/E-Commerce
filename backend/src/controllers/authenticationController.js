@@ -141,30 +141,6 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// Logout a user from a single device
-exports.logoutUser = async (req, res) => {
-    try {
-        req.user.tokens = req.user.tokens.filter(token => {
-            return token.token != req.token;
-        });
-        await req.user.save();
-        res.status(200).json({ message: 'Logout successful' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-// Logout a user from all devices
-exports.logoutAll = async (req, res) => {
-    try {
-        req.user.tokens.splice(0, req.user.tokens.length);
-        await req.user.save();
-        res.status(200).json({ message: 'Logout successful' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 exports.uploadProfileImage = async (req, res) => {
     try {
         // Check if a file was uploaded

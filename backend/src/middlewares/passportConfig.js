@@ -1,38 +1,83 @@
-// passportConfig.js
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/User'); // Your user model
-const session = require('express-session');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
-passport.use(
-    new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-        try {
-            const result = await User.findByCredentials(email, password);
+function generateJwtToken(user) {
 
-            if (result.status !== 200) {
-                return done(null, false, { message: result.message });
-            }
+    const accessToken = jwt.sign(
+        { _id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: '30d' }
+    );
 
-            return done(null, result.user);
-        } catch (error) {
-            return done(error);
+    // Sign the token
+    return accessToken;
+}
+
+// Initialize the Google OAuth strategy
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        // Check if a user with this Google ID already exists
+        let user = await User.findOne({ email: profile.emails[0].value });
+
+        if (!user) {
+            // If the user doesn't exist, create a new user
+            user = new User({
+                email: profile.emails[0].value,
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
+                // You can add more user data from the Google profile if needed
+            });
+
+            user = await user.save();
         }
-    })
-);
 
+        // Create a JWT token
+        const token = generateJwtToken(user);
+        console.log(token);
+
+        return done(null, token);
+    } catch (error) {
+        return done(error, false);
+    }
+}));
+
+// Serialize the user to store in the session
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id)
-        .then((user) => {
-            if (!user) {
-                return done(null, false, { message: 'User not found' });
-            }
-            return done(null, user);
-        })
-        .catch((error) => done(error));
+// Deserialize the user from the session
+passport.deserializeUser(async (id, done) => {
+    const user = await User.findById(id);
+    done(null, user);
 });
 
-module.exports = passport;
+// Create a route for Google OAuth authentication
+exports.googleAuth = passport.authenticate('google', {
+    scope: ['profile', 'email'], // Define the scopes you need
+});
+
+// Handle the Google OAuth callback
+exports.googleAuthCallback = (req, res) => {
+    passport.authenticate('google', (err, token) => {
+        if (err) {
+            // Handle the error, e.g., redirect to an error page
+            return res.redirect('http://localhost:3000/auth-error');
+        }
+
+        if (token) {
+            // Append the token as a query parameter to the successRedirect URL
+            const redirectUrl = `http://localhost:3000/verification?token=${token}`;
+            return res.redirect(redirectUrl);
+        }
+
+        // Handle any other case, e.g., redirect to a login page
+        return res.redirect('http://localhost:3000/login');
+    })(req, res);
+};

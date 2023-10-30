@@ -149,6 +149,14 @@ const AuthState = (props) => {
         router.push('/sign-in');
     }
 
+    const googleAuth = () => {
+        try {
+            window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/users/auth/google`;
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -160,6 +168,7 @@ const AuthState = (props) => {
                     updateUserDetails,
                     uploadProfileImage,
                     signOut,
+                    googleAuth,
                     user
                 }}>
                 {props.children}

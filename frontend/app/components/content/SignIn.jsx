@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const SignIn = () => {
 
     const [credentials, setCredentials] = useState({ email: '', password: '' })
-    const { signIn } = useContext(authContext)
+    const { signIn, googleAuth } = useContext(authContext)
     const { user } = useContext(authContext)
     const router = useRouter()
 
@@ -70,7 +70,7 @@ const SignIn = () => {
                     </Link>
                 </p>
                 <div className="divider">Or</div>
-                <button className={`${roboto.className} flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
+                <button onClick={googleAuth} className={`${roboto.className} flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
                     <FcGoogle className='text-2xl' />
                     <span>
                         Login with Google

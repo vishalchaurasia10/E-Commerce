@@ -5,6 +5,7 @@ import AuthState from './context/Auth/AuthState'
 import CartState from './context/Cart/CartState'
 import FeaturedState from './context/FeaturedProducts/FeaturedState'
 import ProductState from './context/Products/ProductState'
+import SearchState from './context/search/SearchState'
 import './globals.css'
 import { roboto } from './utils/fonts'
 
@@ -18,16 +19,18 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${roboto.className}`}>
         <AuthState>
-          <ProductState>
-            <FeaturedState>
-              <CartState>
-                <Announcement />
-                <Navbar />
-                {children}
-                <Footer />
-              </CartState >
-            </FeaturedState>
-          </ProductState>
+          <SearchState>
+            <ProductState>
+              <FeaturedState>
+                <CartState>
+                  <Announcement />
+                  <Navbar />
+                  {children}
+                  <Footer />
+                </CartState >
+              </FeaturedState>
+            </ProductState>
+          </SearchState>
         </AuthState>
       </body>
     </html>

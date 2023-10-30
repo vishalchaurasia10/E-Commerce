@@ -9,8 +9,8 @@ const Products = ({ localData }) => {
     return (
         <>
             <div className=''>
-                <h2 className={`text-lg ${roboto.className} w-full py-4 `}>{localData.length} Products</h2>
-                <div className="flex flex-wrap py-5">
+                <h2 className={`text-lg ${roboto.className} w-full pt-4 lg:pt-0 lg:py-4 text-center lg:text-start `}>{localData.length} Products</h2>
+                <div className="flex flex-wrap py-5 flex-col lg:flex-row items-center">
                     {localData.length > 0 ?
                         localData.map((product, index) => (
                             <Link href={`/collection/${product._id}`} key={product._id}>

@@ -6,27 +6,64 @@ import Products from '../components/elements/Products'
 import ProductContext from '../context/Products/productContext'
 import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions'
 import { useSearchParams } from 'next/navigation'
+import SearchContext from '../context/search/searchContext'
 
 const page = () => {
 
-    const { products, getAllProducts } = useContext(ProductContext)
+    const { products, getAllProducts, searchProducts, searchProductsByType, searchProductsByCategory } = useContext(ProductContext)
     const [localProductsData, setLocalProductsData] = useState([])
     const [categories, setCategories] = useState([])
     const searchParams = useSearchParams()
     const categoryId = searchParams.get('categoryId')
     const type = searchParams.get('type')
-    console.log(type)
+    const { searchQuery } = useContext(SearchContext)
 
     useEffect(() => {
         const fetchProducts = async () => {
             const data = await getAllProducts()
             setLocalProductsData(data)
-            if (categoryId) {
-                filterProducts(categoryId)
-            }
         }
         fetchProducts()
     }, [])
+
+    useEffect(() => {
+        const searchByCategory = async () => {
+            const data = await searchProductsByCategory(categoryId)
+            console.log(data)
+            setLocalProductsData(data)
+        }
+        if (categoryId) {
+            searchByCategory(categoryId)
+        }
+    }, [categoryId])
+
+    useEffect(() => {
+        const searchByType = async () => {
+            const data = await searchProductsByType(type)
+            console.log(data)
+            setLocalProductsData(data.products)
+        }
+        if (type) {
+            searchByType(type)
+        }
+    }, [type])
+
+    useEffect(() => {
+        if (searchQuery.trim().length === 0 && !categoryId && !type)
+            setLocalProductsData(products)
+    }, [products])
+
+    useEffect(() => {
+        const getSearchedProducts = async () => {
+            const data = await searchProducts(searchQuery)
+            setLocalProductsData(data)
+        }
+        if (searchQuery && searchQuery.trim().length > 0) {
+            getSearchedProducts()
+        } else {
+            setLocalProductsData(products)
+        }
+    }, [searchQuery])
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -45,11 +82,11 @@ const page = () => {
         return categories.filter((category) => category.type === type)
     }
 
-    useEffect(() => {
-        if (type) {
-            filterProductsByType(type)
-        }
-    }, [categories])
+    // useEffect(() => {
+    //     if (type) {
+    //         filterProductsByType(type)
+    //     }
+    // }, [categories])
 
     const filterProductsByType = (type) => {
         const categories = getCategoriesFromType(type);
@@ -62,8 +99,8 @@ const page = () => {
     return (
         <>
             <Banner url='bannerCollection.png' />
-            <div className="collection flex py-5 lg:py-10">
-                <div className=" w-[18%]">
+            <div id='products' className="collection flex flex-col lg:flex-row py-5 lg:py-10">
+                <div className=" lg:w-[18%]">
                     <Filter
                         setLocalData={setLocalProductsData}
                         filterProducts={filterProducts}
@@ -72,7 +109,7 @@ const page = () => {
                         categories={categories}
                     />
                 </div>
-                <div className='w-[82%]'>
+                <div className='lg:w-[82%]'>
                     <Products localData={localProductsData} />
                 </div>
             </div>

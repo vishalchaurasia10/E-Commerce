@@ -128,6 +128,20 @@ exports.getProductsByType = async (req, res) => {
     }
 }
 
+exports.getProductsByCategory = async (req, res) => {
+    try {
+        const categoryId = req.params.categoryId;
+        const products = await Products.find({ category: categoryId });
+        if (!products) {
+            return res.status(404).json({ message: 'Products not found' });
+        }
+        res.status(200).json(products);
+    } catch (error) {
+        console.error('Error fetching products by category:', error);
+        res.status(500).json({ message: 'Error fetching products' });
+    }
+}
+
 exports.searchProducts = async (req, res) => {
     try {
         const { query } = req.query;

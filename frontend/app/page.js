@@ -22,8 +22,8 @@ export default function Home() {
   }, []);
   return (
     <>
-      <AnimatePresence>
-        {loading && (
+      {loading && (
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 1 }}
             animate={{ opacity: 0 }}
@@ -34,8 +34,8 @@ export default function Home() {
             <span className="loading loading-spinner loading-lg"></span>
             <p className="font-bold text-xl">Loading...</p>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )}
       <>
         <Banner url="bannerHome.svg" />
         <FeaturedProduct />

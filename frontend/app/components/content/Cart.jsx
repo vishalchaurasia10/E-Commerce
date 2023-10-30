@@ -33,8 +33,8 @@ const Cart = () => {
 
     return (
         <>
-            <AnimatePresence>
-                {loading && (
+            {loading && (
+                <AnimatePresence>
                     <motion.div
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 0 }}
@@ -45,8 +45,8 @@ const Cart = () => {
                         <span className="loading loading-spinner loading-lg"></span>
                         <p className="font-bold text-xl">Loading...</p>
                     </motion.div>
-                )}
-            </AnimatePresence>
+                </AnimatePresence>
+            )}
             {cart.length > 0 ?
                 <div className="cartWrapper py-10">
                     <h1 className={`${bebas_neue.className} text-center text-5xl pb-7 lg:pb-10`}>My Cart</h1>

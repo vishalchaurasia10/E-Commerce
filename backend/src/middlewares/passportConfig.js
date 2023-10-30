@@ -39,7 +39,6 @@ passport.use(new GoogleStrategy({
 
         // Create a JWT token
         const token = generateJwtToken(user);
-        console.log(token);
 
         return done(null, token);
     } catch (error) {

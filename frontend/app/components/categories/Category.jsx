@@ -17,10 +17,6 @@ const Category = () => {
         })
     }, [])
 
-    useEffect(() => {
-        console.log(themeCategories)
-    }, [themeCategories])
-
     return (
         <div className="wrapper flex flex-col space-y-4">
             <div className="categoriesThumbnail flex flex-col lg:flex-row items-center justify-center w-full lg:space-x-4 lg:px-0">
@@ -71,7 +67,7 @@ const Category = () => {
                 </div>
 
                 <div className="second lg:w-1/2 flex space-x-4">
-                    {themeCategories.slice(2,4).map((category, index) => (
+                    {themeCategories.slice(2, 4).map((category, index) => (
                         <Link className="" key={index} href={`/collection?categoryId=${category._id}`}>
                             <div className="bg-cover bg-center pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image

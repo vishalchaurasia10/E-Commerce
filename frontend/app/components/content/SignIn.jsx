@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const SignIn = () => {
 
     const [credentials, setCredentials] = useState({ email: '', password: '' })
-    const { signIn, googleAuth } = useContext(authContext)
+    const { signIn, googleAuth, loading } = useContext(authContext)
     const { user } = useContext(authContext)
     const router = useRouter()
 
@@ -62,7 +62,10 @@ const SignIn = () => {
                         Forgot Password?
                     </Link>
                 </p>
-                <button onClick={handleSignIn} className={`${roboto.className} w-full py-2 bg-[#2C3E50] text-white`}>Sign In</button>
+                <button onClick={handleSignIn} className={`${roboto.className} w-full flex items-center justify-center py-2 bg-[#2C3E50] text-white`}>
+                    {loading && <span className="loading mr-2 loading-spinner loading-md"></span>}
+                    <span>Sign In</span>
+                </button>
                 <p className='text-sm'>
                     Don't have an account?
                     <Link className='text-[#4D7E86] hover:underline' href='/sign-up'>

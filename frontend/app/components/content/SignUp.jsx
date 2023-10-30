@@ -8,7 +8,7 @@ import authContext from '@/app/context/Auth/authContext'
 
 const SignUp = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '', confirmPassword: '' })
-    const { signUp } = useContext(authContext)
+    const { signUp, googleAuth, loading } = useContext(authContext)
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
@@ -59,7 +59,10 @@ const SignUp = () => {
                     name='confirmPassword'
                     id='confirmPassword'
                     placeholder='Confirm Password' />
-                <button onClick={handleSignUp} className={`${roboto.className} w-full py-2 bg-[#2C3E50] text-white`}>Sign Up</button>
+                <button onClick={handleSignUp} className={`${roboto.className} w-full flex items-center justify-center py-2 bg-[#2C3E50] text-white`}>
+                    {loading && <span className="loading mr-2 loading-spinner loading-md"></span>}
+                    <span>Sign Up</span>
+                </button>
                 <p className='text-sm'>
                     Already have an account?
                     <Link className='text-[#4D7E86] hover:underline' href='/sign-in'>
@@ -67,7 +70,7 @@ const SignUp = () => {
                     </Link>
                 </p>
                 <div className="divider">Or</div>
-                <button className={`${roboto.className} flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
+                <button onClick={googleAuth} className={`${roboto.className} flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
                     <FcGoogle className='text-2xl' />
                     <span>
                         Login with Google

@@ -1,9 +1,10 @@
 'use client'
 import { bebas_neue, roboto } from '@/app/utils/fonts'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CartContext from '@/app/context/Cart/cartContext'
 import Link from 'next/link'
 import CartProducts from '../elements/CartProducts'
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Cart = () => {
     const { cart } = useContext(CartContext)
@@ -20,8 +21,32 @@ const Cart = () => {
         return totalAmount;
     };
 
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, []);
+
     return (
         <>
+            <AnimatePresence>
+                {loading && (
+                    <motion.div
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                        className="h-screen fixed top-0 left-0 w-full z-50 bg-white flex items-center justify-center space-x-4"
+                    >
+                        <span className="loading loading-spinner loading-lg"></span>
+                        <p className="font-bold text-xl">Loading...</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             {cart.length > 0 ?
                 <div className="cartWrapper py-10">
                     <h1 className={`${bebas_neue.className} text-center text-5xl pb-7 lg:pb-10`}>My Cart</h1>

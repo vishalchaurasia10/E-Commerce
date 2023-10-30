@@ -10,7 +10,7 @@ import SearchContext from '../context/search/searchContext'
 
 const page = () => {
 
-    const { products, getAllProducts, searchProducts, searchProductsByType, searchProductsByCategory } = useContext(ProductContext)
+    const { products, getAllProducts, searchProducts, searchProductsByType, searchProductsByCategory, loading } = useContext(ProductContext)
     const [localProductsData, setLocalProductsData] = useState([])
     const [categories, setCategories] = useState([])
     const searchParams = useSearchParams()

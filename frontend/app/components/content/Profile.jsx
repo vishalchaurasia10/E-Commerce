@@ -4,7 +4,7 @@ import { RiPencilFill } from 'react-icons/ri'
 import authContext from '@/app/context/Auth/authContext'
 
 const Profile = ({ user, setShowSidebar, showSidebar }) => {
-    const { updateUserDetails } = useContext(authContext)
+    const { updateUserDetails, loading } = useContext(authContext)
     const [hasChanged, setHasChanged] = useState(false);
     const [localState, setLocalState] = useState({
         firstName: user?.firstName || '',
@@ -123,9 +123,10 @@ const Profile = ({ user, setShowSidebar, showSidebar }) => {
             </div>
             <button
                 onClick={handleUpdate}
-                className={`px-10 py-2 bg-[#2C3E50] text-white ${hasChanged ? '' : 'cursor-not-allowed'}`}
+                className={`px-10 py-2 bg-[#2C3E50] text-white flex items-center ${hasChanged ? '' : 'cursor-not-allowed'}`}
                 disabled={!hasChanged}>
-                Save
+                {loading && <span className="loading -ml-2 mr-1 loading-spinner loading-md"></span>}
+                <span>Save</span>
             </button>
         </div>
     )

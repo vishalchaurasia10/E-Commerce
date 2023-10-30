@@ -11,7 +11,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const ProfileNavigation = ({ user }) => {
-    const { uploadProfileImage, signOut } = useContext(authContext)
+    const { uploadProfileImage, signOut, loading } = useContext(authContext)
     const handleProfileImageUpload = async () => {
         const fileInput = document.getElementById('profileImage');
         const file = fileInput.files[0];
@@ -27,12 +27,17 @@ const ProfileNavigation = ({ user }) => {
                     </label>
                     <input onChange={handleProfileImageUpload} className='hidden' type="file" name="profileImage" id="profileImage" />
                 </div>
-                <div className="userImage mb-2">
-                    {user?.profileImageId ?
-                        <Image className='rounded-full w-40 h-40' src={`http://localhost:8000/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
-                        :
-                        <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] text-8xl p-2 rounded-full cursor-pointer' />}
-                </div>
+                {loading ?
+                    <div className="w-full my-10 flex items-center justify-center">
+                        <span className="loading loading-spinner loading-lg"></span>
+                    </div>
+                    :
+                    <div className="userImage mb-2">
+                        {user?.profileImageId ?
+                            <Image className='rounded-full w-40 h-40' src={`http://localhost:8000/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
+                            :
+                            <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] text-8xl p-2 rounded-full cursor-pointer' />}
+                    </div>}
                 <div className="details">
                     <p title={`${user?.firstName} ${user?.lastName}`} className="name font-bold">{user?.firstName} {user?.lastName}</p>
                     <p title={user?.email} className="email text-sm truncate w-40" >{user?.email}</p>

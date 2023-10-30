@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const AuthState = (props) => {
 
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
@@ -16,6 +17,7 @@ const AuthState = (props) => {
 
     const signUp = async (email, password) => {
         try {
+            setLoading(true);
             const user = {
                 email,
                 password
@@ -36,11 +38,14 @@ const AuthState = (props) => {
             }
         } catch (error) {
             toast.error(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
     const signIn = async (email, password) => {
         try {
+            setLoading(true);
             const user = {
                 email,
                 password
@@ -63,11 +68,14 @@ const AuthState = (props) => {
             }
         } catch (error) {
             toast.error(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
     const verifyAccessToken = async () => {
         try {
+            setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/verifyjwt`, {
                 method: 'GET',
                 headers: {
@@ -81,11 +89,14 @@ const AuthState = (props) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
     const fetchUserDetails = async (userId) => {
         try {
+            setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`);
             const data = await response.json();
             if (data._id) {
@@ -93,11 +104,14 @@ const AuthState = (props) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
     const updateUserDetails = async (userId, updatedUser) => {
         try {
+            setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`, {
                 method: 'PUT',
                 headers: {
@@ -114,11 +128,14 @@ const AuthState = (props) => {
             }
         } catch (error) {
             toast.error(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
     const uploadProfileImage = async (userId, file) => {
         try {
+            setLoading(true);
             if (!file) {
                 return { status: 'failure', message: 'No file Selected' }
             }
@@ -140,6 +157,8 @@ const AuthState = (props) => {
             }
         } catch (error) {
             return { status: 'failure', message: error.message };
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -169,7 +188,8 @@ const AuthState = (props) => {
                     uploadProfileImage,
                     signOut,
                     googleAuth,
-                    user
+                    user,
+                    loading
                 }}>
                 {props.children}
             </AuthContext.Provider>

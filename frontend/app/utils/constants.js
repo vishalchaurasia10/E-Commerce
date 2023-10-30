@@ -76,22 +76,27 @@ export const womenData = [
     {
         path: '/tshirt',
         title: 'T-Shirt',
+        categoryId: '6523ad6742eb3d440edb7435'
     },
     {
         path: '/oversizedtshirt',
         title: 'Oversized T-Shirt',
+        categoryId: '653fc278def49faea4bbeb23'
     },
     {
         path: '/dress',
         title: 'Dress',
+        categoryId: '6523ad9b42eb3d440edb7439'
     },
     {
         path: '/croptop',
         title: 'Crop Top',
+        categoryId: '6523adac42eb3d440edb743b'
     },
     {
         path: '/hoodies&sweatshirts',
         title: 'Hoodies & Sweatshirts',
+        categoryId: '653fc25ddef49faea4bbeb21'
     }
 ]
 
@@ -99,14 +104,17 @@ export const menData = [
     {
         path: '/tshirt',
         title: 'T-Shirt',
+        categoryId: '6523ad4a42eb3d440edb7433'
     },
     {
         path: '/oversizedtshirt',
         title: 'Oversized T-Shirt',
+        categoryId: '6523ad8c42eb3d440edb7437'
     },
     {
         path: '/hoodies&sweatshirts',
         title: 'Hoodies & Sweatshirts',
+        categoryId: '653fc0c7def49faea4bbea4d'
     }
 ]
 
@@ -114,22 +122,27 @@ export const themesData = [
     {
         path: '/fitness',
         title: 'Fitness',
+        categoryId: '6522a84b31a90e002b4d11f4'
     },
     {
         path: '/valentinespecial',
         title: 'Valentine Special',
+        categoryId: '653fc3a9def49faea4bbebb9'
     },
     {
         path: '/halloween',
         title: 'Halloween',
+        categoryId: '6522acd431a90e002b4d11f8'
     },
     {
         path: '/travel',
         title: 'Travel',
+        categoryId: '6522a89831a90e002b4d11f6'
     },
     {
         path: '/zodiactshirt',
         title: 'Zodiac T-Shirt',
+        categoryId: '6522a80f31a90e002b4d11f2'
     }
 ]
 

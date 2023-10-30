@@ -29,7 +29,6 @@ const page = () => {
     useEffect(() => {
         const searchByCategory = async () => {
             const data = await searchProductsByCategory(categoryId)
-            console.log(data)
             setLocalProductsData(data)
         }
         if (categoryId) {
@@ -40,7 +39,6 @@ const page = () => {
     useEffect(() => {
         const searchByType = async () => {
             const data = await searchProductsByType(type)
-            console.log(data)
             setLocalProductsData(data.products)
         }
         if (type) {
@@ -81,12 +79,6 @@ const page = () => {
     const getCategoriesFromType = (type) => {
         return categories.filter((category) => category.type === type)
     }
-
-    // useEffect(() => {
-    //     if (type) {
-    //         filterProductsByType(type)
-    //     }
-    // }, [categories])
 
     const filterProductsByType = (type) => {
         const categories = getCategoriesFromType(type);

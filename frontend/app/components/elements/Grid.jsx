@@ -10,7 +10,7 @@ const Grid = ({ initialUrl, data }) => {
                 <div className="themeCategories flex flex-col justify-center items-center lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
                     <div className="first flex space-x-4">
                         {data.slice(0, 3).map((item, index) => (
-                            <Link className="w-1/3" key={index} href={`/category/${item.title}`}>
+                            <Link className="w-1/3" key={index} href={`/collection?categoryId=${item.categoryId}`}>
                                 <div className="pagesThumbnail justify-center flex relative">
                                     <Image
                                         className="h-full w-full"
@@ -29,7 +29,7 @@ const Grid = ({ initialUrl, data }) => {
                 <div className="categoriesThumbnail flex flex-col lg:flex-row items-center justify-center w-full lg:space-x-4 lg:px-0">
                     {data.slice(3).map((item, index) => {
                         return (
-                            <Link className='w-full lg:w-1/2' href='/women'>
+                            <Link className='w-full lg:w-1/2' href={`/collection?categoryId=${item.categoryId}`}>
                                 <div className="pagesThumbnail justify-center flex relative">
                                     <img
                                         className="h-full w-full"

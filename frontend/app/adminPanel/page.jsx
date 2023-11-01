@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import UploadCategory from '../components/admin/UploadCategory'
 import UploadProduct from '../components/admin/UploadProduct';
 import UploadAnnouncement from '../components/admin/UploadAnnouncement';
-import UploadBanner from '../components/admin/UploadBanner';
+import SearchForProduct from '../components/admin/SearchProduct';
 
 const page = () => {
 
@@ -13,7 +13,7 @@ const page = () => {
         { key: 'category', label: 'Upload Category' },
         { key: 'products', label: 'Upload Products' },
         { key: 'announcement', label: 'Upload Announcement' },
-        { key: 'banner', label: 'Upload Banner' },
+        { key: 'search', label: 'Search Product' },
     ];
 
     const renderTabContent = () => {
@@ -24,8 +24,8 @@ const page = () => {
                 return <UploadProduct />;
             case 'announcement':
                 return <UploadAnnouncement />;
-            case 'banner':
-                return <UploadBanner />;
+            case 'search':
+                return <SearchForProduct />;
             default:
                 return null;
         }

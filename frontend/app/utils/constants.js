@@ -19,11 +19,11 @@ export const navbarData = [
         path: '/themes',
         expand: true
     },
-    // {
-    //     title: 'Combos',
-    //     path: '/combos',
-    //     expand: true
-    // }
+    {
+        title: 'Collection',
+        path: '/collection',
+        expand: true
+    }
 ]
 
 export const categoryFields = [

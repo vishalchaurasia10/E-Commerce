@@ -9,6 +9,9 @@ router.post('/', productsController.createProduct);
 // Get all products
 router.get('/', productsController.getAllProducts);
 
+// Get products with pagination
+router.get('/page', productsController.getProductsByPage);
+
 router.get('/featured', productsController.getFeaturedProducts)
 
 // Search products

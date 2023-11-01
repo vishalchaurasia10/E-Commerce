@@ -12,6 +12,30 @@ exports.createProduct = async (req, res) => {
     }
 }
 
+// Get products with pagination
+exports.getProductsByPage = async (req, res) => {
+    const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+    const perPage = 12; // Number of products per page
+
+    try {
+        const totalProducts = await Products.countDocuments();
+        const totalPages = Math.ceil(totalProducts / perPage);
+
+        if (page < 1 || page > totalPages) {
+            return res.status(400).json({ message: 'Invalid page number' });
+        }
+
+        const products = await Products.find()
+            .skip((page - 1) * perPage) // Skip products on previous pages
+            .limit(perPage); // Limit to perPage products
+
+        res.status(200).json({ products, totalPages, currentPage: page });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 // Get all products
 exports.getAllProducts = async (req, res) => {
     try {

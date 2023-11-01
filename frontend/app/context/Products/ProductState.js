@@ -23,6 +23,22 @@ const ProductState = (props) => {
         }
     }
 
+    const getProductsWithPagination = async (page) => {
+        try{
+            setLoading(true)
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/page?page=${page}`
+            const response = await fetch(url)
+            const data = await response.json()
+            setProducts(data.products)
+            console.log(data)
+            return data
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const searchProducts = async (search) => {
         try {
             setLoading(true)
@@ -79,7 +95,8 @@ const ProductState = (props) => {
                     setProducts,
                     searchProducts,
                     searchProductsByType,
-                    searchProductsByCategory
+                    searchProductsByCategory,
+                    getProductsWithPagination
                 }}>
                 {props.children}
             </ProductContext.Provider>

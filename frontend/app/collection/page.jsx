@@ -10,9 +10,11 @@ import SearchContext from '../context/search/searchContext'
 
 const page = () => {
 
-    const { products, getAllProducts, searchProducts, searchProductsByType, searchProductsByCategory, loading } = useContext(ProductContext)
+    const { products, searchProducts, searchProductsByType, searchProductsByCategory, getProductsWithPagination } = useContext(ProductContext)
     const [localProductsData, setLocalProductsData] = useState([])
     const [categories, setCategories] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
     const searchParams = useSearchParams()
     const categoryId = searchParams.get('categoryId')
     const type = searchParams.get('type')
@@ -20,11 +22,12 @@ const page = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const data = await getAllProducts()
-            setLocalProductsData(data)
+            const data = await getProductsWithPagination(currentPage)
+            setLocalProductsData(data.products)
+            setTotalPages(data.totalPages)
         }
         fetchProducts()
-    }, [])
+    }, [currentPage])
 
     useEffect(() => {
         const searchByCategory = async () => {
@@ -88,6 +91,10 @@ const page = () => {
         setLocalProductsData(filteredProducts); // Update the products state with filtered products
     };
 
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
     return (
         <>
             <Banner url='bannerCollection.png' />
@@ -101,9 +108,22 @@ const page = () => {
                         categories={categories}
                     />
                 </div>
-                <div className='lg:w-[82%]'>
+                <div className='lg:w-[82%] min-h-[35rem]'>
                     <Products localData={localProductsData} />
                 </div>
+            </div>
+            <div className="join w-full flex justify-center mb-10">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1} className="join-item btn">
+                    Prev
+                </button>
+                <button onClick={() => setCurrentPage(1)} className="join-item btn">1</button>
+                {totalPages > 1 && <button onClick={() => setCurrentPage(2)} className="join-item btn">2</button>}
+                {totalPages > 1 && <button className="join-item btn btn-disabled">...</button>}
+                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages - 1)} className="join-item btn">{totalPages - 1}</button>}
+                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages)} className="join-item btn">{totalPages}</button>}
+                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="join-item btn">Next</button>
             </div>
         </>
     )

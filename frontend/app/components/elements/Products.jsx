@@ -6,6 +6,14 @@ import Link from 'next/link'
 
 const Products = ({ localData }) => {
     const { loading } = useContext(ProductContext)
+
+    const truncateStyle = {
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        WebkitLineClamp: 2, // Number of lines to show
+    };
+
     return (
         <>
             <div className=''>
@@ -26,7 +34,7 @@ const Products = ({ localData }) => {
                                     >
                                         <div className='flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
                                             <img src={`http://localhost:8000/uploads/products/${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
-                                            <h3 className={`${roboto.className} px-4 pt-2 text-black font-bold`}>{product.title}</h3>
+                                            <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                                             <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
                                         </div>
                                     </div>

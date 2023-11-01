@@ -23,7 +23,7 @@ const FeaturedProduct = () => {
                         <span className="loading loading-spinner loading-lg"></span>
                     </div>
                     :
-                    <div className="carousel carousel-end w-screen space-x-4 py-5">
+                    <div className="carousel carousel-end w-full space-x-4 py-5">
                         {featuredProducts.map((product, index) => (
                             <Link href={`/collection/${product._id}`} key={product._id}>
                                 <ProductCard product={product} index={index} />

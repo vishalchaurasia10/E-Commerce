@@ -47,7 +47,7 @@ const SearchForProduct = () => {
                                 value={productId}
                                 className='outline-none placeholder:text-white bg-transparent border-b p-2 border-[rgba(255,255,255,0.5)]'
                             />
-                            <button onClick={() => getProduct(productId)} className="btn btn-active">Search</button>
+                            <button onClick={() => { if (productId.trim().length > 0) getProduct(productId) }} className="btn btn-active">Search</button>
                         </div>
                     </div>
                 </div>

@@ -26,45 +26,28 @@ const page = () => {
             setLocalProductsData(data.products)
             setTotalPages(data.totalPages)
         }
-        fetchProducts()
-    }, [currentPage])
-
-    useEffect(() => {
         const searchByCategory = async () => {
             const data = await searchProductsByCategory(categoryId)
             setLocalProductsData(data)
         }
-        if (categoryId) {
-            searchByCategory(categoryId)
-        }
-    }, [categoryId])
-
-    useEffect(() => {
         const searchByType = async () => {
             const data = await searchProductsByType(type)
             setLocalProductsData(data.products)
         }
-        if (type) {
-            searchByType(type)
-        }
-    }, [type])
-
-    useEffect(() => {
-        if (searchQuery.trim().length === 0 && !categoryId && !type)
-            setLocalProductsData(products)
-    }, [products])
-
-    useEffect(() => {
         const getSearchedProducts = async () => {
             const data = await searchProducts(searchQuery)
             setLocalProductsData(data)
         }
         if (searchQuery && searchQuery.trim().length > 0) {
             getSearchedProducts()
+        } else if (categoryId) {
+            searchByCategory(categoryId)
+        } else if (type) {
+            searchByType(type)
         } else {
-            setLocalProductsData(products)
+            fetchProducts()
         }
-    }, [searchQuery])
+    }, [currentPage, categoryId, type, searchQuery])
 
     useEffect(() => {
         const fetchCategories = async () => {

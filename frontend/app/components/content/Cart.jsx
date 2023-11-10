@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Cart = () => {
     const { cart } = useContext(CartContext)
+    const [loading, setLoading] = useState(true);
 
     const calculateTotalAmount = (cart) => {
         let totalAmount = 0;
@@ -21,7 +22,7 @@ const Cart = () => {
         return totalAmount;
     };
 
-    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -86,7 +87,9 @@ const Cart = () => {
                                     <p className='font-bold text-base'>₹{calculateTotalAmount(cart) + 60}</p>
                                 </div>
                                 <div className="buttons flex flex-col space-y-3">
-                                    <button className='w-full bg-[#2C3E50] text-white py-2'>Checkout</button>
+                                    <Link href='/checkout'>
+                                        <button className='w-full bg-[#2C3E50] text-white py-2'>Checkout</button>
+                                    </Link>
                                     <Link href='/collection'>
                                         <button className='w-full bg-[#4D7E86] text-white py-2'>Add More Product</button>
                                     </Link>

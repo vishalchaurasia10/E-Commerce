@@ -22,7 +22,8 @@
     "node-ccavenue": "^1.0.5",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "razorpay": "^2.9.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

@@ -53,15 +53,23 @@ exports.verifyTransaction = async (req, res) => {
             .digest('hex');
 
         if (generatedSignature === razorpay_signature) {
+            const orderItems = req.body.cart.map(item => ({
+                quantity: item.quantity,
+                size: item.size,
+                color: item.color,
+                _id: item.productId // Use the productId as the _id
+            }));
+
             const order = new Order({
                 user: req.body.userId,
-                products: req.body.cart,
+                products: orderItems,
                 paymentId: razorpay_payment_id,
                 orderId: razorpay_order_id,
                 signature: razorpay_signature,
                 address: req.body.address,
                 phoneNumber: req.body.phoneNumber
             });
+
             await order.save();
             res.status(200).json({ status: "Success", message: "Order placed successfully" });
         } else {

@@ -5,11 +5,13 @@ import authContext from '@/app/context/Auth/authContext'
 import CartContext from '@/app/context/Cart/cartContext'
 import { toast, Toaster } from 'react-hot-toast'
 import Script from 'next/script'
+import { useRouter } from 'next/navigation'
 
 const CheckoutComponent = () => {
 
     const { user } = useContext(authContext)
     const { cart } = useContext(CartContext)
+    const router = useRouter()
     const [localState, setLocalState] = useState({
         firstName: '',
         lastName: '',
@@ -92,6 +94,10 @@ const CheckoutComponent = () => {
                                 }),
                             });
                             const data = await res.json();
+                            if (data.status === 'Success') {
+                                toast.success('Payment Successful')
+                                router.push('/myorders')
+                            }
                             console.log(data);
                         } catch (error) {
                             toast.error(error.message);

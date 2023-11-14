@@ -19,7 +19,7 @@ const ProfileNavigation = ({ user }) => {
     }
 
     return (
-        <div className={` sticky top-24 h-[42rem] lg:h-[82vh] flex flex-col items-center py-10 px-5 border border-[#4D7E86] ${roboto.className}`}>
+        <div className={` sticky top-24 z-30 bg-white h-[42rem] lg:h-[82vh] flex flex-col items-center py-10 px-5 border border-[#4D7E86] ${roboto.className}`}>
             <div className="userDetails w-full relative flex flex-wrap items-center justify-center space-x-4 mb-10">
                 <div title='Edit Profile image' className="edit absolute top-0 right-0 text-sm font-bold cursor-pointer">
                     <label className='cursor-pointer' htmlFor="profileImage">
@@ -50,10 +50,12 @@ const ProfileNavigation = ({ user }) => {
                     <p>My Profile</p>
                 </div>
             </Link>
-            <div className="orders flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
-                <BsBox className=' text-xl' />
-                <p>My Orders</p>
-            </div>
+            <Link href='/myorders' className='w-full'>
+                <div className="orders flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
+                    <BsBox className=' text-xl' />
+                    <p>My Orders</p>
+                </div>
+            </Link>
             <div className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
                 <SlLocationPin className=' text-xl' />
                 <p>Track My Order</p>

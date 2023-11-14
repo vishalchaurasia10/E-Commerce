@@ -62,6 +62,8 @@ exports.verifyTransaction = async (req, res) => {
 
             const order = new Order({
                 user: req.body.userId,
+                paidAmount: req.body.paidAmount,
+                name: req.body.name,
                 products: orderItems,
                 paymentId: razorpay_payment_id,
                 orderId: razorpay_order_id,

@@ -11,3 +11,13 @@ exports.getOrders = async (req, res) => {
         res.status(500).json({ error: 'Error fetching orders' });
     }
 }
+
+// fetch a particular order
+exports.getOrder = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        res.status(200).json(order);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching order' });
+    }
+}

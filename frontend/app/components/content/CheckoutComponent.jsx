@@ -51,6 +51,18 @@ const CheckoutComponent = () => {
     }
 
     const checkoutHandler = async () => {
+        if (!user) {
+            toast.error('Please login first')
+            return
+        }
+        if (cart.length === 0) {
+            toast.error('Please add items to cart')
+            return
+        }
+        if (!localState.firstName || !localState.lastName || !localState.phoneNumber || !localState.email || !localState.address || !localState.city || !localState.state || !localState.pinCode) {
+            toast.error('Please fill all the fields')
+            return
+        }
         try {
             const cartData = cart.map(item => ({
                 productId: item.product._id,
@@ -58,6 +70,7 @@ const CheckoutComponent = () => {
                 size: item.size,
                 quantity: item.quantity,
             }));
+            console.log(cartData);
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/checkout`, {
                 method: 'POST',
                 headers: {
@@ -66,18 +79,19 @@ const CheckoutComponent = () => {
                 body: JSON.stringify({ cart: cartData }),
             });
             if (res.ok) {
-                const data = await res.json();
-                console.log(data); // Log the response data
+                const orderData = await res.json();
+                console.log(orderData); // Log the response data
                 const options = {
                     "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-                    "amount": data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "amount": orderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                     "currency": "INR",
                     "name": "Forever Trendin",
                     "description": "Test Transaction",
                     "image": "https://img1.wsimg.com/isteam/ip/f32f6f8b-4f61-4964-b9ab-cdadde45b2da/full%20logo.png/:/rs=w:200,h:200,cg:true,m/cr=w:200,h:200/qt=q:95",
-                    "order_id": data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "order_id": orderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     "handler": async function (response) {
                         try {
+                            console.log(cartData)
                             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/callback`, {
                                 method: 'POST',
                                 headers: {
@@ -86,6 +100,8 @@ const CheckoutComponent = () => {
                                 body: JSON.stringify({
                                     userId: user._id,
                                     cart: cartData,
+                                    name: `${localState.firstName} ${localState.lastName}`,
+                                    paidAmount: orderData.amount,
                                     razorpay_payment_id: response.razorpay_payment_id,
                                     razorpay_order_id: response.razorpay_order_id,
                                     razorpay_signature: response.razorpay_signature,

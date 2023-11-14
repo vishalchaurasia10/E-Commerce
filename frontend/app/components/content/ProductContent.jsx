@@ -3,6 +3,7 @@ import { bebas_neue, jost, roboto } from '@/app/utils/fonts'
 import React, { useContext, useEffect, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import CartContext from '@/app/context/Cart/cartContext'
+import Link from 'next/link'
 
 const ProductContent = ({ product }) => {
     const [quantity, setQuantity] = useState(1)
@@ -66,7 +67,9 @@ const ProductContent = ({ product }) => {
                 </div>
                 <div className="buttons flex flex-col space-y-3">
                     <button onClick={handleAddToCart} className='bg-[#2C3E50] text-white py-3'>Add To Cart</button>
-                    <button className='bg-[#4D7E86] text-white py-3'>Buy It Now</button>
+                    <Link className='bg-[#4D7E86] text-white py-3 flex items-center justify-center' href='/checkout'>
+                        <button >Buy It Now</button>
+                    </Link>
                 </div>
                 <div className="otherDetails">
                     <ul className='list-disc pl-6 space-y-2 py-3'>

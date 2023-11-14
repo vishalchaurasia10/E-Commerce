@@ -28,7 +28,7 @@ const page = () => {
                     <div className={`profileNavigation ${showSidebar ? '' : 'translate-x-[30rem] scale-0 lg:scale-100'} left-0 lg:translate-x-0 duration-700 transition-all absolute lg:static bg-white w-full lg:w-1/4`}>
                         <ProfileNavigation user={user} />
                     </div>
-                    <div className="profileContent mx-auto lg:w-3/4">
+                    <div className="profileContent mx-auto w-full lg:w-3/4">
                         <Orders user={user} setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
                     </div>
                 </div>}

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const CheckoutComponent = () => {
 
     const { user } = useContext(authContext)
-    const { cart } = useContext(CartContext)
+    const { cart, clearCart } = useContext(CartContext)
     const router = useRouter()
     const [localState, setLocalState] = useState({
         firstName: '',
@@ -70,7 +70,6 @@ const CheckoutComponent = () => {
                 size: item.size,
                 quantity: item.quantity,
             }));
-            console.log(cartData);
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/checkout`, {
                 method: 'POST',
                 headers: {
@@ -80,7 +79,6 @@ const CheckoutComponent = () => {
             });
             if (res.ok) {
                 const orderData = await res.json();
-                console.log(orderData); // Log the response data
                 const options = {
                     "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
                     "amount": orderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -91,7 +89,6 @@ const CheckoutComponent = () => {
                     "order_id": orderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     "handler": async function (response) {
                         try {
-                            console.log(cartData)
                             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/callback`, {
                                 method: 'POST',
                                 headers: {
@@ -112,9 +109,11 @@ const CheckoutComponent = () => {
                             const data = await res.json();
                             if (data.status === 'Success') {
                                 toast.success('Payment Successful')
+                                clearCart()
                                 router.push('/myorders')
+                            } else {
+                                toast.error('Something went wrong')
                             }
-                            console.log(data);
                         } catch (error) {
                             toast.error(error.message);
                             console.log(error.message)

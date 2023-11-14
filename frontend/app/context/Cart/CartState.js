@@ -107,6 +107,16 @@ const CartState = (props) => {
         }
     };
 
+    const clearCart = () => {
+        // Clear the cart data in local storage
+        localStorage.removeItem('cart');
+
+        // Clear the cart data in the state
+        setCart([]);
+
+        // Clear the cart count in the state
+        setCartCount(0);
+    };
 
 
     return (
@@ -119,6 +129,7 @@ const CartState = (props) => {
                     removeFromCart,
                     decreaseQuantity,
                     cartCount,
+                    clearCart,
                 }}>
                 {props.children}
             </CartContext.Provider>

@@ -4,4 +4,6 @@ const paymentController = require('../controllers/paymentController');
 
 router.post('/checkout', paymentController.checkout);
 
+router.post('/callback', paymentController.verifyTransaction);
+
 module.exports = router;

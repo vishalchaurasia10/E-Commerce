@@ -11,24 +11,35 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
     const { user } = useContext(authContext);
 
     const getProducts = async () => {
-        const productID = order.products.map((product) => product._id);
+        const productDetails = order.products.map((product) => ({
+            id: product._id,
+            color: product.color,
+            size: product.size,
+        }));
 
         const uniqueProducts = [];
-        const idSet = new Set();
+        const productSet = new Set();
 
-        for (const id of productID) {
+        for (const details of productDetails) {
+            const { id, color, size } = details;
+            const productKey = `${id}-${color}-${size}`;
+
             try {
-                if (idSet.has(id)) continue; // Skip if ID already added
+                if (productSet.has(productKey)) continue; // Skip if combination already added
+
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`);
                 const data = await response.json();
-                idSet.add(id);
+
+                productSet.add(productKey);
                 uniqueProducts.push(data);
             } catch (error) {
                 console.log(error);
             }
         }
+
         setProducts(uniqueProducts);
     };
+
 
     useEffect(() => {
         if (!user) {
@@ -55,7 +66,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                             <p><span className='font-bold'>Email:</span> {user.email}</p>
                             <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                             <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>
-                            <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount/100}</p>
+                            <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount / 100}</p>
                         </div>
                         {
                             products.length > 0 && products.map((product, index) => {

@@ -137,10 +137,10 @@ async function mapOrderToShiprocketFormat(createdOrder) {
     });
 
     return {
-        order_id: createdOrder.orderId,
+        order_id: createdOrder._id,
         order_date: createdOrder.createdAt,
         phone_verified: 1,
-        id: createdOrder._id,
+        id: createdOrder.orderId,
         pickup_location: "Forever TrendIn",
         address: "H no 336, beside Mohini Apartment, Goushala Road",
         address_2: "Near Jain Mandir, Jugsalai",
@@ -180,7 +180,7 @@ async function mapOrderToShiprocketFormat(createdOrder) {
         shipping_phone: "",
         order_items: createdOrder.products.map(item => ({
             name: titleMap.get(item._id.toString()),
-            sku: item._id,
+            sku: `${item._id}_${item.size}_${item.color}`,
             units: item.quantity,
             discount: 0,
             tax: 0,

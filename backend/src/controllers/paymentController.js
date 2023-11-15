@@ -121,7 +121,6 @@ async function getShiprocketAccessToken() {
             email: process.env.SHIPROCKET_EMAIL,
             password: process.env.SHIPROCKET_PASSWORD
         });
-        console.log("Shiprocket Access Token:", response.data.token);
         return response.data.token;
     } catch (error) {
         console.error("Error getting Shiprocket access token:", error.response ? error.response.data : error.message);

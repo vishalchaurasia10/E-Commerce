@@ -81,6 +81,10 @@ const orderSchema = new mongoose.Schema({
     shiprocketShipmentId: {
         type: Number,
     },
+    refundId: {
+        type: String,
+        default: null
+    },
 }, {
     timestamps: true
 });

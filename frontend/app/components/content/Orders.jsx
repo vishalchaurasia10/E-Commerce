@@ -76,7 +76,7 @@ const Orders = ({ user, setShowSidebar, showSidebar }) => {
                                                         <span className='flex items-center space-x-1'>
                                                             {order.status === 'confirmed' && <FaClock className='text-orange-400' />}
                                                             {order.status === 'delivered' && <FaCircleCheck className='text-green-400' />}
-                                                            {order.status === 'canceled' && <FaCirclePlus className='text-red-400 rotate-45 text-lg' />}
+                                                            {order.status === 'cancelled' && <FaCirclePlus className='text-red-500 rotate-45 text-lg' />}
                                                             <span>
                                                                 {order.status}
                                                             </span>

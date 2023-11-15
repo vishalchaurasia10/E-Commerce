@@ -103,8 +103,9 @@ const SearchForProduct = () => {
                                         <h1 className='font-bold text-2xl'>OrderId : {order.orderId}</h1>
                                     </div>
                                     <div className="description flex flex-col space-y-1 pb-10">
+                                        <p className='text-2xl bg-yellow-300 w-fit px-5'><span className='font-bold'>Order Status:</span> {order.status}</p>
                                         <p className='text-sm'><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
-                                        <p><span className='font-bold'>Name:</span> {order.name}</p>
+                                        <p><span className='font-bold'>Name:</span> {order.firstName} {order.lastName}</p>
                                         <p><span className='font-bold'>Email:</span> {order.email}</p>
                                         <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                                         <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>

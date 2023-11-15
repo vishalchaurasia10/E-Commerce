@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import authContext from '@/app/context/Auth/authContext'
 import Image from 'next/image'
 import { formatDate } from './Orders'
+import { FaCircleExclamation } from 'react-icons/fa6'
+import { toast, Toaster } from 'react-hot-toast'
 
 const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
     const [products, setProducts] = useState([]);
@@ -40,6 +42,28 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
         setProducts(uniqueProducts);
     };
 
+    const cancelOrder = async (orderId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/cancel/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            if (response.status === 200) {
+                toast.success(data.message);
+                router.push('/myorders');
+            } else {
+                toast.error(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
+
 
     useEffect(() => {
         if (!user) {
@@ -51,6 +75,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
 
     return (
         <>
+            <Toaster />
             {user && products.length > 0 && order &&
                 <div className='h-full py-6 lg:py-10 px-3 lg:px-5 border border-[#4D7E86]'>
                     <div className="hamburger pb-3 lg:hidden">
@@ -58,15 +83,43 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                     </div>
                     <div className="orderDetails mb-8">
                         <div className='flex items-center space-x-2 mb-6'>
-                            <h1 className='font-bold text-2xl'>OrderId : {order.orderId}</h1>
+                            <h1 className='font-bold text-2xl'>Tracking OrderId : {order.shiprocketOrderId}</h1>
                         </div>
                         <div className="description flex flex-col space-y-1 pb-10">
                             <p className='text-sm'><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
+                            <p><span className='font-bold'>Order Status:</span> {order.status}</p>
                             <p><span className='font-bold'>Name:</span> {order.firstName} {order.lastName}</p>
                             <p><span className='font-bold'>Email:</span> {user.email}</p>
                             <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                             <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>
                             <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount / 100}</p>
+                            <div className="buttons space-x-2">
+                                <button
+                                    disabled={order.status === 'cancelled' || order.status === 'delivered'}
+                                    onClick={() => document.getElementById('cancelModal').showModal()}
+                                    className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
+                                    Cancel Order
+                                </button>
+                                <button className='bg-[#4D7E86] btn hover:bg-black text-white rounded-sm px-3'>Return Order</button>
+                            </div>
+                            <dialog id="cancelModal" className="modal">
+                                <div className="modal-box">
+                                    <h3 className="font-bold text-lg flex items-center">
+                                        <FaCircleExclamation className="inline-block mr-2 text-2xl text-red-500" />
+                                        <span className='text-xl'>
+                                            Cancel Order
+                                        </span>
+                                    </h3>
+                                    <p className="py-4">Are you sure, you want to cancel the order?</p>
+                                    <div className="modal-action">
+                                        <form className='space-x-2' method="dialog">
+                                            {/* if there is a button in form, it will close the modal */}
+                                            <button onClick={() => cancelOrder(order._id)} className="btn btn-neutral">Cancel Order</button>
+                                            <button className="btn">Close</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
                         </div>
                         {
                             products.length > 0 && products.map((product, index) => {

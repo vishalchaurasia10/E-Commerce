@@ -74,7 +74,7 @@ exports.verifyTransaction = async (req, res) => {
                 state: req.body.state,
                 city: req.body.city,
                 pinCode: req.body.pinCode,
-                phoneNumber: req.body.phoneNumber
+                phoneNumber: req.body.phoneNumber,
             });
 
             const createdOrder = await order.save();
@@ -82,7 +82,13 @@ exports.verifyTransaction = async (req, res) => {
             const accessToken = await getShiprocketAccessToken();
             const shiprocketOrder = await mapOrderToShiprocketFormat(createdOrder);
 
-            await createShiprocketOrder(accessToken, shiprocketOrder);
+            const shiprocketDetails = await createShiprocketOrder(accessToken, shiprocketOrder);
+
+            await Order.findByIdAndUpdate(
+                createdOrder._id,
+                { $set: { shiprocketOrderId: shiprocketDetails.order_id, shiprocketShipmentId: shiprocketDetails.shipment_id } },
+                { new: true }
+            );
 
             res.status(200).json({ status: "Success", message: "Order placed successfully" });
         } else {
@@ -102,6 +108,8 @@ async function createShiprocketOrder(shiprocketAccessToken, shiprocketOrder) {
             },
         });
         console.log("Shiprocket Order Created:", response.data);
+
+        return response.data;
     } catch (error) {
         console.error("Error creating Shiprocket order:", error.response ? error.response.data : error.message);
     }
@@ -134,6 +142,12 @@ async function mapOrderToShiprocketFormat(createdOrder) {
 
     products.forEach(product => {
         titleMap.set(product._id.toString(), product.title);
+    });
+
+    //calculate total quantity
+    let totalQuantity = 0;
+    createdOrder.products.forEach(item => {
+        totalQuantity += item.quantity;
     });
 
     return {
@@ -195,9 +209,9 @@ async function mapOrderToShiprocketFormat(createdOrder) {
         transaction_charges: 0,
         total_discount: 0,
         sub_total: createdOrder.paidAmount / 100,
-        length: 10,
-        breadth: 15,
-        height: 20,
-        weight: 2.5
+        length: 0.5,
+        breadth: 0.5,
+        height: 0.5,
+        weight: 0.1 * totalQuantity,
     }
 }

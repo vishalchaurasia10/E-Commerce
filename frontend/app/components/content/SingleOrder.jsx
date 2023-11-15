@@ -62,7 +62,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                         </div>
                         <div className="description flex flex-col space-y-1 pb-10">
                             <p className='text-sm'><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
-                            <p><span className='font-bold'>Name:</span> {order.name}</p>
+                            <p><span className='font-bold'>Name:</span> {order.firstName} {order.lastName}</p>
                             <p><span className='font-bold'>Email:</span> {user.email}</p>
                             <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                             <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>

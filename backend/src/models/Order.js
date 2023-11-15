@@ -74,7 +74,13 @@ const orderSchema = new mongoose.Schema({
     phoneNumber: {
         type: Number,
         required: true
-    }
+    },
+    shiprocketOrderId: {
+        type: Number,
+    },
+    shiprocketShipmentId: {
+        type: Number,
+    },
 }, {
     timestamps: true
 });

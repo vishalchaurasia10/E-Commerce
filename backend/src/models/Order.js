@@ -9,7 +9,14 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String
+    },
+    email: {
         type: String,
         required: true
     },
@@ -50,6 +57,18 @@ const orderSchema = new mongoose.Schema({
     },
     address: {
         type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    pinCode: {
+        type: Number,
         required: true
     },
     phoneNumber: {

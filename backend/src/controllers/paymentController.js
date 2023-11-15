@@ -63,12 +63,17 @@ exports.verifyTransaction = async (req, res) => {
             const order = new Order({
                 user: req.body.userId,
                 paidAmount: req.body.paidAmount,
-                name: req.body.name,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
                 products: orderItems,
                 paymentId: razorpay_payment_id,
                 orderId: razorpay_order_id,
                 signature: razorpay_signature,
                 address: req.body.address,
+                state: req.body.state,
+                city: req.body.city,
+                pinCode: req.body.pinCode,
                 phoneNumber: req.body.phoneNumber
             });
 

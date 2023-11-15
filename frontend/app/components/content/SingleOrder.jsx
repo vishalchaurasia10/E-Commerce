@@ -54,7 +54,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                             <p><span className='font-bold'>Name:</span> {order.name}</p>
                             <p><span className='font-bold'>Email:</span> {user.email}</p>
                             <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
-                            <p><span className='font-bold'>Shipping Address:</span> {order.address}</p>
+                            <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>
                             <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount/100}</p>
                         </div>
                         {

@@ -7,7 +7,7 @@ exports.createPromoCode = async (req, res) => {
         const savedPromoCode = await promoCode.save();
         res.status(201).json(savedPromoCode);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ error: error.message });
     }
 }
 

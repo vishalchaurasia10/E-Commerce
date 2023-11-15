@@ -2,8 +2,8 @@
 import React, { useState } from 'react'
 import UploadCategory from '../components/admin/UploadCategory'
 import UploadProduct from '../components/admin/UploadProduct';
-import UploadAnnouncement from '../components/admin/UploadAnnouncement';
 import SearchForProduct from '../components/admin/SearchProduct';
+import UploadPromoCode from '../components/admin/UploadPromoCode';
 
 const page = () => {
 
@@ -12,7 +12,7 @@ const page = () => {
     const tabOptions = [
         { key: 'category', label: 'Upload Category' },
         { key: 'products', label: 'Upload Products' },
-        { key: 'announcement', label: 'Upload Announcement' },
+        { key: 'promoCode', label: 'Upload PromoCode' },
         { key: 'search', label: 'Search Product' },
     ];
 
@@ -22,8 +22,8 @@ const page = () => {
                 return <UploadCategory />;
             case 'products':
                 return <UploadProduct />;
-            case 'announcement':
-                return <UploadAnnouncement />;
+            case 'promoCode':
+                return <UploadPromoCode />;
             case 'search':
                 return <SearchForProduct />;
             default:

@@ -48,7 +48,6 @@ exports.calculateDiscount = async (req, res) => {
         });
 
         const promoCodeDocument = await PromoCode.findOne({ code: promoCode });
-        console.log(promoCodeDocument);
 
         // If the promo code is not found, return 0 discount
         if (!promoCodeDocument) {

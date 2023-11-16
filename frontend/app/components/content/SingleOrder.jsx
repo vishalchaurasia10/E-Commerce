@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { formatDate } from './Orders'
 import { FaCircleExclamation } from 'react-icons/fa6'
 import { toast, Toaster } from 'react-hot-toast'
+import Link from 'next/link'
 
 const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
     const [products, setProducts] = useState([]);
@@ -100,7 +101,9 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                                     className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
                                     Cancel Order
                                 </button>
-                                <button className='bg-[#4D7E86] btn hover:bg-black text-white rounded-sm px-3'>Return Order</button>
+                                <Link href={`/trackorder?shipmentId=${order.shiprocketShipmentId}`}>
+                                    <button className='bg-[#4D7E86] btn hover:bg-black text-white rounded-sm px-3'>Track Order</button>
+                                </Link>
                             </div>
                             <dialog id="cancelModal" className="modal">
                                 <div className="modal-box">

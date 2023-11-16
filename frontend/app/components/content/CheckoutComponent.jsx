@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const CheckoutComponent = () => {
 
     const { user } = useContext(authContext)
-    const { cart, clearCart, discount } = useContext(CartContext)
+    const { cart, clearCart, discount, setDiscount } = useContext(CartContext)
     const router = useRouter()
     const [localState, setLocalState] = useState({
         firstName: '',
@@ -78,6 +78,7 @@ const CheckoutComponent = () => {
                 body: JSON.stringify({ cart: cartData, discount: discount }),
             });
             if (res.ok) {
+                setDiscount({ amount: 0, code: '' })
                 const orderData = await res.json();
                 const options = {
                     "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard

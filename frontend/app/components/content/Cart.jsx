@@ -5,10 +5,12 @@ import CartContext from '@/app/context/Cart/cartContext'
 import Link from 'next/link'
 import CartProducts from '../elements/CartProducts'
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast, Toaster } from 'react-hot-toast'
 
 const Cart = () => {
-    const { cart } = useContext(CartContext)
+    const { cart, discount, setDiscount } = useContext(CartContext)
     const [loading, setLoading] = useState(true);
+    const [promoCode, setPromoCode] = useState('')
 
     const calculateTotalAmount = (cart) => {
         let totalAmount = 0;
@@ -22,7 +24,37 @@ const Cart = () => {
         return totalAmount;
     };
 
-
+    const calculateDiscount = async () => {
+        if (!promoCode) {
+            toast.error('Please enter a promo code')
+            return
+        }
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promocodes/calculate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    promoCode: promoCode,
+                    cart: cart
+                })
+            })
+            const data = await response.json()
+            if (data.error) {
+                toast.error(data.error)
+                return
+            }
+            toast.success(data.message)
+            setDiscount({
+                amount: data.discount,
+                code: promoCode
+            })
+        } catch (error) {
+            console.log(error.message)
+            toast.error(error.message)
+        }
+    }
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -32,8 +64,13 @@ const Cart = () => {
         return () => clearTimeout(timeout);
     }, []);
 
+    useEffect(() => {
+        console.log(cart)
+    }, [cart])
+
     return (
         <>
+            <Toaster />
             {loading && (
                 <AnimatePresence>
                     <motion.div
@@ -66,8 +103,15 @@ const Cart = () => {
                                 <div className='mb-5'>
                                     <h1 className='font-bold text-lg mb-3'>Apply Promo Code</h1>
                                     <div className="promo flex relative">
-                                        <input className='bg-[#F5F5F5] w-full pl-5 py-2 placeholder:text-black outline-none placeholder:text-sm' type="text" placeholder='Apply Promo Code' />
-                                        <button className='bg-[#4D7E86] absolute right-0 px-4 py-2 text-white'>Apply</button>
+                                        <input
+                                            className='bg-[#F5F5F5] w-full pl-5 py-2 placeholder:text-black outline-none placeholder:text-sm'
+                                            type="text"
+                                            value={promoCode}
+                                            name='promoCode'
+                                            onChange={(e) => setPromoCode(e.target.value)}
+                                            id='promoCode'
+                                            placeholder='Apply Promo Code' />
+                                        <button onClick={calculateDiscount} className='bg-[#4D7E86] absolute right-0 px-4 py-2 text-white'>Apply</button>
                                     </div>
                                 </div>
                                 <div className="amount space-y-1 mb-5">
@@ -80,11 +124,15 @@ const Cart = () => {
                                         <p>Shipping: </p>
                                         <p>₹60</p>
                                     </div>
+                                    <div className='flex items-center justify-between'>
+                                        <p>Discount: </p>
+                                        <p>-₹{(discount.amount).toFixed(2)}</p>
+                                    </div>
                                 </div>
                                 <div className="divider bg-[#4D7E86] h-[0.1rem]"></div>
                                 <div className="totalAmount flex items-center justify-between mb-3">
                                     <p className='font-bold text-base'>Total Amount (incl VAT):</p>
-                                    <p className='font-bold text-base'>₹{calculateTotalAmount(cart) + 60}</p>
+                                    <p className='font-bold text-base'>₹{calculateTotalAmount(cart) + 60 - (discount.amount).toFixed(2)}</p>
                                 </div>
                                 <div className="buttons flex flex-col space-y-3">
                                     <Link href='/checkout'>

@@ -13,7 +13,7 @@ const CartProducts = ({ item }) => {
         <>
             <div className={`cartProduct ${roboto.className} flex flex-col md:flex-row`}>
                 <div className="image mb-4 lg:mb-0 md:mr-3 lg:mr-6 md:w-[35%]">
-                    <Image className='rounded-lg w-full' src={`http://localhost:8000/uploads/products/${item?.product?.imageId[0]}`} alt={item.name} width={200} height={200} />
+                    <Image className='rounded-lg w-full' src={`http://localhost:8000/uploads/products/${item?.product?.imageId[0]}`} alt={item.title} width={200} height={200} />
                 </div>
                 <div className="details space-y-1 lg:mr-6 md:mr-3 md:w-[75%]">
                     <h1 className='font-bold text-2xl pb-1'>{item?.product?.title}</h1>

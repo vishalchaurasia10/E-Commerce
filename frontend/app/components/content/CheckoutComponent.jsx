@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const CheckoutComponent = () => {
 
     const { user } = useContext(authContext)
-    const { cart, clearCart } = useContext(CartContext)
+    const { cart, clearCart, discount } = useContext(CartContext)
     const router = useRouter()
     const [localState, setLocalState] = useState({
         firstName: '',
@@ -75,7 +75,7 @@ const CheckoutComponent = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ cart: cartData }),
+                body: JSON.stringify({ cart: cartData, discount: discount }),
             });
             if (res.ok) {
                 const orderData = await res.json();

@@ -63,7 +63,6 @@ async function cancelShiprocketOrder(shiprocketAccessToken, shiprocketOrderId) {
                 Authorization: `Bearer ${shiprocketAccessToken}`,
             },
         });
-        console.log("Shiprocket Order Cancelled:", response.data);
     } catch (error) {
         console.error("Error cancelling Shiprocket order:", error.response ? error.response.data : error.message);
     }

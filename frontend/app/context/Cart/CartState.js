@@ -6,6 +6,10 @@ import { toast, Toaster } from "react-hot-toast";
 const CartState = (props) => {
     const [cart, setCart] = useState([]);
     const [cartCount, setCartCount] = useState(0);
+    const [discount, setDiscount] = useState({
+        amount: 0,
+        code: '',
+    });
 
     useEffect(() => {
         // Retrieve the cart data from local storage and set it in the state
@@ -130,6 +134,8 @@ const CartState = (props) => {
                     decreaseQuantity,
                     cartCount,
                     clearCart,
+                    discount,
+                    setDiscount
                 }}>
                 {props.children}
             </CartContext.Provider>

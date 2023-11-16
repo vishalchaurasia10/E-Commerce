@@ -7,6 +7,7 @@ const axios = require('axios');
 exports.checkout = async (req, res) => {
     try {
         const cartData = req.body.cart; // Assuming it's an array of objects with productId and quantity
+        const discount = req.body.discount; // Assuming it's an object with amount and code
         const productIds = cartData.map(item => item.productId);
 
         // Fetch product details from the database for the product IDs in the cart
@@ -33,7 +34,7 @@ exports.checkout = async (req, res) => {
         }, 0);
 
         const options = {
-            amount: totalAmount * 100, // amount in smallest currency unit (assuming INR)
+            amount: (totalAmount - discount.amount + 60) * 100, // amount in smallest currency unit (assuming INR)
             currency: "INR",
         };
 

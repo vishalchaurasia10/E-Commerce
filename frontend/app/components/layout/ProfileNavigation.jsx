@@ -56,10 +56,12 @@ const ProfileNavigation = ({ user }) => {
                     <p>My Orders</p>
                 </div>
             </Link>
-            <div className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
-                <SlLocationPin className=' text-xl' />
-                <p>Track My Order</p>
-            </div>
+            <Link href='/trackorder' className='w-full'>
+                <div className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
+                    <SlLocationPin className=' text-xl' />
+                    <p>Track My Order</p>
+                </div>
+            </Link>
             <div title='Signout' onClick={signOut} className="track flex items-center space-x-4 bg-[#F5F5F5] p-3 rounded-md w-full mb-4 cursor-pointer">
                 <GoSignOut className=' text-xl' />
                 <p>Sign Out</p>

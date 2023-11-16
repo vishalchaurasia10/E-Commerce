@@ -33,7 +33,11 @@ const Footer = () => {
                             Terms And Conditions
                         </Link>
                     </li>
-                    <li>Shipping and Tracking</li>
+                    <li>
+                        <Link href='/trackorder'>
+                            Shipping and Tracking
+                        </Link>
+                    </li>
                     <li>
                         <Link href='/aboutus'>
                             About Us

@@ -209,9 +209,9 @@ async function mapOrderToShiprocketFormat(createdOrder) {
         transaction_charges: 0,
         total_discount: 0,
         sub_total: createdOrder.paidAmount / 100,
-        length: 0.5,
-        breadth: 0.5,
-        height: 0.5,
+        length: 29.0,
+        breadth: 18.0,
+        height: 4.0,
         weight: 0.1 * totalQuantity,
     }
 }

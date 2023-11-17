@@ -17,14 +17,14 @@ const Products = ({ localData }) => {
     return (
         <>
             <div className=''>
-                <h2 className={`text-lg ${roboto.className} w-full pt-4 lg:pt-0 lg:py-4 text-center lg:text-start `}>{localData.length} Products</h2>
+                <h2 className={`text-lg ${roboto.className} w-full pt-4 lg:pt-0 lg:py-4 text-center lg:text-start `}>{(localData && localData.length) || 0} Products</h2>
                 {loading ?
                     <div className="w-full my-20 flex items-center justify-center">
                         <span className="loading loading-spinner loading-lg"></span>
                     </div>
                     :
                     <div className="flex flex-wrap py-5 flex-col lg:flex-row items-center">
-                        {localData.length > 0 ?
+                        {localData && localData.length > 0 ?
                             localData.map((product, index) => (
                                 <Link href={`/collection/${product._id}`} key={product._id}>
                                     <div

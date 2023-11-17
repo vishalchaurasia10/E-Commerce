@@ -34,7 +34,8 @@ const page = () => {
         }
         const searchByType = async () => {
             const data = await searchProductsByType(type)
-            setLocalProductsData(data.products)
+            if (data)
+                setLocalProductsData(data.products)
         }
         const getSearchedProducts = async () => {
             const data = await searchProducts(searchQuery)
@@ -71,6 +72,7 @@ const page = () => {
 
     const filterProductsByType = (type) => {
         const categories = getCategoriesFromType(type);
+        if (!categories) return;
         const categoryIds = categories.map((category) => category._id); // Extract category IDs
 
         const filteredProducts = products.filter((product) => categoryIds.includes(product.category));

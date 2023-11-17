@@ -4,6 +4,7 @@ import UploadCategory from '../components/admin/UploadCategory'
 import UploadProduct from '../components/admin/UploadProduct';
 import SearchForProduct from '../components/admin/SearchProduct';
 import UploadPromoCode from '../components/admin/UploadPromoCode';
+import UpdateShippingPrice from '../components/admin/UpdateShippingPrice';
 
 const page = () => {
 
@@ -14,6 +15,7 @@ const page = () => {
         { key: 'products', label: 'Upload Products' },
         { key: 'promoCode', label: 'Upload PromoCode' },
         { key: 'search', label: 'Search Product' },
+        { key: 'shippingPrice', label: 'Update Shipping Price' }
     ];
 
     const renderTabContent = () => {
@@ -26,6 +28,8 @@ const page = () => {
                 return <UploadPromoCode />;
             case 'search':
                 return <SearchForProduct />;
+            case 'shippingPrice':
+                return <UpdateShippingPrice />;
             default:
                 return null;
         }

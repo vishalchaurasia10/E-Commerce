@@ -11,6 +11,7 @@ const Cart = () => {
     const { cart, discount, setDiscount } = useContext(CartContext)
     const [loading, setLoading] = useState(true);
     const [promoCode, setPromoCode] = useState('')
+    const [shippingPrice, setShippingPrice] = useState(0)
 
     const calculateTotalAmount = (cart) => {
         let totalAmount = 0;
@@ -23,6 +24,18 @@ const Cart = () => {
 
         return totalAmount;
     };
+
+    const getShippingPrice = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/shipping/`)
+            const data = await res.json()
+            if (data.error) throw new Error(data.error)
+            setShippingPrice(data.price)
+        } catch (err) {
+            console.log(err)
+            toast.error(err.message)
+        }
+    }
 
     const calculateDiscount = async () => {
         if (!promoCode) {
@@ -65,7 +78,7 @@ const Cart = () => {
     }, []);
 
     useEffect(() => {
-        console.log(cart)
+        getShippingPrice()
     }, [cart])
 
     return (
@@ -122,7 +135,7 @@ const Cart = () => {
                                     </div>
                                     <div className='flex items-center justify-between'>
                                         <p>Shipping: </p>
-                                        <p>₹60</p>
+                                        <p>₹{shippingPrice}</p>
                                     </div>
                                     <div className='flex items-center justify-between'>
                                         <p>Discount: </p>
@@ -132,7 +145,7 @@ const Cart = () => {
                                 <div className="divider bg-[#4D7E86] h-[0.1rem]"></div>
                                 <div className="totalAmount flex items-center justify-between mb-3">
                                     <p className='font-bold text-base'>Total Amount (incl VAT):</p>
-                                    <p className='font-bold text-base'>₹{calculateTotalAmount(cart) + 60 - (discount.amount).toFixed(2)}</p>
+                                    <p className='font-bold text-base'>₹{calculateTotalAmount(cart) + shippingPrice - (discount.amount).toFixed(2)}</p>
                                 </div>
                                 <div className="buttons flex flex-col space-y-3">
                                     <Link href='/checkout'>

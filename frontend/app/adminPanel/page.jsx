@@ -45,7 +45,7 @@ const page = () => {
                         </button>
                     ))}
                 </div>
-                <div className="tab-content pt-12 md:pt-4 pb-14">
+                <div className="pt-12 md:pt-4 pb-14">
                     {renderTabContent()}
                 </div>
             </div>

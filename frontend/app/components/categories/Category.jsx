@@ -49,7 +49,7 @@ const Category = () => {
             </div>
             <div className="themeCategories flex flex-col justify-center items-center lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="first lg:w-1/2 flex space-x-4">
-                    {themeCategories.slice(0, 2).map((category, index) => (
+                    {themeCategories && themeCategories.length > 0 && themeCategories.slice(0, 2).map((category, index) => (
                         <Link className="" key={index} href={`/collection?categoryId=${category._id}`}>
                             <div className="pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image
@@ -67,7 +67,7 @@ const Category = () => {
                 </div>
 
                 <div className="second lg:w-1/2 flex space-x-4">
-                    {themeCategories.slice(2, 4).map((category, index) => (
+                    {themeCategories && themeCategories.length > 0 && themeCategories?.slice(2, 4).map((category, index) => (
                         <Link className="" key={index} href={`/collection?categoryId=${category._id}`}>
                             <div className="bg-cover bg-center pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image

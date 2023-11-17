@@ -20,7 +20,7 @@ const Carousel = () => {
             <div className='overflow-x-hidden'>
                 <h2 className={`${bebas_neue.className} text-6xl w-full text-center py-5 lg:py-10`}>Category</h2>
                 <div className="carousel carousel-end w-screen space-x-4 py-5">
-                    {categories.map((category, index) => (
+                    {categories && categories.length > 0 && categories.map((category, index) => (
                         <Link
                             href={`/collection?categoryId=${category._id}`}
                             className={`carousel-item w-60`}

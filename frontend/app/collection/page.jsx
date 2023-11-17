@@ -23,8 +23,10 @@ const page = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             const data = await getProductsWithPagination(currentPage)
-            setLocalProductsData(data.products)
-            setTotalPages(data.totalPages)
+            if (data) {
+                setLocalProductsData(data.products)
+                setTotalPages(data.totalPages)
+            }
         }
         const searchByCategory = async () => {
             const data = await searchProductsByCategory(categoryId)
@@ -63,7 +65,8 @@ const page = () => {
     };
 
     const getCategoriesFromType = (type) => {
-        return categories.filter((category) => category.type === type)
+        if (categories && categories.length > 0)
+            return categories.filter((category) => category.type === type)
     }
 
     const filterProductsByType = (type) => {

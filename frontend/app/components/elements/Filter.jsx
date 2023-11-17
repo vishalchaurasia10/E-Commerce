@@ -61,7 +61,7 @@ const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategor
                                         <div key={index} className="types flex flex-col">
                                             <h3 className={`${roboto.className} font-extrabold capitalize`}>{type}</h3>
                                             {
-                                                getCategoriesFromType(type).map((category) => (
+                                                getCategoriesFromType(type) && getCategoriesFromType(type).map((category) => (
                                                     <ul onClick={() => filterProducts(category._id)} className='list-disc pl-8 cursor-pointer' key={category._id}>
                                                         <li className='' htmlFor={category.title}>{category.title}
                                                             <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="category" id="category" />

@@ -3,6 +3,7 @@ const Products = require('../models/Products'); // Import your Product model
 const Order = require('../models/Order'); // Import your Order model
 const crypto = require('crypto');
 const axios = require('axios');
+const ShippingPrice = require('../models/ShippingPrice');
 
 exports.checkout = async (req, res) => {
     try {
@@ -33,8 +34,10 @@ exports.checkout = async (req, res) => {
             return total;
         }, 0);
 
+        const shippingPrice = await getShippingPrice();
+
         const options = {
-            amount: (totalAmount - discount.amount + 60) * 100, // amount in smallest currency unit (assuming INR)
+            amount: (totalAmount - discount.amount + shippingPrice) * 100, // amount in smallest currency unit (assuming INR)
             currency: "INR",
         };
 
@@ -213,5 +216,14 @@ async function mapOrderToShiprocketFormat(createdOrder) {
         breadth: 18.0,
         height: 4.0,
         weight: 0.1 * totalQuantity,
+    }
+}
+
+async function getShippingPrice() {
+    try {
+        const shippingPrice = await ShippingPrice.findOne();
+        return shippingPrice.price
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }

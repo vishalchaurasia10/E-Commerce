@@ -34,6 +34,7 @@ app.use('/api/users', require('./routes/authenticationRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/promocodes', require('./routes/promocodeRoutes'));
+app.use('/api/shipping', require('./routes/shippingPriceRoutes'));
 // app.use('/api/banners', require('./routes/bannerRoutes'));
 // app.use('/api/announcements', require('./routes/announcementRoutes'));
 // app.use('/api/featuredproducts', require('./routes/featuredProductsRoutes'));

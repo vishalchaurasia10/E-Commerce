@@ -110,6 +110,7 @@ const CheckoutComponent = () => {
                                     state: localState.state,
                                     pinCode: localState.pinCode,
                                     phoneNumber: localState.phoneNumber,
+                                    discount: discount,
                                 }),
                             });
                             const data = await res.json();

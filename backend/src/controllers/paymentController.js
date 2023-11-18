@@ -1,6 +1,7 @@
 const razorpayInstance = require('../middlewares/razorpay');
 const Products = require('../models/Products'); // Import your Product model
 const Order = require('../models/Order'); // Import your Order model
+const AppliedPromoCode = require('../models/AppliedPromoCode'); // Import your AppliedPromoCode model
 const crypto = require('crypto');
 const axios = require('axios');
 const ShippingPrice = require('../models/ShippingPrice');
@@ -56,6 +57,24 @@ exports.verifyTransaction = async (req, res) => {
             .update(razorpay_order_id + "|" + razorpay_payment_id)
             .digest('hex');
 
+        const appliedPromoCode = await AppliedPromoCode.findOne({ userId: req.body.userId });
+
+        if (appliedPromoCode) {
+            const promoCode = appliedPromoCode.appliedCodes.find(code => code.code === req.body.discount.code);
+            if (promoCode) {
+                promoCode.usageCount += 1;
+            } else {
+                appliedPromoCode.appliedCodes.push({ code: req.body.discount.code, usageCount: 1 });
+            }
+            await appliedPromoCode.save();
+        } else {
+            const appliedPromoCode = new AppliedPromoCode({
+                userId: req.body.userId,
+                appliedCodes: [{ code: req.body.discount.code, usageCount: 1 }],
+            });
+            await appliedPromoCode.save();
+        }
+
         if (generatedSignature === razorpay_signature) {
             const orderItems = req.body.cart.map(item => ({
                 quantity: item.quantity,
@@ -79,6 +98,7 @@ exports.verifyTransaction = async (req, res) => {
                 city: req.body.city,
                 pinCode: req.body.pinCode,
                 phoneNumber: req.body.phoneNumber,
+                discount: req.body.discount.amount,
             });
 
             const createdOrder = await order.save();

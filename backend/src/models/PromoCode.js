@@ -22,6 +22,10 @@ const promoCodeSchema = new mongoose.Schema({
     maximumDiscount: {
         type: Number,
     },
+    times: {
+        type: String,
+        required: true,
+    },
 });
 
 const PromoCode = mongoose.model('PromoCode', promoCodeSchema);

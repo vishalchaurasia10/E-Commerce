@@ -2,6 +2,7 @@
 import { bebas_neue, roboto } from '@/app/utils/fonts'
 import React, { useContext, useEffect, useState } from 'react'
 import CartContext from '@/app/context/Cart/cartContext'
+import authContext from '@/app/context/Auth/authContext'
 import Link from 'next/link'
 import CartProducts from '../elements/CartProducts'
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +10,7 @@ import { toast, Toaster } from 'react-hot-toast'
 
 const Cart = () => {
     const { cart, discount, setDiscount } = useContext(CartContext)
+    const { user } = useContext(authContext)
     const [loading, setLoading] = useState(true);
     const [promoCode, setPromoCode] = useState('')
     const [shippingPrice, setShippingPrice] = useState(0)
@@ -50,7 +52,8 @@ const Cart = () => {
                 },
                 body: JSON.stringify({
                     promoCode: promoCode,
-                    cart: cart
+                    cart: cart,
+                    userId: user._id
                 })
             })
             const data = await response.json()

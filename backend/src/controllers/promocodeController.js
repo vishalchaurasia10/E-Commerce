@@ -1,4 +1,5 @@
 const PromoCode = require('../models/PromoCode');
+const AppliedPromoCode = require('../models/AppliedPromoCode');
 
 // Create a new promo code
 exports.createPromoCode = async (req, res) => {
@@ -48,6 +49,18 @@ exports.calculateDiscount = async (req, res) => {
         });
 
         const promoCodeDocument = await PromoCode.findOne({ code: promoCode });
+        const userAppliedPromoCodes = await AppliedPromoCode.findOne({ userId: req.body.userId });
+
+        if (promoCodeDocument.times !== 'multiple') {
+            if (userAppliedPromoCodes) {
+                const promoCodeAlreadyApplied = userAppliedPromoCodes.appliedCodes.find(code => code.code === promoCode);
+
+                // check the usage with the number of times the code can be applied
+                if (promoCodeAlreadyApplied && promoCodeAlreadyApplied.usageCount >= promoCodeDocument.times) {
+                    return res.status(200).json({ discount: 0, error: 'Promo code usage limit exceeded' });
+                }
+            }
+        }
 
         // If the promo code is not found, return 0 discount
         if (!promoCodeDocument) {

@@ -11,6 +11,7 @@ const UploadPromoCode = () => {
         expiryDate: '',
         minimumAmount: '',
         maximumDiscount: '',
+        times: ''
     })
 
     const handleChange = (e) => {
@@ -38,6 +39,10 @@ const UploadPromoCode = () => {
             toast.error('Please enter a valid maximum discount')
             return false
         }
+        if (promoCode.times === '') {
+            toast.error('Please enter a valid number of times the promo code can be used')
+            return false
+        }
         uploadPromoCode()
     }
 
@@ -61,6 +66,7 @@ const UploadPromoCode = () => {
                 expiryDate: '',
                 minimumAmount: '',
                 maximumDiscount: '',
+                times: ''
             })
         } catch (err) {
             console.log(err)
@@ -114,6 +120,16 @@ const UploadPromoCode = () => {
                                 id='expiryDate'
                                 onChange={handleChange}
                                 value={promoCode.expiryDate}
+                                className='outline-none placeholder:text-white bg-transparent border-b p-2 border-[rgba(255,255,255,0.5)]'
+                            />
+                            <input
+                                required
+                                type='text'
+                                placeholder='Enter number of times the promo code can be used(for unlimited type multiple otherwise type number)'
+                                name='times'
+                                id='times'
+                                onChange={handleChange}
+                                value={promoCode.times}
                                 className='outline-none placeholder:text-white bg-transparent border-b p-2 border-[rgba(255,255,255,0.5)]'
                             />
                             <input

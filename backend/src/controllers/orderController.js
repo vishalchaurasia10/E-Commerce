@@ -28,7 +28,7 @@ exports.getOrder = async (req, res) => {
 exports.cancelOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
-        if (order.status === 'cancelled') {
+        if (order.status === 'Canceled') {
             return res.status(400).json({ error: 'Order already cancelled' });
         }
         if (order.status !== 'confirmed') {
@@ -40,7 +40,7 @@ exports.cancelOrder = async (req, res) => {
         });
         const razorpayRefundResponse = await response;
         order.refundId = razorpayRefundResponse.id;
-        order.status = 'cancelled';
+        order.status = 'Canceled';
 
         // cancel the order on shiprocket as well
         const accessToken = await getShiprocketAccessToken();

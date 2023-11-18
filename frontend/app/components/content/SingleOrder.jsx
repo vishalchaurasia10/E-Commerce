@@ -83,8 +83,9 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                         <svg onClick={() => setShowSidebar(!showSidebar)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block relative bg-white z-30 w-8 h-8 stroke-current lg:hidden"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </div>
                     <div className="orderDetails mb-8">
-                        <div className='flex items-center space-x-2 mb-6'>
-                            <h1 className='font-bold text-2xl'>Tracking OrderId : {order.shiprocketOrderId}</h1>
+                        <div className='flex flex-col space-y-2 mb-6'>
+                            <h1 className='font-bold text-2xl'>OrderId : {order.shiprocketOrderId}</h1>
+                            <h1 className='font-bold text-2xl'>TrackingId : {order.shiprocketShipmentId}</h1>
                         </div>
                         <div className="description flex flex-col space-y-1 pb-10">
                             <p className='text-sm'><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
@@ -97,7 +98,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                             <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount / 100}</p>
                             <div className="buttons space-x-2">
                                 <button
-                                    disabled={order.status === 'cancelled' || order.status === 'delivered'}
+                                    disabled={order.status === 'Canceled' || order.status === 'Delivered'}
                                     onClick={() => document.getElementById('cancelModal').showModal()}
                                     className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
                                     Cancel Order

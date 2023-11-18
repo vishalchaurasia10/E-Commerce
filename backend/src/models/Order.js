@@ -52,7 +52,6 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['confirmed', 'delivered', 'cancelled'],
         default: 'confirmed'
     },
     address: {

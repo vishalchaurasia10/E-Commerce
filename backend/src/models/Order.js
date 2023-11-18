@@ -85,6 +85,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    discount: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 });

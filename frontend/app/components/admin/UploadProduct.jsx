@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa'
+import ListAllProducts from './ListAllProducts'
 
 const UploadProduct = () => {
     const [inputFields, setInputFields] = useState([{ id: 1 }]);
@@ -142,7 +143,7 @@ const UploadProduct = () => {
     return (
         <>
             <Toaster />
-            <div className={`relative w-full flex items-center justify-center bg-[#607c84]`}>
+            <div className={`relative w-full flex items-center justify-center bg-[#607c84] pb-10`}>
                 <div className="uploadContent relative z-20 w-full lg:mx-40 flex items-center justify-center space-x-8">
                     <div className='uploadForm w-full mx-2 bg-[rgba(255,255,255,0.1)] text-white flex flex-col lg:flex-row space-y-8 lg:space-y-0 rounded-xl p-4 md:p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
                         <div className="images flex items-center lg:order-2 lg:ml-8 lg:w-1/2 rounded-xl">
@@ -275,6 +276,9 @@ const UploadProduct = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="allProducts bg-white pb-1">
+                <ListAllProducts />
             </div>
         </>
     )

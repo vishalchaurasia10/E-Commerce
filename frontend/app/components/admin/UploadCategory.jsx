@@ -2,7 +2,6 @@
 import { getAllCategories, uploadCategoryDocument, uploadCategoryFile } from '@/app/utils/apiFunctions/categoryFunctions'
 import { categoryFields } from '@/app/utils/constants'
 import { bebas_neue } from '@/app/utils/fonts'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
@@ -90,6 +89,7 @@ const UploadCategory = () => {
             } else {
                 toast.error(data.error);
             }
+            setDeleteId('')
         } catch (error) {
             toast.error(error.message);
             console.log(error)

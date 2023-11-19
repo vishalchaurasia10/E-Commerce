@@ -16,6 +16,18 @@ const UploadCategory = () => {
     })
     const [categories, setCategories] = useState([]);
     const [deleteId, setDeleteId] = useState('')
+    const [updateId, setUpdateId] = useState('')
+    const [updateFields, setUpdateFields] = useState({
+        title: '',
+        type: ''
+    })
+
+    const handleUpdateChange = (e) => {
+        setUpdateFields({
+            ...updateFields,
+            [e.target.name]: e.target.value
+        })
+    }
 
     useEffect(() => {
         getAllCategories().then(res => {
@@ -96,6 +108,33 @@ const UploadCategory = () => {
         }
     }
 
+    const handleUpdate = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${updateId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateFields)
+            });
+            const data = await response.json();
+            if (response.status === 200) {
+                toast.success(data.message);
+                getAllCategories().then(res => {
+                    setCategories(res.categories);
+                }).catch(err => {
+                    console.log(err);
+                });
+            } else {
+                toast.error(data.error);
+            }
+            setUpdateId('')
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -147,6 +186,14 @@ const UploadCategory = () => {
                                     <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
                                     <FaPen
                                         title='Update'
+                                        onClick={() => {
+                                            setUpdateId(category._id);
+                                            setUpdateFields({
+                                                title: category.title,
+                                                type: category.type
+                                            })
+                                            document.getElementById('updateModal').showModal()
+                                        }}
                                         className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-10 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
                                     <FaTrash
                                         onClick={() => {
@@ -171,6 +218,44 @@ const UploadCategory = () => {
                                     <form className='space-x-2' method="dialog">
                                         <button onClick={handleDelete} className="btn btn-neutral">Delete</button>
                                         <button onClick={() => setDeleteId('')} className="btn">Close</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog>
+                        <dialog id="updateModal" className="modal">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg flex items-center">
+                                    <FaCircleExclamation className="inline-block mr-2 text-2xl text-yellow-500" />
+                                    <span className='text-xl'>
+                                        Update Category
+                                    </span>
+                                </h3>
+                                <div className="inputs flex flex-col space-y-2 pt-4">
+                                    <input
+                                        required
+                                        type='text'
+                                        placeholder='Enter category name'
+                                        name='title'
+                                        id='title'
+                                        value={updateFields.title}
+                                        onChange={handleUpdateChange}
+                                        className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
+                                    />
+                                    <input
+                                        required
+                                        type='text'
+                                        placeholder='Enter category type'
+                                        name='type'
+                                        id='type'
+                                        value={updateFields.type}
+                                        onChange={handleUpdateChange}
+                                        className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
+                                    />
+                                </div>
+                                <div className="modal-action">
+                                    <form className='space-x-2' method="dialog">
+                                        <button onClick={handleUpdate} className="btn btn-neutral">Update</button>
+                                        <button onClick={() => setUpdateId('')} className="btn">Close</button>
                                     </form>
                                 </div>
                             </div>

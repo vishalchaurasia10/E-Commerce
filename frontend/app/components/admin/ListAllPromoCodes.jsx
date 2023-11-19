@@ -12,6 +12,20 @@ const ListAllPromoCodes = () => {
     const [loading, setLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
     const [deleteId, setDeleteId] = useState('')
+    const [updateId, setUpdateId] = useState('')
+    const [updateFields, setUpdateFields] = useState({
+        code: '',
+        discountPercent: '',
+        discountAmount: '',
+        expiryDate: '',
+        minimumAmount: '',
+        maximumDiscount: '',
+        times: ''
+    })
+
+    const handleUpdateChange = (e) => {
+        setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
+    }
 
     const getPromoCodesWithPagination = async (page) => {
         try {
@@ -59,6 +73,39 @@ const ListAllPromoCodes = () => {
         }
     }
 
+    const handleUpdate = async () => {
+        try {
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/promocodes/${updateId}`
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateFields)
+            })
+            const data = await response.json()
+            if (response.status === 200) {
+                toast.success(data.message)
+                setUpdateId('')
+                setUpdateFields({
+                    code: '',
+                    discountPercent: '',
+                    discountAmount: '',
+                    expiryDate: '',
+                    minimumAmount: '',
+                    maximumDiscount: '',
+                    times: ''
+                })
+                getPromoCodesWithPagination(currentPage)
+            } else {
+                toast.error(data.error)
+            }
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -95,6 +142,19 @@ const ListAllPromoCodes = () => {
                                                 </div>
                                                 <FaPen
                                                     title='Update'
+                                                    onClick={() => {
+                                                        setUpdateId(promoCode?._id);
+                                                        setUpdateFields({
+                                                            code: promoCode?.code,
+                                                            discountPercent: promoCode?.discountPercent,
+                                                            discountAmount: promoCode?.discountAmount,
+                                                            expiryDate: promoCode?.expiryDate,
+                                                            minimumAmount: promoCode?.minimumAmount,
+                                                            maximumDiscount: promoCode?.maximumDiscount,
+                                                            times: promoCode?.times
+                                                        })
+                                                        document.getElementById('updateModal').showModal()
+                                                    }}
                                                     className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-11 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
                                                 <FaTrash
                                                     onClick={() => {
@@ -116,6 +176,94 @@ const ListAllPromoCodes = () => {
                                                     <div className="modal-action">
                                                         <form className='space-x-2' method="dialog">
                                                             <button onClick={handleDelete} className="btn btn-neutral">Delete</button>
+                                                            <button onClick={() => setDeleteId('')} className="btn">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
+                                            <dialog id="updateModal" className="modal">
+                                                <div className="modal-box">
+                                                    <h3 className="font-bold text-lg flex items-center">
+                                                        <FaCircleExclamation className="inline-block mr-2 text-2xl text-yellow-500" />
+                                                        <span className='text-xl'>
+                                                            Update PromoCode
+                                                        </span>
+                                                    </h3>
+                                                    <div className="inputs flex flex-col pt-3 space-y-1">
+                                                        <input
+                                                            required
+                                                            type='text'
+                                                            placeholder='Enter PromoCode'
+                                                            name='code'
+                                                            id='code'
+                                                            value={updateFields.code}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='number'
+                                                            placeholder='Enter Discount Percent(Leave it blank if you want to enter discount amount)'
+                                                            name='discountPercent'
+                                                            id='discountPercent'
+                                                            value={updateFields.discountPercent}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='number'
+                                                            placeholder='Enter Discount Amount(Leave it blank if you want to enter discount percent)'
+                                                            name='discountAmount'
+                                                            id='discountAmount'
+                                                            value={updateFields.discountAmount}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='date'
+                                                            placeholder='Enter Expiry Date'
+                                                            name='expiryDate'
+                                                            id='expiryDate'
+                                                            value={updateFields.expiryDate}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='number'
+                                                            placeholder='Enter Minimum Amount'
+                                                            name='minimumAmount'
+                                                            id='minimumAmount'
+                                                            value={updateFields.minimumAmount}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='number'
+                                                            placeholder='Enter Maximum Discount'
+                                                            name='maximumDiscount'
+                                                            id='maximumDiscount'
+                                                            value={updateFields.maximumDiscount}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <input
+                                                            required
+                                                            type='text'
+                                                            placeholder='Enter number of times the promo code can be used(for unlimited type multiple otherwise type number)'
+                                                            name='times'
+                                                            id='times'
+                                                            value={updateFields.times}
+                                                            onChange={handleUpdateChange}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                    </div>
+                                                    <div className="modal-action">
+                                                        <form className='space-x-2' method="dialog">
+                                                            <button onClick={handleUpdate} className="btn btn-neutral">Update</button>
                                                             <button onClick={() => setDeleteId('')} className="btn">Close</button>
                                                         </form>
                                                     </div>

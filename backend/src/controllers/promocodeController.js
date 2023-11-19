@@ -121,3 +121,20 @@ exports.deletePromoCode = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+// update a promo code
+exports.updatePromoCode = async (req, res) => {
+    try {
+        const updatedPromoCode = await PromoCode.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!updatedPromoCode) {
+            return res.status(404).json({ error: 'Promo code not found' });
+        }
+        res.status(200).json({ message: 'Promo code updated successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}

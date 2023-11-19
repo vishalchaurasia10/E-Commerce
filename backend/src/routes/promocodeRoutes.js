@@ -14,4 +14,7 @@ router.post('/calculate', promoCodeController.calculateDiscount);
 // delete promo code
 router.delete('/:id', promoCodeController.deletePromoCode);
 
+// update promo code
+router.put('/:id', promoCodeController.updatePromoCode);
+
 module.exports = router;

@@ -278,7 +278,7 @@ const UploadProduct = () => {
                 </div>
             </div>
             <div className="allProducts bg-white pb-1">
-                <ListAllProducts />
+                <ListAllProducts categoryOption={categoryOption} />
             </div>
         </>
     )

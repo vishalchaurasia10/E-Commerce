@@ -5,12 +5,52 @@ import { toast, Toaster } from 'react-hot-toast'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { FaCircleExclamation } from 'react-icons/fa6'
 
-const ListAllProducts = () => {
+const ListAllProducts = ({ categoryOption }) => {
     const [localData, setLocalData] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [loading, setLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
     const [deleteId, setDeleteId] = useState('')
+    const [updateId, setUpdateId] = useState('')
+    const [updateFields, setUpdateFields] = useState({
+        title: '',
+        category: '',
+        price: '',
+        featured: false,
+        size: [],
+        color: '',
+        description: '',
+        otherDetails: []
+    })
+    const sizes = ['Small', 'Medium', 'Large', 'XL', 'XXL'];
+
+    const handleUpdateChange = (e) => {
+        setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
+    }
+
+    const handleRadioChange = (e) => {
+        setUpdateFields({
+            ...updateFields,
+            [e.target.name]: e.target.value === 'true' // Convert the string value to a boolean
+        });
+    }
+
+    const handleSizeClick = (size) => {
+        const updatedSizes = [...updateFields.size];
+
+        if (updatedSizes.includes(size)) {
+            // Remove the size if it's already selected
+            updatedSizes.splice(updatedSizes.indexOf(size), 1);
+        } else {
+            // Add the size if it's not selected
+            updatedSizes.push(size);
+        }
+
+        setUpdateFields({
+            ...updateFields,
+            size: updatedSizes,
+        });
+    };
 
     const getProductsWithPagination = async (page) => {
         try {
@@ -65,6 +105,30 @@ const ListAllProducts = () => {
         }
     }
 
+    const handleUpdate = async () => {
+        try {
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${updateId}`
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateFields)
+            })
+            const data = await response.json()
+            if (response.status === 200) {
+                toast.success(data.message)
+                setUpdateId('')
+                getProductsWithPagination(currentPage)
+            } else {
+                toast.error(data.error)
+            }
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -92,6 +156,20 @@ const ListAllProducts = () => {
                                                     <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
                                                     <FaPen
                                                         title='Update'
+                                                        onClick={() => {
+                                                            setUpdateId(product._id);
+                                                            setUpdateFields({
+                                                                title: product.title,
+                                                                category: product.category,
+                                                                price: product.price,
+                                                                featured: product.featured,
+                                                                size: product.size,
+                                                                color: product.color,
+                                                                description: product.description,
+                                                                otherDetails: product.otherDetails
+                                                            })
+                                                            document.getElementById('updateModal').showModal()
+                                                        }}
                                                         className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-10 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
                                                     <FaTrash
                                                         onClick={() => {
@@ -115,6 +193,120 @@ const ListAllProducts = () => {
                                                         <form className='space-x-2' method="dialog">
                                                             <button onClick={handleDelete} className="btn btn-neutral">Delete</button>
                                                             <button onClick={() => setDeleteId('')} className="btn">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
+                                            <dialog id="updateModal" className="modal">
+                                                <div className="modal-box">
+                                                    <h3 className="font-bold text-lg flex items-center">
+                                                        <FaCircleExclamation className="inline-block mr-2 text-2xl text-yellow-500" />
+                                                        <span className='text-xl'>
+                                                            Update Product
+                                                        </span>
+                                                    </h3>
+                                                    <div className="inputs flex flex-col pt-3 space-y-1">
+                                                        <input
+                                                            required
+                                                            type="text"
+                                                            placeholder='Enter Product Title'
+                                                            name='title'
+                                                            id='title'
+                                                            onChange={handleUpdateChange}
+                                                            value={updateFields.title}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <select
+                                                            name='category'
+                                                            id='category'
+                                                            onChange={handleUpdateChange}
+                                                            value={updateFields.category}
+                                                            className="outline-none bg-transparent border p-2 border-gray-500 rounded-lg">
+                                                            <option disabled value=''>Select the category</option>
+                                                            {categoryOption.map((category) => {
+                                                                return (
+                                                                    <option className='text-black' key={category._id} value={category._id}>
+                                                                        <span>{category.type} : </span>
+                                                                        <span>{category.title}</span>
+                                                                    </option>
+                                                                )
+                                                            })}
+                                                        </select>
+                                                        <div className="featured">
+                                                            <div className="form-control">
+                                                                <label className="label cursor-pointer">
+                                                                    <span className="label-text">Featured Product</span>
+                                                                    <input
+                                                                        type="radio"
+                                                                        name="featured"
+                                                                        value='true'
+                                                                        onChange={handleRadioChange}
+                                                                        className="radio checked:bg-[#607c84]"
+                                                                        checked={updateFields.featured === true} />
+                                                                </label>
+                                                            </div>
+                                                            <div className="form-control">
+                                                                <label className="label cursor-pointer">
+                                                                    <span className="label-text">Not a Featured a Product</span>
+                                                                    <input
+                                                                        type="radio"
+                                                                        name="featured"
+                                                                        value='false'
+                                                                        className="radio checked:bg-[#607c84]"
+                                                                        onChange={handleRadioChange}
+                                                                        checked={updateFields.featured === false} />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="priceColor flex flex-wrap w-full">
+                                                            <input
+                                                                required
+                                                                type="number"
+                                                                placeholder='Enter Price'
+                                                                name='price'
+                                                                id='price'
+                                                                onChange={handleUpdateChange}
+                                                                value={updateFields.price}
+                                                                className='outline-none bg-transparent border p-2 m-2 border-gray-500 rounded-lg'
+                                                            />
+                                                            <input
+                                                                required
+                                                                type="text"
+                                                                placeholder='Enter Product Color'
+                                                                name='color'
+                                                                id='color'
+                                                                onChange={handleUpdateChange}
+                                                                value={updateFields.color}
+                                                                className='outline-none bg-transparent border p-2 m-2 border-gray-500 rounded-lg'
+                                                            />
+                                                        </div>
+                                                        <textarea
+                                                            required
+                                                            placeholder='Enter Product Description'
+                                                            name='description'
+                                                            id='description'
+                                                            onChange={handleUpdateChange}
+                                                            value={updateFields.description}
+                                                            rows={3}
+                                                            cols={10}
+                                                            className='outline-none bg-transparent border p-2 border-gray-500 rounded-lg'
+                                                        />
+                                                        <div className="size flex flex-wrap items-center">
+                                                            {sizes.map((size) => (
+                                                                <button
+                                                                    key={size}
+                                                                    className={`btn rounded-3xl mr-4 mb-2 ${updateFields.size.includes(size) ? 'btn-neutral' : ' btn-active'}`}
+                                                                    onClick={() => handleSizeClick(size)}
+                                                                >
+                                                                    {size}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-action">
+                                                        <form className='space-x-2' method="dialog">
+                                                            <button onClick={handleUpdate} className="btn btn-neutral">Update</button>
+                                                            <button onClick={() => setUpdateId('')} className="btn">Close</button>
                                                         </form>
                                                     </div>
                                                 </div>

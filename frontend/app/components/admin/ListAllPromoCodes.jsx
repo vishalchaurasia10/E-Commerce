@@ -264,7 +264,7 @@ const ListAllPromoCodes = () => {
                                                     <div className="modal-action">
                                                         <form className='space-x-2' method="dialog">
                                                             <button onClick={handleUpdate} className="btn btn-neutral">Update</button>
-                                                            <button onClick={() => setDeleteId('')} className="btn">Close</button>
+                                                            <button onClick={() => setUpdateId('')} className="btn">Close</button>
                                                         </form>
                                                     </div>
                                                 </div>

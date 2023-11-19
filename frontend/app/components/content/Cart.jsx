@@ -40,10 +40,10 @@ const Cart = () => {
     }
 
     const calculateDiscount = async () => {
-        if (!promoCode) {
-            toast.error('Please enter a promo code')
-            return
-        }
+        if (promoCode === '') return setDiscount({
+            amount: 0,
+            code: ''
+        })
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promocodes/calculate`, {
                 method: 'POST',
@@ -59,6 +59,10 @@ const Cart = () => {
             const data = await response.json()
             if (data.error) {
                 toast.error(data.error)
+                setDiscount({
+                    amount: 0,
+                    code: ''
+                })
                 return
             }
             toast.success(data.message)
@@ -72,6 +76,14 @@ const Cart = () => {
         }
     }
 
+    const checkValidity = () => {
+        if (!promoCode) {
+            toast.error('Please enter a promo code')
+            return
+        }
+        calculateDiscount()
+    }
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             setLoading(false);
@@ -82,6 +94,7 @@ const Cart = () => {
 
     useEffect(() => {
         getShippingPrice()
+        calculateDiscount()
     }, [cart])
 
     return (
@@ -127,7 +140,7 @@ const Cart = () => {
                                             onChange={(e) => setPromoCode(e.target.value)}
                                             id='promoCode'
                                             placeholder='Apply Promo Code' />
-                                        <button onClick={calculateDiscount} className='bg-[#4D7E86] absolute right-0 px-4 py-2 text-white'>Apply</button>
+                                        <button onClick={checkValidity} className='bg-[#4D7E86] absolute right-0 px-4 py-2 text-white'>Apply</button>
                                     </div>
                                 </div>
                                 <div className="amount space-y-1 mb-5">

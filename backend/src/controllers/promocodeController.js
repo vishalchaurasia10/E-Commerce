@@ -51,6 +51,11 @@ exports.calculateDiscount = async (req, res) => {
         const promoCodeDocument = await PromoCode.findOne({ code: promoCode });
         const userAppliedPromoCodes = await AppliedPromoCode.findOne({ userId: req.body.userId });
 
+        // If the promo code is not found, return 0 discount
+        if (!promoCodeDocument) {
+            return res.status(200).json({ discount: 0, error: 'Invalid promo code' });
+        }
+
         if (promoCodeDocument.times !== 'multiple') {
             if (userAppliedPromoCodes) {
                 const promoCodeAlreadyApplied = userAppliedPromoCodes.appliedCodes.find(code => code.code === promoCode);
@@ -60,11 +65,6 @@ exports.calculateDiscount = async (req, res) => {
                     return res.status(200).json({ discount: 0, error: 'Promo code usage limit exceeded' });
                 }
             }
-        }
-
-        // If the promo code is not found, return 0 discount
-        if (!promoCodeDocument) {
-            return res.status(200).json({ discount: 0, error: 'Invalid promo code' });
         }
 
         const { discountPercent, discountAmount, expiryDate, minimumAmount, maximumDiscount } = promoCodeDocument;
@@ -104,6 +104,19 @@ exports.calculateDiscount = async (req, res) => {
 
         // Otherwise, return the calculated discount
         res.status(200).json({ discount, message: 'Discount applied' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// delete a promo code
+exports.deletePromoCode = async (req, res) => {
+    try {
+        const deletedPromoCode = await PromoCode.findByIdAndDelete(req.params.id);
+        if (!deletedPromoCode) {
+            return res.status(404).json({ error: 'Promo code not found' });
+        }
+        res.status(200).json({ message: 'Promo code deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

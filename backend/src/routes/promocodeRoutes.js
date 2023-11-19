@@ -6,9 +6,12 @@ const promoCodeController = require('../controllers/promocodeController');
 router.post('/', promoCodeController.createPromoCode);
 
 // Get promo codes with pagination
-router.get('/', promoCodeController.getPromoCodesByPage);
+router.get('/page', promoCodeController.getPromoCodesByPage);
 
 // Calculate discount
 router.post('/calculate', promoCodeController.calculateDiscount);
+
+// delete promo code
+router.delete('/:id', promoCodeController.deletePromoCode);
 
 module.exports = router;

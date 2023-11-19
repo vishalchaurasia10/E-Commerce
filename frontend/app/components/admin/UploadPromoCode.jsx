@@ -2,6 +2,7 @@
 import { bebas_neue } from '@/app/utils/fonts'
 import React, { useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
+import ListAllPromoCodes from './ListAllPromoCodes'
 
 const UploadPromoCode = () => {
     const [promoCode, setPromoCode] = useState({
@@ -156,6 +157,9 @@ const UploadPromoCode = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className=" pb-5">
+                <ListAllPromoCodes />
             </div>
         </>
     )

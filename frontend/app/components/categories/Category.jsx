@@ -24,7 +24,7 @@ const Category = () => {
                     <div className="pagesThumbnail justify-center flex relative overflow-hidden">
                         <img
                             className="h-full w-full transition-all duration-300 hover:scale-105"
-                            src='/assets/pageLinks/shopwomen.png'
+                            src='/assets/pageLinks/shopWomen.png'
                             height={500}
                             width={500}
                             alt="shopwomen"
@@ -37,7 +37,7 @@ const Category = () => {
                     <div className="pagesThumbnail justify-center flex relative overflow-hidden">
                         <img
                             className="h-full w-full transition-all duration-300 hover:scale-105"
-                            src='/assets/pageLinks/shopmen.png'
+                            src='/assets/pageLinks/shopMen.png'
                             height={500}
                             width={500}
                             alt="shopmen"

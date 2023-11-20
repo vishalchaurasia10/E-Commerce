@@ -75,7 +75,6 @@ const AuthState = (props) => {
 
     const verifyAccessToken = async () => {
         try {
-            setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/verifyjwt`, {
                 method: 'GET',
                 headers: {
@@ -89,8 +88,6 @@ const AuthState = (props) => {
             }
         } catch (error) {
             console.log(error);
-        } finally {
-            setLoading(false);
         }
     }
 

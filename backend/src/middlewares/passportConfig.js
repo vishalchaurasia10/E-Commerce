@@ -67,16 +67,16 @@ exports.googleAuthCallback = (req, res) => {
     passport.authenticate('google', (err, token) => {
         if (err) {
             // Handle the error, e.g., redirect to an error page
-            return res.redirect('http://localhost:3000/auth-error');
+            return res.redirect(`${process.env.FRONTEND_URL}/auth-error`);
         }
 
         if (token) {
             // Append the token as a query parameter to the successRedirect URL
-            const redirectUrl = `http://localhost:3000/verification?token=${token}`;
+            const redirectUrl = `${process.env.FRONTEND_URL}/verification?token=${token}`;
             return res.redirect(redirectUrl);
         }
 
         // Handle any other case, e.g., redirect to a login page
-        return res.redirect('http://localhost:3000/login');
+        return res.redirect(`${process.env.FRONTEND_URL}/login`);
     })(req, res);
 };

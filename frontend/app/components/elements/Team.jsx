@@ -18,7 +18,7 @@ const Team = () => {
             </div>
             <div className="team flex flex-col md:flex-row items-center justify-center md:space-x-2 lg:space-x-4 mx-2 md:mx-5 xl:mx-40 bg-[#4D7E86] text-white">
                 <div className="md:w-1/2 order-1 md:order-2">
-                    <Image src='/assets/teams/style.svg' alt="team" width={500} height={500} className="w-full h-full object-cover" />
+                    <Image src='/assets/teams/style.svg' alt="team" width={500} height={500} className="w-full h-full object-cover" loading='lazy' />
                 </div>
                 <div className="description order-2 md:order-1 md:w-1/2 flex flex-col items-center justify-center space-y-4 py-10 md:py-0 px-10 lg:px-20">
                     <h1 className={`${bebas_neue.className} text-6xl`}>Our Style</h1>

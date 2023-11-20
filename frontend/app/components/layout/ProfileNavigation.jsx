@@ -1,13 +1,12 @@
 'use client'
 import { roboto } from '@/app/utils/fonts'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { BsBox } from 'react-icons/bs'
 import { FaUser } from 'react-icons/fa'
 import { SlLocationPin } from 'react-icons/sl'
 import { AiOutlineUser } from 'react-icons/ai'
 import { GoSignOut } from 'react-icons/go'
 import authContext from '@/app/context/Auth/authContext'
-import Image from 'next/image'
 import Link from 'next/link'
 
 const ProfileNavigation = ({ user }) => {
@@ -34,7 +33,7 @@ const ProfileNavigation = ({ user }) => {
                     :
                     <div className="userImage mb-2">
                         {user?.profileImageId ?
-                            <Image className='rounded-full w-40 h-40' src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
+                            <img className='rounded-full w-40 h-40' src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} loading='lazy' />
                             :
                             <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] text-8xl p-2 rounded-full cursor-pointer' />}
                     </div>}

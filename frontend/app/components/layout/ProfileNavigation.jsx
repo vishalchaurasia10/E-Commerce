@@ -34,7 +34,7 @@ const ProfileNavigation = ({ user }) => {
                     :
                     <div className="userImage mb-2">
                         {user?.profileImageId ?
-                            <Image className='rounded-full w-40 h-40' src={`http://localhost:8000/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
+                            <Image className='rounded-full w-40 h-40' src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
                             :
                             <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] text-8xl p-2 rounded-full cursor-pointer' />}
                     </div>}

@@ -54,7 +54,7 @@ const Category = () => {
                             <div className="pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
-                                    src={`http://localhost:8000/uploads/categories/${category.coverImageId}`}
+                                    src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`}
                                     height={500}
                                     width={500}
                                     alt="themeImage"
@@ -72,7 +72,7 @@ const Category = () => {
                             <div className="bg-cover bg-center pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
-                                    src={`http://localhost:8000/uploads/categories/${category.coverImageId}`}
+                                    src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`}
                                     height={500}
                                     width={500}
                                     alt="themeImage"

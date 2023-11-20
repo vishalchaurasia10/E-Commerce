@@ -181,7 +181,7 @@ const UploadCategory = () => {
                                 className={`carousel-item w-60`}
                             >
                                 <div className='relative flex flex-col border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                    <img src={`http://localhost:8000/uploads/categories/${category.coverImageId}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
+                                    <img src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
                                     <h3 className={`text-black pl-4 pt-3`}><span className='font-bold'>Title: </span>{category.title}</h3>
                                     <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
                                     <FaPen

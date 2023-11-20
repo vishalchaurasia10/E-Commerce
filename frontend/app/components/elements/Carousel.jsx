@@ -31,7 +31,7 @@ const Carousel = () => {
                                 className={`carousel-item w-60`}
                             >
                                 <div className='flex flex-col items-center justify-center border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                    <img src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
+                                    <img src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} loading='lazy' />
                                     <h3 className={`${bebas_neue.className} py-5 text-black text-2xl text-center`}>{category.title}</h3>
                                 </div>
                             </div>

@@ -3,6 +3,7 @@ import { bebas_neue, roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { formatDate } from '../content/Orders'
+import { FaCircleExclamation } from 'react-icons/fa6'
 
 const SearchForProduct = () => {
     const [order, setOrder] = useState(null)
@@ -59,6 +60,27 @@ const SearchForProduct = () => {
         setProducts(uniqueProducts);
     };
 
+    const cancelOrder = async (orderId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/cancel/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            if (response.status === 200) {
+                toast.success(data.message);
+                getOrder(orderId)
+            } else {
+                toast.error(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
     useEffect(() => {
         if (order) {
             getProducts()
@@ -100,6 +122,30 @@ const SearchForProduct = () => {
                                 <div className="orderDetails mb-8">
                                     <div className='flex items-center space-x-2 mb-6'>
                                         <h1 className='font-bold text-2xl'>OrderId : {order.orderId}</h1>
+                                        <button
+                                            disabled={order.status === 'Canceled' || order.status === 'Delivered'}
+                                            onClick={() => document.getElementById('cancelModal').showModal()}
+                                            className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
+                                            Cancel Order
+                                        </button>
+                                        <dialog id="cancelModal" className="modal">
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-lg flex items-center">
+                                                    <FaCircleExclamation className="inline-block mr-2 text-2xl text-red-500" />
+                                                    <span className='text-xl'>
+                                                        Cancel Order
+                                                    </span>
+                                                </h3>
+                                                <p className="py-4">Are you sure, you want to cancel the order?</p>
+                                                <div className="modal-action">
+                                                    <form className='space-x-2' method="dialog">
+                                                        {/* if there is a button in form, it will close the modal */}
+                                                        <button onClick={() => cancelOrder(order._id)} className="btn btn-neutral">Cancel Order</button>
+                                                        <button className="btn">Close</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
                                     </div>
                                     <div className="description flex flex-col space-y-1 pb-10">
                                         <p className='text-2xl bg-yellow-300 w-fit px-5'><span className='font-bold'>Order Status:</span> {order.status}</p>

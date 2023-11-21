@@ -48,6 +48,10 @@ exports.calculateDiscount = async (req, res) => {
             };
         });
 
+        if (!req.body.userId) {
+            return res.status(400).json({ discount: 0, error: 'Please login first' });
+        }
+
         const promoCodeDocument = await PromoCode.findOne({ code: promoCode });
         const userAppliedPromoCodes = await AppliedPromoCode.findOne({ userId: req.body.userId });
 

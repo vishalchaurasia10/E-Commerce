@@ -44,6 +44,7 @@ const Cart = () => {
             amount: 0,
             code: ''
         })
+        if (!user) return toast.error('Please login to apply promo code')
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promocodes/calculate`, {
                 method: 'POST',

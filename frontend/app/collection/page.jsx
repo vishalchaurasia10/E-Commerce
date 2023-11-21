@@ -60,8 +60,8 @@ const page = () => {
         fetchCategories()
     }, [])
 
-    const filterProducts = (categoryId) => {
-        const filteredProducts = products.filter((product) => product.category === categoryId);
+    const filterProducts = async (categoryId) => {
+        const filteredProducts = await searchProductsByCategory(categoryId)
         setLocalProductsData(filteredProducts); // Update the products state with filtered products
     };
 
@@ -70,13 +70,9 @@ const page = () => {
             return categories.filter((category) => category.type === type)
     }
 
-    const filterProductsByType = (type) => {
-        const categories = getCategoriesFromType(type);
-        if (!categories) return;
-        const categoryIds = categories.map((category) => category._id); // Extract category IDs
-
-        const filteredProducts = products.filter((product) => categoryIds.includes(product.category));
-        setLocalProductsData(filteredProducts); // Update the products state with filtered products
+    const filterProductsByType = async (type) => {
+        const filteredProducts = await searchProductsByType(type)
+        setLocalProductsData(filteredProducts.products); // Update the products state with filtered products
     };
 
     const handlePageChange = (newPage) => {

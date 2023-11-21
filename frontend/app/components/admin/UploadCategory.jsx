@@ -21,6 +21,7 @@ const UploadCategory = () => {
         title: '',
         type: ''
     })
+    const [loading, setLoading] = useState(false)
 
     const handleUpdateChange = (e) => {
         setUpdateFields({
@@ -55,6 +56,11 @@ const UploadCategory = () => {
     const handleFileUpload = async (e) => {
         const fileInput = document.getElementById('uploadFile');
         const file = fileInput.files[0];
+        if (!file) {
+            toast.error('Please upload a file')
+            return
+        }
+        setLoading(true)
         const response = await uploadCategoryFile(file)
         if (response.status === 'success') {
             setCategoryDetails({
@@ -80,10 +86,12 @@ const UploadCategory = () => {
         } else {
             toast.error('Cover Image is not uploaded')
         }
+        setLoading(false)
     }
 
     const handleDelete = async () => {
         try {
+            setLoading(true)
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${deleteId}`, {
                 method: 'DELETE',
                 headers: {
@@ -105,11 +113,14 @@ const UploadCategory = () => {
         } catch (error) {
             toast.error(error.message);
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
     const handleUpdate = async () => {
         try {
+            setLoading(true)
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${updateId}`, {
                 method: 'PUT',
                 headers: {
@@ -132,6 +143,8 @@ const UploadCategory = () => {
         } catch (error) {
             toast.error(error.message);
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -166,7 +179,12 @@ const UploadCategory = () => {
                                     )
                                 })
                             }
-                            <button onClick={checkValidity} className="btn btn-active">Upload</button>
+                            <button onClick={checkValidity} className="btn btn-active">
+                                {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                <span>
+                                    Upload
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -215,8 +233,11 @@ const UploadCategory = () => {
                                 </h3>
                                 <p className="py-4">Are you sure, you want to delete this category?</p>
                                 <div className="modal-action">
-                                    <form className='space-x-2' method="dialog">
-                                        <button onClick={handleDelete} className="btn btn-neutral">Delete</button>
+                                    <form className='flex space-x-2' method="dialog">
+                                        <button onClick={handleDelete} className="btn btn-neutral">
+                                            {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                            <span>Delete</span>
+                                        </button>
                                         <button onClick={() => setDeleteId('')} className="btn">Close</button>
                                     </form>
                                 </div>
@@ -253,8 +274,11 @@ const UploadCategory = () => {
                                     />
                                 </div>
                                 <div className="modal-action">
-                                    <form className='space-x-2' method="dialog">
-                                        <button onClick={handleUpdate} className="btn btn-neutral">Update</button>
+                                    <form className='flex space-x-2' method="dialog">
+                                        <button onClick={handleUpdate} className="btn btn-neutral">
+                                            {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                            <span>Update</span>
+                                        </button>
                                         <button onClick={() => setUpdateId('')} className="btn">Close</button>
                                     </form>
                                 </div>

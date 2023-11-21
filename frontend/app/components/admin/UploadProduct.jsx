@@ -22,6 +22,7 @@ const UploadProduct = () => {
         description: '',
         otherDetails: []
     })
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setProductDetails({
@@ -97,6 +98,7 @@ const UploadProduct = () => {
     };
 
     const handleFileUpload = async (e) => {
+        setLoading(true)
         const fileInput = document.getElementById('uploadFile');
         const files = fileInput.files;
         const fileIds = [];
@@ -130,6 +132,7 @@ const UploadProduct = () => {
         } else {
             toast.error('Images are not uploaded')
         }
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -272,7 +275,10 @@ const UploadProduct = () => {
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={checkValidity} className="btn btn-active">Upload</button>
+                            <button onClick={checkValidity} className="btn btn-active">
+                                {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                <span>Upload</span>
+                            </button>
                         </div>
                     </div>
                 </div>

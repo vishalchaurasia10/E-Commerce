@@ -14,6 +14,7 @@ const UploadPromoCode = () => {
         maximumDiscount: '',
         times: ''
     })
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {
         setPromoCode({ ...promoCode, [e.target.name]: e.target.value })
@@ -49,7 +50,7 @@ const UploadPromoCode = () => {
 
     const uploadPromoCode = async () => {
         try {
-            console.log(promoCode)
+            setLoading(true)
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promoCodes/`, {
                 method: 'POST',
                 headers: {
@@ -72,6 +73,8 @@ const UploadPromoCode = () => {
         } catch (err) {
             console.log(err)
             toast.error(err.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -153,7 +156,12 @@ const UploadPromoCode = () => {
                                 value={promoCode.maximumDiscount}
                                 className='outline-none placeholder:text-white bg-transparent border-b p-2 border-[rgba(255,255,255,0.5)]'
                             />
-                            <button onClick={checkValidity} className="btn btn-active">Add PromoCode</button>
+                            <button onClick={checkValidity} className="btn btn-active">
+                                {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                <span>
+                                    Add PromoCode
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>

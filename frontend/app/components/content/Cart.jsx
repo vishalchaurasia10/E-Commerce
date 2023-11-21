@@ -1,5 +1,5 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/utils/fonts'
+import { bebas_neue, roboto } from '@/app/layout'
 import React, { useContext, useEffect, useState } from 'react'
 import CartContext from '@/app/context/Cart/cartContext'
 import authContext from '@/app/context/Auth/authContext'

@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { roboto } from '@/app/utils/fonts'
+import { roboto } from '@/app/layout'
 
 const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategoriesFromType }) => {
     const { products } = useContext(ProductContext)

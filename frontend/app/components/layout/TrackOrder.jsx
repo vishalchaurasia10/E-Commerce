@@ -1,5 +1,5 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/utils/fonts'
+import { bebas_neue, roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FaArrowRightLong } from 'react-icons/fa6'

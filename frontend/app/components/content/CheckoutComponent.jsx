@@ -1,6 +1,6 @@
 'use client'
-import { roboto } from '@/app/utils/fonts'
-import React, { useContext, useEffect, useState } from 'react'
+import { roboto } from '@/app/layout'
+import React, { useContext, useState } from 'react'
 import authContext from '@/app/context/Auth/authContext'
 import CartContext from '@/app/context/Cart/cartContext'
 import { toast, Toaster } from 'react-hot-toast'

@@ -1,5 +1,5 @@
+import { bebas_neue, roboto } from '@/app/layout'
 import { whyChooseUsData } from '@/app/utils/constants'
-import { bebas_neue, roboto } from '@/app/utils/fonts'
 import React from 'react'
 
 const WhyChoose = () => {

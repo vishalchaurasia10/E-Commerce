@@ -1,5 +1,5 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/utils/fonts'
+import { bebas_neue, roboto } from '@/app/layout'
 import Link from 'next/link'
 import React, { useContext, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'

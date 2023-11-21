@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext, useEffect } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { bebas_neue, roboto } from '@/app/utils/fonts'
+import { bebas_neue } from '@/app/layout'
 import Link from 'next/link'
 import ProductCard from './ProductCard'
 
@@ -23,7 +23,7 @@ const YouMayAlsoLike = () => {
                     </div>
                     :
                     <div className="carousel carousel-end w-full space-x-4 py-5">
-                        {products.map((product, index) => (
+                        {products.length > 0 && products.map((product, index) => (
                             <Link href={`/collection/${product._id}`} key={product._id}>
                                 <ProductCard product={product} index={index} />
                             </Link>

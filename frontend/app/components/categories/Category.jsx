@@ -1,6 +1,6 @@
 'use client'
 import { getCategories } from '@/app/utils/apiFunctions/categoryFunctions';
-import { bebas_neue } from '@/app/utils/fonts';
+import { bebas_neue } from '@/app/layout';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 

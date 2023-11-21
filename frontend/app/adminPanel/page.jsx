@@ -5,8 +5,8 @@ import UploadProduct from '../components/admin/UploadProduct';
 import SearchForProduct from '../components/admin/SearchProduct';
 import UploadPromoCode from '../components/admin/UploadPromoCode';
 import UpdateShippingPrice from '../components/admin/UpdateShippingPrice';
-import { bebas_neue } from '../utils/fonts';
 import { toast, Toaster } from 'react-hot-toast';
+import { bebas_neue } from '@/app/layout'
 
 const page = () => {
 

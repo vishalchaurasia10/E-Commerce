@@ -1,7 +1,7 @@
 'use client'
 import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions'
 import { uploadProductDocument, uploadProductImages } from '@/app/utils/apiFunctions/productFunctions'
-import { bebas_neue } from '@/app/utils/fonts'
+import { bebas_neue } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { BsFillCloudUploadFill } from 'react-icons/bs'

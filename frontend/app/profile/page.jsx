@@ -4,7 +4,7 @@ import authContext from '../context/Auth/authContext'
 import { useRouter } from 'next/navigation'
 import Profile from '../components/content/Profile'
 import ProfileNavigation from '../components/layout/ProfileNavigation'
-import { roboto } from '../utils/fonts'
+import { roboto } from '@/app/layout'
 
 const page = () => {
     const [showSidebar, setShowSidebar] = useState(false)

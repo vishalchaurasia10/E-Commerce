@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AiFillCheckCircle, AiFillExclamationCircle } from 'react-icons/ai';
 import { useSearchParams, useRouter } from 'next/navigation';
 import authContext from '@/app/context/Auth/authContext';
-import { roboto } from '@/app/utils/fonts';
+import { roboto } from '@/app/layout';
 
 const Verificaiton = () => {
 

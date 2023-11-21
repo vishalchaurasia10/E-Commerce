@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -28,7 +28,7 @@ export default function Home() {
             initial={{ opacity: 1 }}
             animate={{ opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: 1 }}
             className="h-screen fixed top-0 left-0 w-full z-50 bg-white flex items-center justify-center space-x-4"
           >
             <span className="loading loading-spinner loading-lg"></span>

@@ -1,5 +1,5 @@
 'use client'
-import { bebas_neue } from '@/app/utils/fonts'
+import { bebas_neue } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 

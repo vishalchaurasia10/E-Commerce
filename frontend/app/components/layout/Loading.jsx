@@ -1,4 +1,4 @@
-import { roboto } from '@/app/utils/fonts'
+import { roboto } from '@/app/layout'
 import React from 'react'
 
 const Loading = () => {

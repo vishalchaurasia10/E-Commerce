@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import authContext from '../context/Auth/authContext'
 import { useRouter } from 'next/navigation'
 import ProfileNavigation from '../components/layout/ProfileNavigation'
-import { roboto } from '../utils/fonts'
+import { roboto } from '@/app/layout'
 import Orders from '../components/content/Orders'
 
 const page = () => {

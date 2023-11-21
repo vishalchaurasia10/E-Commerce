@@ -1,4 +1,4 @@
-import { roboto } from '@/app/utils/fonts'
+import { roboto } from '@/app/layout'
 import Image from 'next/image'
 import React from 'react'
 

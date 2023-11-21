@@ -1,5 +1,5 @@
 'use client'
-import { bebas_neue } from '@/app/utils/fonts'
+import { bebas_neue } from '@/app/layout'
 import React, { useContext, useEffect } from 'react'
 import FeaturedContext from '@/app/context/FeaturedProducts/featuredContext'
 import Link from 'next/link'

@@ -1,6 +1,6 @@
 'use client'
-import { bebas_neue, jost, roboto } from '@/app/utils/fonts'
-import React, { useContext, useEffect, useState } from 'react'
+import { bebas_neue, jost, roboto } from '@/app/layout'
+import React, { useContext, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import CartContext from '@/app/context/Cart/cartContext'
 import Link from 'next/link'

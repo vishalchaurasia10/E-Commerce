@@ -1,4 +1,4 @@
-import { roboto } from '@/app/utils/fonts'
+import { roboto } from '@/app/layout'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import authContext from '@/app/context/Auth/authContext'

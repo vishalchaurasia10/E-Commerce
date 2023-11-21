@@ -1,4 +1,4 @@
-import { bebas_neue } from '@/app/utils/fonts'
+import { bebas_neue } from '@/app/layout'
 import React from 'react'
 
 const Contact = () => {

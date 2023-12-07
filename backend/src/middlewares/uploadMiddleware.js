@@ -1,24 +1,30 @@
 const multer = require('multer');
-const fs = require('fs');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
 
-// Define the destination folder path
-const destinationFolder = './uploads/categories';
+// Configure AWS SDK with your credentials
+aws.config.update({
+    accessKeyId: 'YOUR_ACCESS_KEY_ID',
+    secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+    region: 'YOUR_AWS_REGION',
+});
 
-// Create the destination folder if it doesn't exist
-if (!fs.existsSync(destinationFolder)) {
-    fs.mkdirSync(destinationFolder, { recursive: true });
-}
+// Create an S3 instance
+const s3 = new aws.S3();
 
-// Define multer storage configuration for local storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, destinationFolder); // Set the destination folder for uploaded files
-    },
-    filename: (req, file, cb) => {
+// Define the S3 bucket name
+const bucketName = 'your-s3-bucket-name';
+
+// Define multer storage configuration for S3
+const storage = multerS3({
+    s3: s3,
+    bucket: bucketName,
+    acl: 'public-read', // Set ACL permissions for the uploaded file
+    key: (req, file, cb) => {
         const uniqueId = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const fileExtension = file.originalname.split('.').pop(); // Get the file extension
+        const fileExtension = file.originalname.split('.').pop();
         const filename = `${uniqueId}.${fileExtension}`;
-        req.uploadedFileId = filename; // Store the unique ID in the request object
+        req.uploadedFileId = filename;
         cb(null, filename);
     },
 });

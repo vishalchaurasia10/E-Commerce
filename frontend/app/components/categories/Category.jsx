@@ -49,11 +49,11 @@ const Category = () => {
             <div className="themeCategories flex flex-col justify-center items-center lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="first lg:w-1/2 flex space-x-4">
                     {themeCategories && themeCategories.length > 0 && themeCategories.slice(0, 2).map((category, index) => (
-                        <Link className="" key={index} href={`/collection?categoryId=${category._id}`}>
-                            <div className="pagesThumbnail justify-center flex relative overflow-hidden">
+                        <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
+                            <div className="pagesThumbnail w-full justify-center flex relative overflow-hidden">
                                 <img
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
-                                    src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`}
+                                    src={`${category.coverImageId}`}
                                     height={500}
                                     width={500}
                                     alt="themeImage"
@@ -68,11 +68,11 @@ const Category = () => {
 
                 <div className="second lg:w-1/2 flex space-x-4">
                     {themeCategories && themeCategories.length > 0 && themeCategories?.slice(2, 4).map((category, index) => (
-                        <Link className="" key={index} href={`/collection?categoryId=${category._id}`}>
-                            <div className="bg-cover bg-center pagesThumbnail justify-center flex relative overflow-hidden">
+                        <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
+                            <div className="bg-cover w-full bg-center pagesThumbnail justify-center flex relative overflow-hidden">
                                 <img
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
-                                    src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/categories/${category.coverImageId}`}
+                                    src={`${category.coverImageId}`}
                                     height={500}
                                     width={500}
                                     alt="themeImage"

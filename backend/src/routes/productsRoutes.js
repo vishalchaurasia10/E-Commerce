@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/productsController');
 const uploadMultipleMiddleware = require('../middlewares/uploadMultipleMiddleware');
+const multer = require('multer');
+
+// Define multer storage configuration for handling file uploads
+const storage = multer.memoryStorage(); // Store files in memory as buffers
+
+const upload = multer({ storage });
 
 // Create a new product
 router.post('/', productsController.createProduct);
@@ -32,6 +38,6 @@ router.put('/:productId', productsController.updateProduct);
 router.delete('/:productId', productsController.deleteProduct);
 
 // Handle file upload
-router.post('/upload', uploadMultipleMiddleware.array('files'), productsController.uploadProductImages);
+router.post('/upload', upload.array('files'), productsController.uploadProductImages);
 
 module.exports = router;

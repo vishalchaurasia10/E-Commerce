@@ -1,17 +1,19 @@
-export const uploadProductImages = async (file) => {
+export const uploadProductImages = async (files) => {
     try {
-        if (!file) {
+        if (!files) {
             return { status: 'failure', message: 'No file Selected' }
         }
         const formData = new FormData();
-        formData.append('files', file);
+        for (const file of files) {
+            formData.append('files', file);
+        }
         const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/upload`, {
             method: 'POST',
             body: formData,
         });
         if (result.status === 200) {
             const data = await result.json();
-            return { status: 'success', message: data.message, fileId: data.fileId };
+            return { status: 'success', message: data.message, fileId: data.fileUrls };
         } else {
             return { status: 'failure', message: 'Error uploading file' };
         }

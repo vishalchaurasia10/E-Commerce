@@ -101,15 +101,13 @@ const UploadProduct = () => {
         setLoading(true)
         const fileInput = document.getElementById('uploadFile');
         const files = fileInput.files;
-        const fileIds = [];
-        for (let i = 0; i < files.length; i++) {
-            const response = await uploadProductImages(files[i])
-            if (response.status === 'success') {
-                fileIds.push(response.fileId)
-            } else {
-                toast.error(response.message)
-                return
-            }
+        let fileIds = [];
+        const response = await uploadProductImages(files)
+        if (response.status === 'success') {
+            fileIds = response.fileId
+        } else {
+            toast.error(response.message)
+            return
         }
         if (fileIds.length !== 0) {
             const result = await uploadProductDocument(productDetails.title, productDetails.category, fileIds, productDetails.price, productDetails.size, productDetails.color, productDetails.description, productDetails.otherDetails, productDetails.featured)

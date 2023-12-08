@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/productsController');
-const uploadMultipleMiddleware = require('../middlewares/uploadMultipleMiddleware');
 const multer = require('multer');
 
 // Define multer storage configuration for handling file uploads

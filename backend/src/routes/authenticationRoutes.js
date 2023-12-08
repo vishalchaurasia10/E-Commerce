@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const authenticationController = require('../controllers/authenticationController');
-const uploadProfileImageMiddleware = require('../middlewares/uploadProfileImageMiddleware')
 const passport = require('../middlewares/passportConfig')
+const multer = require('multer');
+
+// Define multer storage configuration for handling file uploads
+const storage = multer.memoryStorage(); // Store files in memory as buffers
+
+const upload = multer({ storage });
 
 // Register a new user
 router.post('/register', authenticationController.createUser);
@@ -21,7 +26,7 @@ router.get('/auth/google/callback', passport.googleAuthCallback);
 
 
 //upload profile image of user
-router.post('/upload/:userId', uploadProfileImageMiddleware.single('file'), authenticationController.uploadProfileImage)
+router.post('/upload/:userId', upload.single('file'), authenticationController.uploadProfileImage)
 
 // verify the JWT token sent by the user
 router.get('/verifyjwt', authenticationController.verifyUserToken, (req, res) => {

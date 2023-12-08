@@ -96,7 +96,7 @@ const Navbar = () => {
                         {user && user._id ?
                             <Link href='/profile'>
                                 {user?.profileImageId ?
-                                    <img className='rounded-full w-8 h-8' src={`${process.env.NEXT_PUBLIC_API_IMAGE_URL}/uploads/profiles/${user.profileImageId}`} alt="profileImage" height={200} width={200} />
+                                    <img className='rounded-full w-8 h-8' src={`${user.profileImageId}`} alt="profileImage" height={200} width={200} />
                                     :
                                     <FaUser className='border-2 border-[#4D7E86] text-[#4D7E86] rounded-full p-[0.15rem] text-3xl font-bold' />
                                 }

@@ -90,16 +90,45 @@ exports.updateProduct = async (req, res) => {
 // Delete a product by ID
 exports.deleteProduct = async (req, res) => {
     try {
-        const productsId = req.params.productId;
-        const deletedProducts = await Products.findByIdAndDelete(productsId);
-        if (!deletedProducts) {
-            return res.status(404).json({ error: 'Products not found' });
+        const productId = req.params.productId;
+
+        // Find the product to get the image URLs
+        const product = await Products.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
         }
-        res.status(200).json({ message: 'Products deleted successfully' });
+
+        // If product images exist, delete them from S3
+        if (product.imageId && product.imageId.length > 0) {
+            try {
+                const deletePromises = product.imageId.map(async imageUrl => {
+                    const imageKey = imageUrl.split('/').pop(); // Extract the key from the URL
+                    await s3.deleteObject({
+                        Bucket: 'forevertrendin-bucket',
+                        Key: `products/${imageKey}`, // Adjust the key based on your S3 structure
+                    }).promise();
+                });
+
+                // Wait for all delete promises to complete
+                await Promise.all(deletePromises);
+            } catch (error) {
+                console.error('Error deleting product images from S3:', error);
+                return res.status(500).json({ error: 'Error deleting product images from S3' });
+            }
+        }
+
+        // Remove the product document from the database
+        const deletedProduct = await Products.findByIdAndDelete(productId);
+        if (!deletedProduct) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error deleting products' });
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Error deleting product' });
     }
-}
+};
 
 exports.uploadProductImages = async (req, res) => {
     try {

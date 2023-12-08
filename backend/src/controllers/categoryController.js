@@ -1,4 +1,12 @@
 const Category = require('../models/Category');
+const aws = require('aws-sdk');
+
+// AWS S3 Configuration
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+});
 
 // Create a new category
 exports.createCategory = async (req, res) => {
@@ -58,12 +66,36 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
+
+        // Find the category to get the image URL
+        const category = await Category.findById(categoryId);
+        if (!category) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+
+        // If a category image exists, delete it from S3
+        if (category.coverImageId) {
+            try {
+                const imageKey = category.coverImageId.split('/').pop(); // Extract the key from the URL
+                await s3.deleteObject({
+                    Bucket: 'forevertrendin-bucket',
+                    Key: `categories/${imageKey}`, // Adjust the key based on your S3 structure
+                }).promise();
+            } catch (error) {
+                console.error('Error deleting category image from S3:', error);
+                return res.status(500).json({ error: 'Error deleting category image from S3' });
+            }
+        }
+
+        // Remove the category document from the database
         const deletedCategory = await Category.findByIdAndRemove(categoryId);
         if (!deletedCategory) {
             return res.status(404).json({ error: 'Category not found' });
         }
+
         res.status(200).json({ message: 'Category deleted successfully' });
     } catch (error) {
+        console.error('Error deleting category:', error);
         res.status(500).json({ error: 'Error deleting category' });
     }
 };

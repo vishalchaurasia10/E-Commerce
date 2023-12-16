@@ -76,27 +76,27 @@ export const womenData = [
     {
         path: '/tshirt',
         title: 'T-Shirt',
-        categoryId: '6523ad6742eb3d440edb7435'
+        categoryId: '657d9bc9039a02dce37bed3c'
     },
     {
         path: '/oversizedtshirt',
         title: 'Oversized T-Shirt',
-        categoryId: '653fc278def49faea4bbeb23'
+        categoryId: '657da67f039a02dce37bee68'
     },
     {
         path: '/dress',
         title: 'Dress',
-        categoryId: '6523ad9b42eb3d440edb7439'
+        categoryId: '657d9c31039a02dce37bed48'
     },
     {
         path: '/croptop',
         title: 'Crop Top',
-        categoryId: '6523adac42eb3d440edb743b'
+        categoryId: '657d9c52039a02dce37bed4a'
     },
     {
         path: '/hoodies&sweatshirts',
         title: 'Hoodies & Sweatshirts',
-        categoryId: '653fc25ddef49faea4bbeb21'
+        categoryId: '657da6d0039a02dce37bee6a'
     }
 ]
 
@@ -104,17 +104,17 @@ export const menData = [
     {
         path: '/tshirt',
         title: 'T-Shirt',
-        categoryId: '6523ad4a42eb3d440edb7433'
+        categoryId: '657d9b40039a02dce37bed34'
     },
     {
         path: '/oversizedtshirt',
         title: 'Oversized T-Shirt',
-        categoryId: '6523ad8c42eb3d440edb7437'
+        categoryId: '657d9c06039a02dce37bed46'
     },
     {
         path: '/hoodies&sweatshirts',
         title: 'Hoodies & Sweatshirts',
-        categoryId: '653fc0c7def49faea4bbea4d'
+        categoryId: '657da73b039a02dce37bee70'
     }
 ]
 
@@ -122,27 +122,27 @@ export const themesData = [
     {
         path: '/fitness',
         title: 'Fitness',
-        categoryId: '6522a84b31a90e002b4d11f4'
+        categoryId: '657d9c7d039a02dce37bed52'
     },
     {
         path: '/valentinespecial',
         title: 'Valentine Special',
-        categoryId: '653fc3a9def49faea4bbebb9'
+        categoryId: '657da7cc039a02dce37bee76'
     },
     {
         path: '/halloween',
         title: 'Halloween',
-        categoryId: '6522acd431a90e002b4d11f8'
+        categoryId: '657d9ca9039a02dce37bed56'
     },
     {
         path: '/travel',
         title: 'Travel',
-        categoryId: '6522a89831a90e002b4d11f6'
+        categoryId: '657d9c93039a02dce37bed54'
     },
     {
         path: '/zodiactshirt',
         title: 'Zodiac T-Shirt',
-        categoryId: '6522a80f31a90e002b4d11f2'
+        categoryId: '657d9aa0039a02dce37bed2a'
     }
 ]
 

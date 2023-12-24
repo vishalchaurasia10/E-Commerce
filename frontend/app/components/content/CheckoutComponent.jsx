@@ -63,6 +63,10 @@ const CheckoutComponent = () => {
             toast.error('Please fill all the fields')
             return
         }
+        if (!localState.pinCode.match(/^\d{6}$/)) {
+            toast.error('Please enter a valid pin code')
+            return
+        }
         try {
             const cartData = cart.map(item => ({
                 productId: item.product._id,

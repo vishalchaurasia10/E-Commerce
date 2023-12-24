@@ -25,9 +25,9 @@ export default function Home() {
       {loading && (
         <AnimatePresence>
           <motion.div
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
+            initial={{ scale: 1, }}
+            animate={{ scale: 1, }}
+            exit={{ scale: 0, }}
             transition={{ duration: 1 }}
             className="h-screen fixed top-0 left-0 w-full z-50 bg-white flex items-center justify-center space-x-4"
           >

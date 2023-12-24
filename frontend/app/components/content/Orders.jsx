@@ -27,11 +27,13 @@ export function formatDate(inputDate) {
 const Orders = ({ user, setShowSidebar, showSidebar }) => {
 
     const [orders, setOrders] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                if (!user) return toast.error('Please sign in to view your orders')
+                if (!user) return
+                setLoading(true)
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/`, {
                     method: 'POST',
                     headers: {
@@ -41,10 +43,10 @@ const Orders = ({ user, setShowSidebar, showSidebar }) => {
                 })
                 const data = await response.json()
                 setOrders(data)
-                console.log(data)
             } catch (error) {
-                toast.error(error.message)
                 console.log(error.message)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -63,42 +65,47 @@ const Orders = ({ user, setShowSidebar, showSidebar }) => {
                         <h1 className='font-bold text-2xl'>My Orders</h1>
                     </div>
                     {
-                        orders.length > 0 ?
-                            <>
-                                {orders.map(order => {
-                                    return (
-                                        <React.Fragment key={order._id}>
-                                            <div className="card lg:card-side bg-base-100 shadow-xl my-4 z-0">
-                                                <div className="card-body">
-                                                    <p><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
-                                                    <p className='flex items-center'>
-                                                        <span className='font-bold'>Status: &nbsp;</span>
-                                                        <span className='flex items-center space-x-1'>
-                                                            {order.status === 'confirmed' && <FaClock className='text-orange-400' />}
-                                                            {order.status === 'Delivered' && <FaCircleCheck className='text-green-400' />}
-                                                            {order.status === 'Canceled' && <FaCirclePlus className='text-red-500 rotate-45 text-lg' />}
-                                                            <span>
-                                                                {order.status}
-                                                            </span>
-                                                        </span>
-                                                    </p>
-                                                    <p><span className='font-bold'>OrderId:</span> {order.orderId}</p>
-                                                    <p><span className='font-bold'>Shipping Address:</span> {order.address}</p>
-                                                    <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
-                                                    <Link href={`/myorders/${order._id}`}>
-                                                        <button className='btn btn-neutral w-fit px-6'>
-                                                            View
-                                                        </button>
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </React.Fragment>
-                                    )
-                                })}
-                            </> :
-                            <div>
-                                <p className='text-center text-xl font-bold w-full my-5'>No orders found</p>
+                        loading ?
+                            <div className="w-full my-10 flex items-center justify-center">
+                                <span className="loading loading-spinner loading-lg"></span>
                             </div>
+                            :
+                            orders.length > 0 ?
+                                <>
+                                    {orders.map(order => {
+                                        return (
+                                            <React.Fragment key={order._id}>
+                                                <div className="card lg:card-side bg-base-100 shadow-xl my-4 z-0">
+                                                    <div className="card-body">
+                                                        <p><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
+                                                        <p className='flex items-center'>
+                                                            <span className='font-bold'>Status: &nbsp;</span>
+                                                            <span className='flex items-center space-x-1'>
+                                                                {order.status === 'confirmed' && <FaClock className='text-orange-400' />}
+                                                                {order.status === 'Delivered' && <FaCircleCheck className='text-green-400' />}
+                                                                {order.status === 'Canceled' && <FaCirclePlus className='text-red-500 rotate-45 text-lg' />}
+                                                                <span>
+                                                                    {order.status}
+                                                                </span>
+                                                            </span>
+                                                        </p>
+                                                        <p><span className='font-bold'>OrderId:</span> {order.orderId}</p>
+                                                        <p><span className='font-bold'>Shipping Address:</span> {order.address}</p>
+                                                        <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
+                                                        <Link href={`/myorders/${order._id}`}>
+                                                            <button className='btn btn-neutral w-fit px-6'>
+                                                                View
+                                                            </button>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>
+                                        )
+                                    })}
+                                </> :
+                                <div>
+                                    <p className='text-center text-xl font-bold w-full my-5'>No orders found</p>
+                                </div>
                     }
                 </div>
             </div >

@@ -2,7 +2,7 @@
 import { navbarData } from '@/app/utils/constants'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { PiShoppingCart } from 'react-icons/pi'
 import { LuSearch } from 'react-icons/lu';
 import { roboto } from '@/app/layout'
@@ -32,6 +32,13 @@ const Navbar = () => {
         setShowInput(false);
         setSearchQuery('');
     };
+
+    useEffect(() => {
+        const drawer = document.getElementById('my-drawer-4');
+        if (drawer.checked) {
+            drawer.checked = false;
+        }
+    }, [pathname]);
 
     const handleSearch = () => {
         const searchInput = document.querySelector('input[name="searchQuery"]').value;

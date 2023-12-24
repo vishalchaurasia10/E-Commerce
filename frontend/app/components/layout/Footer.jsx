@@ -13,42 +13,44 @@ const Footer = () => {
                     <img key={index} className={`${item === 5 ? 'hidden md:block' : ''} w-1/2 md:w-1/5`} src={`/assets/footer/${item}.png`} alt="" />
                 ))}
             </div>
-            <div className="links px-4 lg:px-20 flex flex-col lg:flex-row lg:items-center justify-center lg:space-x-10 space-y-4 lg:space-y-0 py-5">
-                <Link href='/'>
+            <div className="links px-4 lg:px-20 flex items-center lg:justify-center lg:space-x-12 space-y-4 lg:space-y-0 py-5">
+                <Link className='order-2 lg:order-1 w-[40%] lg:w-auto flex items-center justify-center' href='/'>
                     <Image className='h-16 w-16' src="/assets/icon.svg" alt="logo" width={100} height={100} />
                 </Link>
-                <ul className='flex flex-col lg:flex-row lg:list-disc lg:space-x-8 space-y-2 lg:space-y-0  font-bold lg:font-medium'>
-                    <li>
-                        <Link href='/'>
-                            Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/collection'>
-                            Collection
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/termsandcondition'>
-                            Terms And Conditions
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/trackorder'>
-                            Shipping and Tracking
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/aboutus'>
-                            About Us
-                        </Link>
-                    </li>
-                </ul>
-                <div className="icons flex lg:items-center lg:justify-center space-x-2 text-[#528289]">
-                    <FaFacebook className='text-lg' />
-                    <FaInstagram className='text-lg' />
-                    <FaPinterest className='text-lg' />
-                    <FaTwitter className='text-lg' />
+                <div className="linkWrapper w-[60%] lg:w-auto order-1 lg:order-2 flex flex-col space-y-4 lg:space-y-0 lg:space-x-12 lg:flex-row lg:items-center justify-center">
+                    <ul className='flex flex-col lg:flex-row lg:list-disc lg:space-x-8 space-y-2 lg:space-y-0  font-bold lg:font-medium'>
+                        <li>
+                            <Link href='/'>
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href='/collection'>
+                                Collection
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href='/termsandcondition'>
+                                Terms And Conditions
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href='/trackorder'>
+                                Shipping and Tracking
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href='/aboutus'>
+                                About Us
+                            </Link>
+                        </li>
+                    </ul>
+                    <div className="icons flex lg:items-center lg:justify-center space-x-2 text-[#528289]">
+                        <FaFacebook className='text-lg' />
+                        <FaInstagram className='text-lg' />
+                        <FaPinterest className='text-lg' />
+                        <FaTwitter className='text-lg' />
+                    </div>
                 </div>
             </div>
             <div className="copyright bg-[#528289] w-full py-1 text-sm text-white text-center">

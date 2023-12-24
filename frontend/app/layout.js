@@ -9,11 +9,6 @@ import SearchState from './context/search/SearchState'
 import { Roboto, Bebas_Neue, Jost } from 'next/font/google'
 import './globals.css'
 
-// export const metadata = {
-//   title: 'Home | Forever Trendin',
-//   description: 'Forever Trendin is a fashion store that sells the latest fashion trends.',
-// }
-
 export const roboto = Roboto({
   weight: ['300', '400', '500', '700', '900'],
   subsets: ['latin'],

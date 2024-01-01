@@ -193,13 +193,13 @@ const UploadCategory = () => {
             <div className="showCategories flex flex-wrap bg-white justify-center">
                 {categories && categories.length > 0 && categories.map((category, index) => (
                     <React.Fragment key={category._id}>
-                        <div className="carousel-item m-2 w-60 h-[22rem]">
+                        <div className="carousel-item m-2 w-60">
                             <div
                                 id={`slide${index + 1}`}
                                 className={`carousel-item w-60`}
                             >
                                 <div className='relative w-full flex flex-col border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                    <img src={`${category.coverImageId}`} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
+                                    <img src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} />
                                     <h3 className={`text-black pl-4 pt-3`}><span className='font-bold'>Title: </span>{category.title}</h3>
                                     <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
                                     <FaPen

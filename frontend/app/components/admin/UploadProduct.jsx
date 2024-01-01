@@ -11,7 +11,7 @@ import ListAllProducts from './ListAllProducts'
 const UploadProduct = () => {
     const [inputFields, setInputFields] = useState([{ id: 1 }]);
     const [categoryOption, setCategoryOption] = useState([]);
-    const sizes = ['Small', 'Medium', 'Large', 'XL', 'XXL'];
+    const sizes = ['XS','Small', 'Medium', 'Large', 'XL', 'XXL'];
     const [productDetails, setProductDetails] = useState({
         title: '',
         category: '',

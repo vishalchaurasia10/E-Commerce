@@ -7,6 +7,8 @@ import toast, { Toaster } from 'react-hot-toast'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { FaCircleExclamation } from 'react-icons/fa6'
+import Image from 'next/image'
+import { RiLoopRightFill } from 'react-icons/ri'
 
 const UploadCategory = () => {
     const [categoryDetail, setCategoryDetails] = useState({
@@ -14,12 +16,14 @@ const UploadCategory = () => {
         type: '',
         coverImageId: ''
     })
+    const [selectedFile, setSelectedFile] = useState(null);
     const [categories, setCategories] = useState([]);
     const [deleteId, setDeleteId] = useState('')
     const [updateId, setUpdateId] = useState('')
     const [updateFields, setUpdateFields] = useState({
         title: '',
-        type: ''
+        type: '',
+        coverImageId: ''
     })
     const [loading, setLoading] = useState(false)
 
@@ -121,12 +125,14 @@ const UploadCategory = () => {
     const handleUpdate = async () => {
         try {
             setLoading(true)
+            const formData = new FormData();
+            formData.append('title', updateFields.title);
+            formData.append('type', updateFields.type);
+            formData.append('coverImage', selectedFile); // Assuming selectedFile is a File object
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${updateId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updateFields)
+                body: formData,
             });
             const data = await response.json();
             if (response.status === 200) {
@@ -140,6 +146,7 @@ const UploadCategory = () => {
                 toast.error(data.error);
             }
             setUpdateId('')
+            setSelectedFile(null)
         } catch (error) {
             toast.error(error.message);
             console.log(error)
@@ -147,6 +154,32 @@ const UploadCategory = () => {
             setLoading(false)
         }
     }
+
+    const handleImageUpdate = () => {
+        const fileInput = document.getElementById('replaceFile');
+        fileInput.click();
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                // Update state to show the selected image in the UI
+                setUpdateFields({
+                    ...updateFields,
+                    coverImageId: reader.result,
+                });
+
+                // Save the selected file for later use when updating on the backend
+                setSelectedFile(file);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <>
@@ -199,7 +232,7 @@ const UploadCategory = () => {
                                 className={`carousel-item w-60`}
                             >
                                 <div className='relative w-full flex flex-col border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                    <img src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} />
+                                    <Image height={500} width={500} src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} />
                                     <h3 className={`text-black pl-4 pt-3`}><span className='font-bold'>Title: </span>{category.title}</h3>
                                     <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
                                     <FaPen
@@ -208,7 +241,8 @@ const UploadCategory = () => {
                                             setUpdateId(category._id);
                                             setUpdateFields({
                                                 title: category.title,
-                                                type: category.type
+                                                type: category.type,
+                                                coverImageId: category.coverImageId
                                             })
                                             document.getElementById('updateModal').showModal()
                                         }}
@@ -272,6 +306,20 @@ const UploadCategory = () => {
                                         onChange={handleUpdateChange}
                                         className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
                                     />
+                                    <input
+                                        onChange={(e) => handleFileChange(e)}
+                                        type='file'
+                                        name='replaceFile'
+                                        id='replaceFile'
+                                        className='hidden' />
+                                    <div className="image relative w-fit">
+                                        <RiLoopRightFill
+                                            title='Replace Image'
+                                            onClick={handleImageUpdate}
+                                            className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer"
+                                        />
+                                        <Image src={`${updateFields.coverImageId}`} alt={updateFields.title} width={200} height={200} />
+                                    </div>
                                 </div>
                                 <div className="modal-action">
                                     <form className='flex space-x-2' method="dialog">

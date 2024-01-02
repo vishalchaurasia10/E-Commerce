@@ -1,5 +1,8 @@
 const Category = require('../models/Category');
 const aws = require('aws-sdk');
+const multer = require('multer');
+const upload = multer();
+const { Readable } = require('stream');
 
 // AWS S3 Configuration
 const s3 = new aws.S3({
@@ -48,16 +51,69 @@ exports.getCategoryById = async (req, res) => {
 exports.updateCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
+        const file = req.file;
+
+        const category = await Category.findById(categoryId);
+        if (!category) {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+
+        // If a new file is provided, delete the existing file from S3
+        if (file && category.coverImageId) {
+            try {
+                const imageKey = category.coverImageId.split('/').pop(); // Extract the key from the URL
+                await s3.deleteObject({
+                    Bucket: 'forevertrendin-bucket',
+                    Key: `categories/${imageKey}`, // Adjust the key based on your S3 structure
+                }).promise();
+            } catch (error) {
+                console.error('Error deleting category image from S3:', error);
+                return res.status(500).json({ error: 'Error deleting category image from S3' });
+            }
+        }
+
+        // If a new file is provided, upload the new file to S3
+        let updatedCoverImageId = category.coverImageId;
+        if (file) {
+            const fileName = `categories/${Date.now()}-${file.originalname}`;
+
+            // Create a Readable stream from the buffer
+            const fileStream = Readable.from(file.buffer);
+
+            // Upload the file to S3
+            const uploadParams = {
+                Bucket: 'forevertrendin-bucket',
+                Key: fileName,
+                Body: fileStream,
+                ContentType: file.mimetype,
+            };
+
+            const uploadResult = await s3.upload(uploadParams).promise();
+            updatedCoverImageId = uploadResult.Location;
+        }
+
+        // Update the document with new data
         const updatedCategory = await Category.findByIdAndUpdate(
             categoryId,
-            req.body,
+            {
+                title: req.body.title,
+                type: req.body.type,
+                coverImageId: updatedCoverImageId,
+            },
             { new: true }
         );
+
         if (!updatedCategory) {
             return res.status(404).json({ error: 'Category not found' });
         }
-        res.status(200).json({ message: 'Category updated successfully' });
+
+        res.json({
+            status: 'success',
+            message: 'Category updated successfully',
+            fileId: updatedCoverImageId,
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Error updating category' });
     }
 };

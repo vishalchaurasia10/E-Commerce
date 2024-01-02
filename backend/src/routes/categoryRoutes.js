@@ -29,7 +29,7 @@ router.get('/', categoryController.getAllCategories);
 router.get('/:categoryId', categoryController.getCategoryById);
 
 // Update a category by ID
-router.put('/:categoryId', categoryController.updateCategory);
+router.put('/:categoryId',upload.single('coverImage'), categoryController.updateCategory);
 
 // Delete a category by ID
 router.delete('/:categoryId', categoryController.deleteCategory);

@@ -3,6 +3,7 @@ import { getCategories } from '@/app/utils/apiFunctions/categoryFunctions';
 import { bebas_neue } from '@/app/layout';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const Category = () => {
 
@@ -21,7 +22,7 @@ const Category = () => {
             <div className="categoriesThumbnail flex flex-col lg:flex-row items-center justify-center w-full lg:space-x-4 lg:px-0">
                 <Link className='w-full lg:w-1/2' href='/women'>
                     <div className="pagesThumbnail justify-center flex relative overflow-hidden">
-                        <img
+                        <Image
                             className="h-full w-full transition-all duration-300 hover:scale-105"
                             src='/assets/pageLinks/shopWomen.png'
                             height={500}
@@ -34,7 +35,7 @@ const Category = () => {
                 </Link>
                 <Link className='w-full lg:w-1/2' href='/men'>
                     <div className="pagesThumbnail justify-center flex relative overflow-hidden">
-                        <img
+                        <Image
                             className="h-full w-full transition-all duration-300 hover:scale-105"
                             src='/assets/pageLinks/shopMen.png'
                             height={500}
@@ -51,7 +52,7 @@ const Category = () => {
                     {themeCategories && themeCategories.length > 0 && themeCategories.slice(0, 2).map((category, index) => (
                         <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
                             <div className="pagesThumbnail w-full justify-center flex relative overflow-hidden">
-                                <img
+                                <Image
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
                                     src={`${category.coverImageId}`}
                                     height={500}
@@ -70,7 +71,7 @@ const Category = () => {
                     {themeCategories && themeCategories.length > 0 && themeCategories?.slice(2, 4).map((category, index) => (
                         <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
                             <div className="bg-cover w-full bg-center pagesThumbnail justify-center flex relative overflow-hidden">
-                                <img
+                                <Image
                                     className="h-full w-full transition-all duration-300 hover:scale-105"
                                     src={`${category.coverImageId}`}
                                     height={500}

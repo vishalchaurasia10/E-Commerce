@@ -31,7 +31,7 @@ const Grid = ({ initialUrl, data }) => {
                         return (
                             <Link className='w-full lg:w-1/2' href={`/collection?categoryId=${item.categoryId}`}>
                                 <div className="pagesThumbnail justify-center flex relative">
-                                    <img
+                                    <Image
                                         className="h-full w-full"
                                         src={`${initialUrl}${index + 4}.png`}
                                         height={500}

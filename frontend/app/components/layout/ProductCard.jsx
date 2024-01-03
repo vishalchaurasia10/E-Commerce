@@ -1,5 +1,6 @@
 import { roboto } from '@/app/layout'
 import React from 'react'
+import Image from 'next/image'
 
 const ProductCard = ({ product, index }) => {
     const truncateStyle = {
@@ -16,7 +17,7 @@ const ProductCard = ({ product, index }) => {
             className={`carousel-item w-60`}
         >
             <div className='flex flex-col w-full space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                <img src={`${product.imageId[0]}`} className="w-full h-[16.5rem] object-cover" alt={`Slide ${index + 1}`} loading='lazy' />
+                <Image width={500} height={500} src={`${product.imageId[0]}`} className="w-full h-[16.5rem] object-cover" alt={`Slide ${index + 1}`} loading='lazy' />
                 <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                 <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
             </div>

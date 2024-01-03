@@ -3,6 +3,7 @@ import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions';
 import { bebas_neue } from '@/app/layout';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const Carousel = () => {
     const [categories, setCategories] = useState([]);
@@ -31,7 +32,7 @@ const Carousel = () => {
                                 className={`carousel-item w-60 h-[22rem]`}
                             >
                                 <div className='flex flex-col w-full items-center justify-center border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400 overflow-hidden'>
-                                    <img src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} loading='lazy' />
+                                    <Image width={500} height={500} src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} loading='lazy' />
                                     <h3 className={`${bebas_neue.className} py-5 text-black text-2xl text-center`}>{category.title}</h3>
                                 </div>
                             </div>

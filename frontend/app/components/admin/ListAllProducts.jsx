@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { FaCircleExclamation } from 'react-icons/fa6'
+import Image from 'next/image'
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
 const ListAllProducts = ({ categoryOption }) => {
     const [localData, setLocalData] = useState([])
@@ -12,6 +14,8 @@ const ListAllProducts = ({ categoryOption }) => {
     const [totalPages, setTotalPages] = useState(0)
     const [deleteId, setDeleteId] = useState('')
     const [updateId, setUpdateId] = useState('')
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
     const [updateFields, setUpdateFields] = useState({
         title: '',
         category: '',
@@ -20,9 +24,10 @@ const ListAllProducts = ({ categoryOption }) => {
         size: [],
         color: '',
         description: '',
-        otherDetails: []
+        otherDetails: [],
+        imageId: []
     })
-    const sizes = ['Small', 'Medium', 'Large', 'XL', 'XXL'];
+    const sizes = ['XS', 'Small', 'Medium', 'Large', 'XL', 'XXL'];
 
     const handleUpdateChange = (e) => {
         setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
@@ -106,28 +111,95 @@ const ListAllProducts = ({ categoryOption }) => {
     }
 
     const handleUpdate = async () => {
+        if (updateFields.imageId.length === 0) {
+            toast.error('There should be at least one image for the product');
+            return;
+        }
+
         try {
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${updateId}`
+            const formData = new FormData();
+
+            // Append each selected file to the FormData
+            selectedFiles.forEach((file) => {
+                formData.append(`files`, file);
+            });
+
+            // Append the other details as JSON in a specific field (e.g., productDetails)
+            formData.append('productDetails', JSON.stringify(updateFields));
+
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${updateId}`;
             const response = await fetch(url, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updateFields)
-            })
-            const data = await response.json()
+                body: formData,
+            });
+
+            const data = await response.json();
+
             if (response.status === 200) {
-                toast.success(data.message)
-                setUpdateId('')
-                getProductsWithPagination(currentPage)
+                toast.success(data.message);
+                setUpdateId('');
+                getProductsWithPagination(currentPage);
             } else {
-                toast.error(data.error)
+                toast.error(data.error);
             }
+            setSelectedFiles([]);
+            setPreviewImages([]);
         } catch (error) {
-            toast.error(error.message)
-            console.log(error)
+            toast.error(error.message);
+            console.log(error);
         }
+    };
+
+
+
+    const handleImageDelete = async (index) => {
+        setUpdateFields({
+            ...updateFields,
+            imageId: updateFields.imageId.filter((image, i) => i !== index)
+        })
     }
+
+    const handlePreviewImageDelete = async (index) => {
+        setPreviewImages(previewImages.filter((image, i) => i !== index))
+        setSelectedFiles(selectedFiles.filter((file, i) => i !== index))
+    }
+
+    const handleImageUpdate = () => {
+        const fileInput = document.getElementById('addFile');
+        fileInput.click();
+    };
+
+    const handleFileChange = (event) => {
+        const files = event.target.files;
+
+        // Create a temporary array to hold all selected images
+        let tempImageArray = [];
+
+        // Loop through all the selected files
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const imageData = reader.result;
+
+                // Add each image to the temporary array
+                tempImageArray.push(imageData);
+
+                // Check if it's the last iteration to update the state once
+                if (i === files.length - 1) {
+                    // Update the preview images
+                    setPreviewImages(tempImageArray);
+
+                    // Store the selected files in the state variable
+                    setSelectedFiles([...selectedFiles, ...files]);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
 
     return (
         <>
@@ -151,7 +223,7 @@ const ListAllProducts = ({ categoryOption }) => {
                                                 className={`w-72 h-[27rem] mr-4 mb-3`}
                                             >
                                                 <div className='relative flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                                    <img src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
+                                                    <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
                                                     <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                                                     <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
                                                     <FaPen
@@ -166,7 +238,8 @@ const ListAllProducts = ({ categoryOption }) => {
                                                                 size: product.size,
                                                                 color: product.color,
                                                                 description: product.description,
-                                                                otherDetails: product.otherDetails
+                                                                otherDetails: product.otherDetails,
+                                                                imageId: product.imageId
                                                             })
                                                             document.getElementById('updateModal').showModal()
                                                         }}
@@ -301,6 +374,48 @@ const ListAllProducts = ({ categoryOption }) => {
                                                                     {size}
                                                                 </button>
                                                             ))}
+                                                        </div>
+                                                        <input
+                                                            onChange={(e) => handleFileChange(e)}
+                                                            type='file'
+                                                            name='addFile'
+                                                            id='addFile'
+                                                            className='hidden'
+                                                            multiple={true} />
+                                                        <div className="image items-center carousel carousel-end space-x-4 py-5">
+                                                            {
+                                                                updateFields.imageId.map((image, index) => {
+                                                                    return (
+                                                                        <div className="imageContainer carousel-item relative">
+                                                                            <FaTrash
+                                                                                title='Delete Image'
+                                                                                onClick={() => handleImageDelete(index)}
+                                                                                className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer"
+                                                                            />
+                                                                            <Image className='carousel-item h-[12rem] object-cover' src={`${image}`} alt={updateFields.title} width={200} height={200} />
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            }
+                                                            {
+                                                                previewImages.map((image, index) => {
+                                                                    return (
+                                                                        <div className="imageContainer carousel-item relative">
+                                                                            <FaTrash
+                                                                                title='Delete Image'
+                                                                                onClick={() => handlePreviewImageDelete(index)}
+                                                                                className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer"
+                                                                            />
+                                                                            <Image className='carousel-item h-[12rem] object-cover' src={`${image}`} alt={updateFields.title} width={200} height={200} />
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            }
+                                                            <div className='w-40 carousel-item justify-center items-center flex'>
+                                                                <MdOutlineAddPhotoAlternate
+                                                                    onClick={handleImageUpdate}
+                                                                    className="text-8xl text-gray-600 bg-white p-[0.38rem] rounded-md hover:scale-105 transition-all duration-300 cursor-pointer" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="modal-action">

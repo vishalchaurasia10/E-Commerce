@@ -72,20 +72,80 @@ exports.getProductById = async (req, res) => {
 // Update a product by ID
 exports.updateProduct = async (req, res) => {
     try {
-        const productsId = req.params.productId;
-        const updatedProducts = await Products.findByIdAndUpdate(
-            productsId,
-            req.body,
+        const productId = req.params.productId;
+        const originalProduct = await Products.findById(productId);
+        if (!originalProduct) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        // Parse the JSON-encoded object in productDetails
+        const productDetails = JSON.parse(req.body.productDetails);
+
+        // Extract imageId from the parsed productDetails
+        const imagesToDelete = originalProduct.imageId.filter(imageUrl => !productDetails.imageId.includes(imageUrl));
+
+        if (imagesToDelete.length > 0) {
+            try {
+                const deletePromises = imagesToDelete.map(async imageUrl => {
+                    const imageKey = imageUrl.split('/').pop(); // Extract the key from the URL
+                    await s3.deleteObject({
+                        Bucket: 'forevertrendin-bucket',
+                        Key: `products/${imageKey}`, // Adjust the key based on your S3 structure
+                    }).promise();
+                });
+
+                // Wait for all delete promises to complete
+                await Promise.all(deletePromises);
+            } catch (error) {
+                console.error('Error deleting product images from S3:', error);
+                return res.status(500).json({ error: 'Error deleting product images from S3' });
+            }
+        }
+
+        // Handle uploaded files
+        const files = req.files || [];
+        const uploadedFileUrls = [];
+
+        // Process files (e.g., upload to S3)
+        for (const file of files) {
+            const fileName = `products/${Date.now()}-${file.originalname}`; // Updated Key
+
+            const fileStream = Readable.from(file.buffer);
+
+            // Upload the file to S3
+            const uploadResult = await s3.upload({
+                Bucket: 'forevertrendin-bucket',
+                Key: fileName,
+                Body: fileStream,
+                ContentType: file.mimetype,
+            }).promise();
+
+            uploadedFileUrls.push(uploadResult.Location);
+        }
+
+        // Combine existing and uploaded image URLs
+        const updatedImageUrls = [...productDetails.imageId, ...uploadedFileUrls];
+
+        // Update the product with new details
+        const updatedProduct = await Products.findByIdAndUpdate(
+            productId,
+            {
+                ...productDetails,
+                imageId: updatedImageUrls,
+            },
             { new: true }
         );
-        if (!updatedProducts) {
-            return res.status(404).json({ error: 'Products not found' });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ error: 'Product not found' });
         }
+
         res.status(200).json({ message: 'Product updated successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error updating products' });
+        res.status(500).json({ error: 'Error updating product' });
+        console.error('Error updating product:', error);
     }
-}
+};
 
 // Delete a product by ID
 exports.deleteProduct = async (req, res) => {

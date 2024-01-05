@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
 import { roboto } from '@/app/layout'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const Products = ({ localData }) => {
     const { loading } = useContext(ProductContext)
@@ -33,7 +34,7 @@ const Products = ({ localData }) => {
                                         className={`w-72 h-[27rem] mr-4 mb-3`}
                                     >
                                         <div className='flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                            <img src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
+                                            <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
                                             <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                                             <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
                                         </div>

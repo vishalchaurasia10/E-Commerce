@@ -25,6 +25,9 @@ router.get('/search', categoryController.searchCategories);
 // Get all categories
 router.get('/', categoryController.getAllCategories);
 
+// Get categories by type
+router.get('/type/:type', categoryController.getCategoriesByType);
+
 // Get a single category by ID
 router.get('/:categoryId', categoryController.getCategoryById);
 

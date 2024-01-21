@@ -18,6 +18,11 @@ module.exports = {
         'lg': '992px',   // Large devices (e.g., laptops) - 992px and up
         'xl': '1200px',  // Extra large devices (e.g., desktops) - 1200px and up
       },
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+        jost: ['Jost', 'sans-serif'],
+        bebas_neue: ['Bebas Neue', 'cursive'],
+      },
     },
   },
   daisyui: {

@@ -33,6 +33,22 @@ exports.getAllCategories = async (req, res) => {
     }
 };
 
+//get categories by type
+exports.getCategoriesByType = async (req, res) => {
+    try {
+        const type = req.params.type;
+        const categories = await Category.find({ type: type });
+        const count = await Category.countDocuments({ type: type });
+        if (!categories) {
+            return res.status(404).json({ error: 'Categories not found' });
+        }
+        res.status(200).json(categories);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching categories' });
+    }
+};
+
+
 // Get a single category by ID
 exports.getCategoryById = async (req, res) => {
     try {

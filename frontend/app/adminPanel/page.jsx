@@ -6,7 +6,6 @@ import SearchForProduct from '../components/admin/SearchProduct';
 import UploadPromoCode from '../components/admin/UploadPromoCode';
 import UpdateShippingPrice from '../components/admin/UpdateShippingPrice';
 import { toast, Toaster } from 'react-hot-toast';
-import { bebas_neue } from '@/app/layout'
 
 const page = () => {
 
@@ -62,7 +61,7 @@ const page = () => {
                         <div className="uploadContent relative z-20 w-full lg:mx-40 flex items-center justify-center space-x-8">
                             <div className='uploadForm w-full lg:w-1/2 mx-2 bg-[rgba(255,255,255,0.1)] text-white flex flex-col lg:flex-row space-y-8 lg:space-y-0 rounded-xl p-4 md:p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
                                 <div className='uploadForm w-full bg-[rgba(255,255,255,0.1)] text-white flex flex-col rounded-xl space-y-8 p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
-                                    <h1 className={`${bebas_neue.className} font-bold text-6xl`}>Enter Admin Key</h1>
+                                    <h1 className={`font-bebas_neue font-bold text-6xl`}>Enter Admin Key</h1>
                                     <input
                                         required
                                         type='text'

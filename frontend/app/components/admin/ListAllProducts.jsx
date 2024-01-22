@@ -478,7 +478,7 @@ const ListAllProducts = ({ categoryOption }) => {
                             className="join-item btn">
                             «
                         </button>
-                        <button className="join-item btn">Page {currentPage}</button>
+                        <button className="join-item btn font-roboto">Page {currentPage}</button>
                         <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage >= totalPages}

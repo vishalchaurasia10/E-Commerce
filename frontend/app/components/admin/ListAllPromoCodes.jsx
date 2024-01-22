@@ -280,18 +280,20 @@ const ListAllPromoCodes = () => {
                     </div>
                 </div>
             </div>
-            <div className="join w-full flex justify-center mb-10">
+            <div className="join mx-auto flex justify-center my-10 bg-white w-fit">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1} className="join-item btn">
-                    Prev
+                    disabled={currentPage === 1}
+                    className="join-item btn">
+                    «
                 </button>
-                <button onClick={() => setCurrentPage(1)} className="join-item btn">1</button>
-                {totalPages > 1 && <button onClick={() => setCurrentPage(2)} className="join-item btn">2</button>}
-                {totalPages > 1 && <button className="join-item btn btn-disabled">...</button>}
-                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages - 1)} className="join-item btn">{totalPages - 1}</button>}
-                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages)} className="join-item btn">{totalPages}</button>}
-                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="join-item btn">Next</button>
+                <button className="join-item btn">Page {currentPage}</button>
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                    className="join-item btn">
+                    »
+                </button>
             </div>
         </>
     )

@@ -1,7 +1,6 @@
 'use client'
 import { getAllCategories, uploadCategoryDocument, uploadCategoryFile, getCategoryByType } from '@/app/utils/apiFunctions/categoryFunctions'
 import { categoryFields } from '@/app/utils/constants'
-import { bebas_neue } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
@@ -220,7 +219,7 @@ const UploadCategory = () => {
                             </label>
                         </div>
                         <div className='uploadForm lg:order-1 lg:w-1/2 bg-[rgba(255,255,255,0.1)] text-white flex flex-col rounded-xl space-y-8 p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
-                            <h1 className={`${bebas_neue.className} font-bold text-6xl`}>Upload Category</h1>
+                            <h1 className={`font-bebas_neue text-6xl`}>Upload Category</h1>
                             {
                                 categoryFields.map((field, index) => {
                                     return (

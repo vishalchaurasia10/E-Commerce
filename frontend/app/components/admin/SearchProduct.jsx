@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { formatDate } from '../content/Orders'
@@ -95,7 +94,7 @@ const SearchForProduct = () => {
                 <div className="uploadContent relative z-20 w-full lg:mx-40 flex items-center justify-center space-x-8">
                     <div className='uploadForm w-full lg:w-1/2 mx-2 bg-[rgba(255,255,255,0.1)] text-white flex flex-col lg:flex-row space-y-8 lg:space-y-0 rounded-xl p-4 md:p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
                         <div className='uploadForm w-full bg-[rgba(255,255,255,0.1)] text-white flex flex-col rounded-xl space-y-8 p-8 backdrop-blur-2xl shadow-2xl border-[rgba(255,255,255,0.1)]'>
-                            <h1 className={`${bebas_neue.className} font-bold text-6xl`}>Enter OrderID</h1>
+                            <h1 className={`font-bebas_neue text-6xl`}>Enter OrderID</h1>
                             <input
                                 required
                                 type='text'
@@ -116,7 +115,7 @@ const SearchForProduct = () => {
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
                 :
-                <div className={`profileWrapper ${roboto.className} bg-white flex lg:space-x-4 px-2 pt-4 lg:pt-0 lg:px-40`}>
+                <div className={`profileWrapper font-roboto bg-white flex lg:space-x-4 px-2 pt-4 lg:pt-0 lg:px-40`}>
                     <div className="profileContent mx-auto lg:w-3/4">
                         {products.length > 0 && order &&
                             <div className='h-full py-6 lg:py-10 px-3 lg:px-5 border border-[#4D7E86]'>
@@ -161,7 +160,7 @@ const SearchForProduct = () => {
                                         products.length > 0 && products.map((product, index) => {
                                             return (
                                                 <React.Fragment key={index}>
-                                                    <div className={`cartProduct ${roboto.className} flex flex-col md:flex-row`}>
+                                                    <div className={`cartProduct font-roboto flex flex-col md:flex-row`}>
                                                         <div className="image mb-4 lg:mb-0 md:mr-3 lg:mr-6 md:w-[35%]">
                                                             <Image className='rounded-lg w-full' src={`${product?.imageId[0]}`} alt={product.title} width={200} height={200} loading='lazy' />
                                                         </div>

@@ -1,5 +1,4 @@
 'use client'
-import { roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { FaPen, FaTrash } from 'react-icons/fa'
@@ -16,6 +15,7 @@ const ListAllProducts = ({ categoryOption }) => {
     const [updateId, setUpdateId] = useState('')
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
+    const [productType, setProductType] = useState('all')
     const [updateFields, setUpdateFields] = useState({
         title: '',
         category: '',
@@ -28,6 +28,7 @@ const ListAllProducts = ({ categoryOption }) => {
         imageId: []
     })
     const sizes = ['XS', 'Small', 'Medium', 'Large', 'XL', 'XXL'];
+    const types = ['all', 'men', 'women', 'themes']
 
     const handleUpdateChange = (e) => {
         setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
@@ -72,13 +73,32 @@ const ListAllProducts = ({ categoryOption }) => {
         }
     }
 
+    const getProductsWithPaginationAndType = async (page, type) => {
+        try {
+            setLoading(true)
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/type/${type}?page=${page}`
+            const response = await fetch(url)
+            const data = await response.json()
+            setLocalData(data.products)
+            setTotalPages(data.totalPages)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
     };
 
     useEffect(() => {
-        getProductsWithPagination(currentPage)
-    }, [currentPage])
+        if (productType === 'all') {
+            getProductsWithPagination(currentPage)
+        } else {
+            getProductsWithPaginationAndType(currentPage, productType)
+        }
+    }, [currentPage, productType])
 
     const truncateStyle = {
         display: '-webkit-box',
@@ -200,20 +220,36 @@ const ListAllProducts = ({ categoryOption }) => {
         }
     };
 
+    const handleProductTypeChange = async (e) => {
+        setProductType(e.target.value)
+    }
+
 
     return (
         <>
             <Toaster />
-            <div id='products' className="collection flex flex-col justify-center lg:flex-row py-5 lg:py-10">
-                <div className=' min-h-[35rem]'>
-                    <div className=''>
-                        <h2 className={`text-lg ${roboto.className} text-white w-full pt-4 lg:pt-0 lg:py-4 text-center text-xl font-bold`}>{(localData && localData.length) || 0} Products</h2>
+            <div className="mainContainer min-h-[35rem] flex flex-col lg:flex-row lg:space-x-4 bg-white justify-center px-10">
+                <div className="filter lg:w-[18%] border-2 border-gray-400 my-16 p-4 h-fit lg:sticky lg:top-20">
+                    {
+                        types.map((type, index) => {
+                            return (
+                                <div onClick={handleProductTypeChange} key={index} className="types flex space-x-4 py-1">
+                                    <h3 className={`font-roboto font-extrabold capitalize`}>{type}</h3>
+                                    <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="categoryType" id="categoryType" value={type} />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <div id='products' className="collection lg:w-[82%] flex flex-col justify-center py-5 lg:py-10">
+                    <div className=' min-h-[35rem]'>
+                        {/* <h2 className={`text-lg ${roboto.className} text-white w-full pt-4 lg:pt-0 lg:py-4 text-center text-xl font-bold`}>{(localData && localData.length) || 0} Products</h2> */}
                         {loading ?
                             <div className="w-full my-20 flex items-center justify-center">
                                 <span className="loading loading-spinner loading-lg"></span>
                             </div>
                             :
-                            <div className="flex flex-wrap justify-center py-5 flex-col lg:flex-row items-center">
+                            <div className="flex flex-wrap px-5 py-5 flex-col lg:flex-row items-center">
                                 {localData && localData.length > 0 ?
                                     localData.map((product, index) => (
                                         <React.Fragment key={product._id}>
@@ -224,8 +260,8 @@ const ListAllProducts = ({ categoryOption }) => {
                                             >
                                                 <div className='relative flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
                                                     <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
-                                                    <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
-                                                    <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
+                                                    <h3 className={`font-roboto px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
+                                                    <p className={`font-roboto px-4 pb-3 text-black`}>₹{product.price}</p>
                                                     <FaPen
                                                         title='Update'
                                                         onClick={() => {
@@ -435,20 +471,20 @@ const ListAllProducts = ({ categoryOption }) => {
                             </div>
                         }
                     </div>
+                    <div className="join w-full flex justify-center mb-10">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1} className="join-item btn">
+                            Prev
+                        </button>
+                        <button onClick={() => setCurrentPage(1)} className="join-item btn">1</button>
+                        {totalPages > 1 && <button onClick={() => setCurrentPage(2)} className="join-item btn">2</button>}
+                        {totalPages > 1 && <button className="join-item btn btn-disabled">...</button>}
+                        {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages - 1)} className="join-item btn">{totalPages - 1}</button>}
+                        {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages)} className="join-item btn">{totalPages}</button>}
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="join-item btn">Next</button>
+                    </div>
                 </div>
-            </div>
-            <div className="join w-full flex justify-center mb-10">
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1} className="join-item btn">
-                    Prev
-                </button>
-                <button onClick={() => setCurrentPage(1)} className="join-item btn">1</button>
-                {totalPages > 1 && <button onClick={() => setCurrentPage(2)} className="join-item btn">2</button>}
-                {totalPages > 1 && <button className="join-item btn btn-disabled">...</button>}
-                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages - 1)} className="join-item btn">{totalPages - 1}</button>}
-                {totalPages > 2 && <button onClick={() => setCurrentPage(totalPages)} className="join-item btn">{totalPages}</button>}
-                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="join-item btn">Next</button>
             </div>
         </>
     )

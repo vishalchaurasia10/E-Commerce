@@ -251,7 +251,7 @@ const UploadCategory = () => {
 
             <h1 className={`font-bebas_neue pt-20 pb-10 text-center bg-white text-6xl`}>All categories</h1>
 
-            <div className="mainContainer flex flex-col lg:flex-row lg:space-x-4 bg-white justify-center px-10">
+            <div className="mainContainer min-h-[35rem] flex flex-col lg:flex-row lg:space-x-4 bg-white justify-center px-10">
                 <div className="filter lg:w-[18%] border-2 border-gray-400 my-2 p-4 h-fit lg:sticky lg:top-20">
                     {
                         types.map((type, index) => {

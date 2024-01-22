@@ -241,6 +241,9 @@ exports.getFeaturedProducts = async (req, res) => {
 exports.getProductsByType = async (req, res) => {
     try {
         const type = req.params.type;
+        const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+        const perPage = 1; // Set the number of products per page
+        const skip = (page - 1) * perPage;
 
         // Find all categories with the specified type
         const categories = await Category.find({ type });
@@ -253,18 +256,28 @@ exports.getProductsByType = async (req, res) => {
         const categoryIds = categories.map(category => category._id);
 
         // Find all products that have one of the matching category IDs
-        const products = await Products.find({ category: { $in: categoryIds } });
+        const products = await Products.find({ category: { $in: categoryIds } })
+            .skip(skip)
+            .limit(perPage);
+
+        // Get the total count of products for the specified type
+        const totalCount = await Products.countDocuments({ category: { $in: categoryIds } });
 
         if (!products || products.length === 0) {
             return res.status(404).json({ message: 'Products not found' });
         }
 
-        res.status(200).json({ products });
+        res.status(200).json({
+            products,
+            totalProducts: totalCount,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / perPage),
+        });
     } catch (error) {
         console.error('Error fetching products by type:', error);
         res.status(500).json({ message: 'Error fetching products' });
     }
-}
+};
 
 exports.getProductsByCategory = async (req, res) => {
     try {

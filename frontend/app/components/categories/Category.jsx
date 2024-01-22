@@ -1,6 +1,5 @@
 'use client'
 import { getCategories } from '@/app/utils/apiFunctions/categoryFunctions';
-import { bebas_neue } from '@/app/layout';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -30,7 +29,7 @@ const Category = () => {
                             alt="shopwomen"
                         />
                         <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                        <h3 className={`${bebas_neue.className} text-white bottom-10 text-6xl absolute`}>Shop women</h3>
+                        <h3 className={`font-bebas_neue text-white bottom-10 text-6xl absolute`}>Shop women</h3>
                     </div>
                 </Link>
                 <Link className='w-full lg:w-1/2' href='/men'>
@@ -43,7 +42,7 @@ const Category = () => {
                             alt="shopmen"
                         />
                         <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                        <h3 className={`${bebas_neue.className} text-white bottom-10 text-6xl absolute`}>Shop men</h3>
+                        <h3 className={`font-bebas_neue text-white bottom-10 text-6xl absolute`}>Shop men</h3>
                     </div>
                 </Link>
             </div>
@@ -61,7 +60,7 @@ const Category = () => {
                                     loading='lazy'
                                 />
                                 <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                                <h3 className={`${bebas_neue.className} text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{category.title}</h3>
+                                <h3 className={`font-bebas_neue text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{category.title}</h3>
                             </div>
                         </Link>
                     ))}
@@ -80,7 +79,7 @@ const Category = () => {
                                     loading='lazy'
                                 />
                                 <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                                <h3 className={`${bebas_neue.className} text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{category.title}</h3>
+                                <h3 className={`font-bebas_neue text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{category.title}</h3>
                             </div>
                         </Link>
                     ))}

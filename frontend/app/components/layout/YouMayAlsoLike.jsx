@@ -5,11 +5,9 @@ import Link from 'next/link'
 import ProductCard from './ProductCard'
 
 const YouMayAlsoLike = () => {
-    const { products, getAllProducts, loading } = useContext(ProductContext)
+    const { products, getProductsWithPagination, loading } = useContext(ProductContext)
     useEffect(() => {
-        if (products.length === 0) {
-            getAllProducts()
-        }
+        getProductsWithPagination(1)
     }, [])
 
     return (

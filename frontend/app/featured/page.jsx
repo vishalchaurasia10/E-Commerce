@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import FeaturedContext from '../context/FeaturedProducts/featuredContext'
 import Image from 'next/image'
-import { FaPen, FaTrash } from 'react-icons/fa'
+import Link from 'next/link'
 
 const page = () => {
 
@@ -33,7 +33,7 @@ const page = () => {
 
     return (
         <>
-        <h1 className='font-bebas_neue text-4xl text-center lg:text-6xl pt-5'>Featured Products</h1>
+            <h1 className='font-bebas_neue text-4xl text-center lg:text-6xl pt-5'>Featured Products</h1>
             <div id='products' className="collection lg:px-20 flex flex-col justify-center py-5 lg:py-5">
                 <div className=' min-h-[35rem]'>
                     {loading ?
@@ -44,7 +44,7 @@ const page = () => {
                         <div className="flex flex-wrap px-5 py-5 flex-col lg:flex-row items-center">
                             {localData && localData.length > 0 ?
                                 localData.map((product, index) => (
-                                    <React.Fragment key={product._id}>
+                                    <Link href={`/collection/${product._id}`} key={product._id}>
                                         <div
                                             key={product._id}
                                             id={`slide${index + 1}`}
@@ -54,34 +54,9 @@ const page = () => {
                                                 <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
                                                 <h3 className={`font-roboto px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                                                 <p className={`font-roboto px-4 pb-3 text-black`}>₹{product.price}</p>
-                                                <FaPen
-                                                    title='Update'
-                                                    onClick={() => {
-                                                        setUpdateId(product._id);
-                                                        setUpdateFields({
-                                                            title: product.title,
-                                                            category: product.category,
-                                                            price: product.price,
-                                                            featured: product.featured,
-                                                            size: product.size,
-                                                            color: product.color,
-                                                            description: product.description,
-                                                            otherDetails: product.otherDetails,
-                                                            imageId: product.imageId
-                                                        })
-                                                        document.getElementById('updateModal').showModal()
-                                                    }}
-                                                    className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-10 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
-                                                <FaTrash
-                                                    onClick={() => {
-                                                        setDeleteId(product._id);
-                                                        document.getElementById('deleteModal').showModal()
-                                                    }}
-                                                    title='Delete'
-                                                    className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
                                             </div>
                                         </div>
-                                    </React.Fragment>
+                                    </Link>
                                 )) :
                                 <div className='w-full'>
                                     <h1 className='w-full text-center text-4xl font-bold'>No Products Found!</h1>

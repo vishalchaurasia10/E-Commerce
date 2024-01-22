@@ -38,6 +38,11 @@ const Carousel = () => {
                         </Link>
                     ))}
                 </div>
+                <div className="button flex items-center justify-center py-5">
+                    <Link href={`/categories`}>
+                        <button className='bg-[#2C3E50] py-2 px-8 text-white'>View All</button>
+                    </Link>
+                </div>
             </div>
         </>
     );

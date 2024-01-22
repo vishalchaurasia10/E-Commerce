@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue, jost, roboto } from '@/app/layout'
 import React, { useContext, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import CartContext from '@/app/context/Cart/cartContext'
@@ -26,11 +25,11 @@ const ProductContent = ({ product }) => {
     return (
         <>
             <div className='flex flex-col space-y-3'>
-                <p className={`${jost.className} pt-4 lg:pt-0`}>Forever Trendin</p>
-                <h1 className={`${bebas_neue.className} text-5xl`}>{product.title}</h1>
-                <p className={`${roboto.className} font-bold text-xl`}>₹ {product.price}</p>
+                <p className={`font-jost pt-4 lg:pt-0`}>Forever Trendin</p>
+                <h1 className={`font-bebas_neue text-5xl`}>{product.title}</h1>
+                <p className={`font-roboto font-bold text-xl`}>₹ {product.price}</p>
                 <div className="size space-y-2">
-                    <p className={`${roboto.className} text-lg font-bold`}>Size</p>
+                    <p className={`font-roboto text-lg font-bold`}>Size</p>
                     <div className="buttons flex flex-wrap">
                         {
                             product.size.map((size, index) => (
@@ -45,7 +44,7 @@ const ProductContent = ({ product }) => {
                     </div>
                 </div>
                 <div className="color">
-                    <div className={`${roboto.className} text-lg font-bold`}>Color</div>
+                    <div className={`font-roboto text-lg font-bold`}>Color</div>
                     {
                         product.color.split(',').map((color, index) => (
                             <button
@@ -58,7 +57,7 @@ const ProductContent = ({ product }) => {
                     }
                 </div>
                 <div className="quantity space-y-2">
-                    <p className={`${roboto.className} text-lg font-bold`}>Quantity</p>
+                    <p className={`font-roboto text-lg font-bold`}>Quantity</p>
                     <div className="buttons border border-black w-fit flex items-center px-2">
                         <FiMinus onClick={() => handleQuantity('remove')} className='cursor-pointer' />
                         <button className='px-3 py-1'>{quantity}</button>
@@ -81,7 +80,7 @@ const ProductContent = ({ product }) => {
                     </ul>
                 </div>
                 <div className="description">
-                    <p className={`${bebas_neue.className} text-3xl`}>Product Description</p>
+                    <p className={`font-bebas_neue text-3xl`}>Product Description</p>
                     <div className="line bg-black h-[0.1rem] mb-3"></div>
                     <p>{product.description}</p>
                 </div>

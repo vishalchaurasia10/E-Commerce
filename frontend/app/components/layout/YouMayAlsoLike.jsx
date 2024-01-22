@@ -1,7 +1,6 @@
 'use client'
 import React, { useContext, useEffect } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { bebas_neue } from '@/app/layout'
 import Link from 'next/link'
 import ProductCard from './ProductCard'
 
@@ -16,7 +15,7 @@ const YouMayAlsoLike = () => {
     return (
         <>
             <div className='overflow-x-hidden lg:w-3/4 mx-auto px-2 py-5 lg:py-10'>
-                <h2 className={`${bebas_neue.className} text-6xl w-full text-center py-4 `}>You may also like</h2>
+                <h2 className={`font-bebas_neue text-6xl w-full text-center py-4 `}>You may also like</h2>
                 {loading ?
                     <div className="w-full my-20 flex items-center justify-center">
                         <span className="loading loading-spinner loading-lg"></span>

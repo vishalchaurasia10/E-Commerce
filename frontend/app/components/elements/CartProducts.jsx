@@ -1,4 +1,3 @@
-import { roboto } from '@/app/layout'
 import Image from 'next/image'
 import React, { useContext } from 'react'
 import { FaTrash } from 'react-icons/fa'
@@ -11,7 +10,7 @@ const CartProducts = ({ item }) => {
 
     return (
         <>
-            <div className={`cartProduct ${roboto.className} flex flex-col md:flex-row`}>
+            <div className={`cartProduct font-roboto flex flex-col md:flex-row`}>
                 <div className="image mb-4 lg:mb-0 md:mr-3 lg:mr-6 md:w-[35%]">
                     <Image className='rounded-lg w-full h-full' src={`${item?.product?.imageId[0]}`} alt={item.title} width={200} height={200} />
                 </div>

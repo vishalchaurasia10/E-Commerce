@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FaArrowRightLong } from 'react-icons/fa6'
@@ -117,7 +116,7 @@ const TrackOrder = () => {
                 </div>
                 :
                 <div className='flex flex-col items-center justify-center'>
-                    <h1 className={`${bebas_neue.className} text-4xl py-5`}>Track Your Shipment</h1>
+                    <h1 className={`font-bebas_neue text-4xl py-5`}>Track Your Shipment</h1>
                     <div className="inputId py-5 flex items-center">
                         <input
                             className='bg-[#4D7E86] text-white placeholder:text-white outline-none p-3'
@@ -141,7 +140,7 @@ const TrackOrder = () => {
                     </div>
                     {shipmentId && trackingDetails &&
                         <>
-                            <h2 className={`${roboto.className} font-extrabold text-xl md:text-2xl pt-5 pb-3`}>
+                            <h2 className={`font-roboto font-extrabold text-xl md:text-2xl pt-5 pb-3`}>
                                 {trackingDetails.track_status !== 0 ? trackingDetails?.shipment_track[0]?.current_status : 'Confirmed'}
                             </h2>
                             <h1 className='font-medium text-2xl md:text-3xl text-center'>

@@ -1,4 +1,3 @@
-import { bebas_neue } from '@/app/layout'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -7,7 +6,7 @@ import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from 'react-icons/fa'
 const Footer = () => {
     return (
         <div>
-            <h1 className={`${bebas_neue.className} py-10 text-5xl lg:text-6xl text-center`}>Follow Us @forevertrendin</h1>
+            <h1 className={`font-bebas_neue py-10 text-5xl lg:text-6xl text-center`}>Follow Us @forevertrendin</h1>
             <div className="images flex flex-wrap">
                 {[1, 2, 3, 4, 5].map((item, index) => (
                     <img key={index} className={`${item === 5 ? 'hidden md:block' : ''} w-1/2 md:w-1/5`} src={`/assets/footer/${item}.png`} alt="" />

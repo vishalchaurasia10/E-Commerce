@@ -5,7 +5,6 @@ import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { PiShoppingCart } from 'react-icons/pi'
 import { LuSearch } from 'react-icons/lu';
-import { roboto } from '@/app/layout'
 import authContext from '@/app/context/Auth/authContext'
 import { FaUser } from 'react-icons/fa'
 import CartContext from '@/app/context/Cart/cartContext'
@@ -65,7 +64,7 @@ const Navbar = () => {
                     {navbarData.map((item, index) => {
                         return (
                             <React.Fragment key={index}>
-                                <Link href={item.path}>
+                                <Link className='font-roboto' href={item.path}>
                                     {item.title}
                                 </Link>
                             </React.Fragment>
@@ -128,7 +127,7 @@ const Navbar = () => {
                         {navbarData.map((item, index) => {
                             return (
                                 <React.Fragment key={index}>
-                                    <Link className={`${roboto.className} text-xl font-bold`} href={item.path}>
+                                    <Link className={`font-roboto text-xl font-bold`} href={item.path}>
                                         {item.title}
                                     </Link>
                                 </React.Fragment>

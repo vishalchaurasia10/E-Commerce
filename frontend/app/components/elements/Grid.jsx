@@ -1,4 +1,3 @@
-import { bebas_neue } from '@/app/layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -20,7 +19,7 @@ const Grid = ({ initialUrl, data }) => {
                                         alt="themeImage"
                                     />
                                     <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                                    <h3 className={`${bebas_neue.className} text-center text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{item.title}</h3>
+                                    <h3 className={`font-bebas_neue text-center text-white bottom-5 lg:bottom-10 text-2xl md:text-4xl absolute`}>{item.title}</h3>
                                 </div>
                             </Link>
                         ))}
@@ -39,7 +38,7 @@ const Grid = ({ initialUrl, data }) => {
                                         alt="shopwomen"
                                     />
                                     <div className="absolute inset-0 top-1/2 bg-gradient-to-b from-transparent via-opacity-30 to-black" />
-                                    <h3 className={`${bebas_neue.className} text-center text-white bottom-10 text-6xl absolute`}>{item.title}</h3>
+                                    <h3 className={`font-bebas_neue text-center text-white bottom-10 text-6xl absolute`}>{item.title}</h3>
                                 </div>
                             </Link>
                         )

@@ -1,5 +1,4 @@
 'use client'
-import { roboto } from '@/app/layout'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { FaPen, FaTrash } from 'react-icons/fa'
@@ -112,7 +111,7 @@ const ListAllPromoCodes = () => {
             <div id='products' className="collection flex flex-col justify-center lg:flex-row py-5 lg:py-10">
                 <div className=' min-h-[35rem]'>
                     <div className=''>
-                        <h2 className={`text-lg ${roboto.className} text-white w-full pt-4 lg:pt-0 lg:py-4 text-center text-xl font-bold`}>{(localData && localData.length) || 0} PromoCodes</h2>
+                        <h2 className={`text-lg font-roboto text-white w-full pt-4 lg:pt-0 lg:py-4 text-center text-xl font-bold`}>{(localData && localData.length) || 0} PromoCodes</h2>
                         {loading ?
                             <div className="w-full my-20 flex items-center justify-center">
                                 <span className="loading loading-spinner loading-lg"></span>

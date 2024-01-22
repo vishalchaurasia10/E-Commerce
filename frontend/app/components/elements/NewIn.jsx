@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue } from '@/app/layout'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../layout/ProductCard'
@@ -30,7 +29,7 @@ const NewIn = ({ type }) => {
     return (
         <>
             <div className='overflow-x-hidden lg:w-3/4 mx-auto py-5 lg:py-10'>
-                <h2 className={`${bebas_neue.className} text-6xl w-full text-center py-4 `}>New In</h2>
+                <h2 className={`font-bebas_neue text-6xl w-full text-center py-4 `}>New In</h2>
                 {loading ?
                     <div className="w-full my-20 flex items-center justify-center">
                         <span className="loading loading-spinner loading-lg"></span>

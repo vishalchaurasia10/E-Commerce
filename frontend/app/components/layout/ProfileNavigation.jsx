@@ -1,5 +1,4 @@
 'use client'
-import { roboto } from '@/app/layout'
 import React, { useContext } from 'react'
 import { BsBox } from 'react-icons/bs'
 import { FaUser } from 'react-icons/fa'
@@ -18,7 +17,7 @@ const ProfileNavigation = ({ user }) => {
     }
 
     return (
-        <div className={` sticky top-24 z-30 bg-white h-[42rem] lg:h-[82vh] flex flex-col items-center py-10 px-5 border border-[#4D7E86] ${roboto.className}`}>
+        <div className={` sticky top-24 z-30 bg-white h-[42rem] lg:h-[82vh] flex flex-col items-center py-10 px-5 border border-[#4D7E86] font-roboto`}>
             <div className="userDetails w-full relative flex flex-wrap items-center justify-center space-x-4 mb-10">
                 <div title='Edit Profile image' className="edit absolute top-0 right-0 text-sm font-bold cursor-pointer">
                     <label className='cursor-pointer' htmlFor="profileImage">

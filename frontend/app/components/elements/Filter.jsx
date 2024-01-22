@@ -1,7 +1,6 @@
 'use client'
 import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { roboto } from '@/app/layout'
 
 const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategoriesFromType }) => {
     const { products } = useContext(ProductContext)
@@ -40,14 +39,14 @@ const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategor
                     <div className="collapse-content flex flex-col">
                         <div>
                             <div onClick={() => setLocalData(products)} className="types flex space-x-4 py-1">
-                                <h3 className={`${roboto.className} font-extrabold capitalize`}>All</h3>
+                                <h3 className={`font-roboto font-extrabold capitalize`}>All</h3>
                                 <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="category" id="category" />
                             </div>
                             {
                                 types.map((type, index) => {
                                     return (
                                         <div onClick={() => filterProductsByType(type)} key={index} className="types flex space-x-4 py-1">
-                                            <h3 className={`${roboto.className} font-extrabold capitalize`}>{type}</h3>
+                                            <h3 className={`font-roboto font-extrabold capitalize`}>{type}</h3>
                                             <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="category" id="category" />
                                         </div>
                                     )
@@ -59,7 +58,7 @@ const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategor
                                 types.map((type, index) => {
                                     return (
                                         <div key={index} className="types flex flex-col">
-                                            <h3 className={`${roboto.className} font-extrabold capitalize`}>{type}</h3>
+                                            <h3 className={`font-roboto font-extrabold capitalize`}>{type}</h3>
                                             {
                                                 getCategoriesFromType(type) && getCategoriesFromType(type).map((category) => (
                                                     <ul onClick={() => filterProducts(category._id)} className='list-disc pl-8 cursor-pointer' key={category._id}>

@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/layout'
 import React, { useContext, useEffect, useState } from 'react'
 import CartContext from '@/app/context/Cart/cartContext'
 import authContext from '@/app/context/Auth/authContext'
@@ -117,7 +116,7 @@ const Cart = () => {
             )}
             {cart.length > 0 ?
                 <div className="cartWrapper py-10">
-                    <h1 className={`${bebas_neue.className} text-center text-5xl pb-7 lg:pb-10`}>My Cart</h1>
+                    <h1 className={`font-bebas_neue text-center text-5xl pb-7 lg:pb-10`}>My Cart</h1>
                     <div className="mainCart flex flex-col lg:flex-row lg:space-x-8 px-3 lg:px-40">
                         <div className="cartItems space-y-4 lg:w-3/4">
                             {
@@ -129,7 +128,7 @@ const Cart = () => {
                             }
                         </div>
                         <div className='promoWrapper lg:w-[30%]'>
-                            <div className={`billing px-6 py-5 pb-8 border-2 border-[rgba(207,207,207,0.25)] sticky top-24 ${roboto.className}`}>
+                            <div className={`billing px-6 py-5 pb-8 border-2 border-[rgba(207,207,207,0.25)] sticky top-24 font-roboto`}>
                                 <div className='mb-5'>
                                     <h1 className='font-bold text-lg mb-3'>Apply Promo Code</h1>
                                     <div className="promo flex relative">
@@ -178,7 +177,7 @@ const Cart = () => {
                 </div>
                 :
                 <div className=' flex flex-col items-center justify-center space-y-8 py-10 w-full' >
-                    <p className={`message ${bebas_neue.className} text-5xl md:text-6xl`}>
+                    <p className={`message font-bebas_neue text-5xl md:text-6xl`}>
                         Your Cart Is Empty
                     </p>
                     <button className='bg-[#2C3E50] py-2 px-6 text-white'>

@@ -1,10 +1,9 @@
-import { bebas_neue } from '@/app/layout'
 import React from 'react'
 
 const Contact = () => {
     return (
         <div className='w-full lg:w-1/2 mx-auto my-10 flex flex-col items-center justify-center'>
-            <h1 className={`${bebas_neue.className} text-6xl pb-10`}>Get in touch</h1>
+            <h1 className={`font-bebas_neue text-6xl pb-10`}>Get in touch</h1>
             <div className="form w-full">
                 <form className='flex px-2 flex-col space-y-4'>
                     <div className="nameEmail w-full flex space-x-4">

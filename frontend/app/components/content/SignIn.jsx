@@ -1,5 +1,4 @@
 'use client'
-import { bebas_neue, roboto } from '@/app/layout'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
@@ -40,7 +39,7 @@ const SignIn = () => {
         <>
             <Toaster />
             <div className="login md:w-1/2 px-3 py-5 mx-auto flex flex-col space-y-4 items-center justify-center">
-                <h1 className={`${bebas_neue.className} text-6xl`} >Log IN</h1>
+                <h1 className={`font-bebas_neue text-6xl`} >Log IN</h1>
                 <input
                     className='w-full outline-none border border-[#4D7E86] px-4 py-2'
                     onChange={(e) => handleChange(e)}
@@ -62,7 +61,7 @@ const SignIn = () => {
                         Forgot Password?
                     </Link>
                 </p>
-                <button onClick={handleSignIn} className={`${roboto.className} w-full flex items-center justify-center py-2 bg-[#2C3E50] text-white`}>
+                <button onClick={handleSignIn} className={`font-roboto w-full flex items-center justify-center py-2 bg-[#2C3E50] text-white`}>
                     {loading && <span className="loading mr-2 loading-spinner loading-md"></span>}
                     <span>Sign In</span>
                 </button>
@@ -73,7 +72,7 @@ const SignIn = () => {
                     </Link>
                 </p>
                 <div className="divider">Or</div>
-                <button onClick={googleAuth} className={`${roboto.className} flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
+                <button onClick={googleAuth} className={`font-roboto flex items-center justify-center space-x-2 w-full py-2 border border-[#4D7E86]`}>
                     <FcGoogle className='text-2xl' />
                     <span>
                         Login with Google

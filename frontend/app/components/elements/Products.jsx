@@ -1,7 +1,6 @@
 'use client'
 import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
-import { roboto } from '@/app/layout'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -18,7 +17,7 @@ const Products = ({ localData }) => {
     return (
         <>
             <div className=''>
-                <h2 className={`text-lg ${roboto.className} w-full pt-4 lg:pt-0 lg:py-4 text-center lg:text-start `}>{(localData && localData.length) || 0} Products</h2>
+                <h2 className={`text-lg font-roboto w-full pt-4 lg:pt-0 lg:py-4 text-center lg:text-start `}>{(localData && localData.length) || 0} Products</h2>
                 {loading ?
                     <div className="w-full my-20 flex items-center justify-center">
                         <span className="loading loading-spinner loading-lg"></span>
@@ -35,8 +34,8 @@ const Products = ({ localData }) => {
                                     >
                                         <div className='flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
                                             <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
-                                            <h3 className={`${roboto.className} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
-                                            <p className={`${roboto.className} px-4 pb-3 text-black`}>₹{product.price}</p>
+                                            <h3 className={`font-roboto} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
+                                            <p className={`font-roboto px-4 pb-3 text-black`}>₹{product.price}</p>
                                         </div>
                                     </div>
                                 </Link>

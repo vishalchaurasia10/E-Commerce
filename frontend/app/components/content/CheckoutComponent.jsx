@@ -1,5 +1,4 @@
 'use client'
-import { roboto } from '@/app/layout'
 import React, { useContext, useState } from 'react'
 import authContext from '@/app/context/Auth/authContext'
 import CartContext from '@/app/context/Cart/cartContext'
@@ -168,7 +167,7 @@ const CheckoutComponent = () => {
             <Script src="https://checkout.razorpay.com/v1/checkout.js" />
             <div className="checkoutWrapper flex flex-col items-center space-y-5 justify-center w-full px-2 md:px-20 lg:px-60">
                 <div className="customerInfo w-full">
-                    <h1 className={`${roboto.className} uppercase font-bold text-3xl text-[#4D7E86] pt-10 pb-5`}>Customer Information</h1>
+                    <h1 className={`font-roboto uppercase font-bold text-3xl text-[#4D7E86] pt-10 pb-5`}>Customer Information</h1>
                     <div className='flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 w-full'>
                         <input
                             className='lg:w-1/2 bg-[#F5F5F5] p-3 border border-black rounded-md outline-none'
@@ -189,7 +188,7 @@ const CheckoutComponent = () => {
                     </div>
                 </div>
                 <div className="shippingInfo flex flex-col space-y-4 w-full">
-                    <h1 className={`${roboto.className} uppercase font-bold text-3xl text-[#4D7E86] pt-6 pb-2`}>Shipping Address</h1>
+                    <h1 className={`font-roboto uppercase font-bold text-3xl text-[#4D7E86] pt-6 pb-2`}>Shipping Address</h1>
                     <div className='flex space-x-4 w-full'>
                         <input
                             className='w-1/2 bg-[#F5F5F5] p-3 border border-black rounded-md outline-none'

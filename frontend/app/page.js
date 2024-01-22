@@ -1,6 +1,6 @@
 import FeaturedProduct from "./components/Featured/FeaturedProduct";
 import Category from "./components/categories/Category";
-import Banner from "./components/content/Banner";
+import CarouselBanner from "./components/content/CarouselBanner";
 import WhyChoose from "./components/content/WhyChoose";
 import Carousel from "./components/elements/Carousel";
 import Company from "./components/elements/Company";
@@ -47,10 +47,12 @@ export const metadata = {
 
 export default function Home() {
 
+  const images = ['bannerHome.svg', 'bannerMen.png', 'bannerWomen.png', 'bannerTheme.png']
+
   return (
     <>
       <HomeLoading />
-      <Banner url="bannerHome.svg" />
+      <CarouselBanner images={images} />
       <FeaturedProduct />
       <Category />
       <Team />

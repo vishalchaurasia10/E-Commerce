@@ -265,9 +265,9 @@ const UploadCategory = () => {
                 </div>
 
                 {/* show categories */}
-                <div className="showCategories lg:w-[82%] justify-center flex flex-col flex-wrap bg-white">
+                <div className="showCategories lg:w-[82%] flex flex-col flex-wrap bg-white">
                     {/* <h2 className='font-roboto block pl-20 text-lg'>Category count: <span className='font-bold'>{count}</span></h2> */}
-                    <div className="categories flex justify-center flex-wrap">
+                    <div className="categories flex px-10 flex-wrap">
                         {categories && categories.length > 0 && categories.map((category, index) => (
                             <React.Fragment key={category._id}>
                                 <div className="carousel-item m-2 w-60">

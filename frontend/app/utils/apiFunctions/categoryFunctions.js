@@ -63,12 +63,12 @@ export const getCategories = async (parameter, query) => {
     }
 }
 
-export const getCategoryByType = async (type) => {
+export const getCategoryByType = async (type, page) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/type/${type}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/type/${type}?page=${page}`);
         const data = await response.json();
         if (response.status === 200) {
-            return { status: 'success', message: 'Categories fetched successfully', categories: data };
+            return { status: 'success', message: 'Categories fetched successfully', categories: data.categories, count: data.count };
         } else {
             return { status: 'failure', message: data.message };
         }
@@ -77,12 +77,12 @@ export const getCategoryByType = async (type) => {
     }
 }
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (page) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories?page=${page}`);
         const data = await response.json();
         if (response.status === 200) {
-            return { status: 'success', message: 'Categories fetched successfully', categories: data };
+            return { status: 'success', message: 'Categories fetched successfully', categories: data.categories, count: data.count };
         } else {
             return { status: 'failure', message: data.message };
         }

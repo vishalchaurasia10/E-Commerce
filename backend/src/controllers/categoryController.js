@@ -26,8 +26,15 @@ exports.createCategory = async (req, res) => {
 // Get all categories
 exports.getAllCategories = async (req, res) => {
     try {
-        const categories = await Category.find();
-        res.status(200).json(categories);
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const limit = req.query.limit ? parseInt(req.query.limit) : 12;
+        const skipIndex = (page - 1) * limit;
+        const categories = await Category.find().skip(skipIndex).limit(limit);
+        const count = await Category.countDocuments();
+        if (!categories) {
+            return res.status(404).json({ error: 'Categories not found' });
+        }
+        res.status(200).json({ categories: categories, count: count });
     } catch (error) {
         res.status(500).json({ error: 'Error fetching categories' });
     }
@@ -37,12 +44,15 @@ exports.getAllCategories = async (req, res) => {
 exports.getCategoriesByType = async (req, res) => {
     try {
         const type = req.params.type;
-        const categories = await Category.find({ type: type });
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const limit = req.query.limit ? parseInt(req.query.limit) : 12;
+        const skipIndex = (page - 1) * limit;
+        const categories = await Category.find({ type: type }).skip(skipIndex).limit(limit);
         const count = await Category.countDocuments({ type: type });
         if (!categories) {
             return res.status(404).json({ error: 'Categories not found' });
         }
-        res.status(200).json(categories);
+        res.status(200).json({ categories: categories, count: count });
     } catch (error) {
         res.status(500).json({ error: 'Error fetching categories' });
     }

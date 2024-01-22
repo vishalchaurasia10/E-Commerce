@@ -21,6 +21,8 @@ const UploadCategory = () => {
     const [deleteId, setDeleteId] = useState('')
     const [updateId, setUpdateId] = useState('')
     const [categoryType, setCategoryType] = useState('all')
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
     const [updateFields, setUpdateFields] = useState({
         title: '',
         type: '',
@@ -38,21 +40,23 @@ const UploadCategory = () => {
 
     useEffect(() => {
         if (categoryType === 'all') {
-            getAllCategories().then(res => {
+            getAllCategories(page).then(res => {
                 setCategories(res.categories);
+                setTotalPages(Math.ceil(res.count / 12))
             }).catch(err => {
                 toast.error(err.message);
                 console.log(err);
             });
         } else {
-            getCategoryByType(categoryType).then(res => {
+            getCategoryByType(categoryType, page).then(res => {
                 setCategories(res.categories);
+                setTotalPages(Math.ceil(res.count / 12))
             }).catch(err => {
                 toast.error(err.message);
                 console.log(err);
             });
         }
-    }, [categoryType]);
+    }, [categoryType, page]);
 
     const handleChange = (e) => {
         setCategoryDetails({
@@ -197,6 +201,10 @@ const UploadCategory = () => {
         setCategoryType(e.target.value)
     }
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage)
+    }
+
     return (
         <>
             <Toaster />
@@ -240,11 +248,11 @@ const UploadCategory = () => {
                     </div>
                 </div>
             </div>
+
             <h1 className={`font-bebas_neue pt-20 pb-10 text-center bg-white text-6xl`}>All categories</h1>
 
-
-            <div className="mainContainer flex bg-white justify-center px-10">
-                <div className="filter lg:w-[18%] border-2 border-gray-400 my-2 p-4 h-fit sticky lg:top-20">
+            <div className="mainContainer flex flex-col lg:flex-row lg:space-x-4 bg-white justify-center px-10">
+                <div className="filter lg:w-[18%] border-2 border-gray-400 my-2 p-4 h-fit lg:sticky lg:top-20">
                     {
                         types.map((type, index) => {
                             return (
@@ -258,121 +266,139 @@ const UploadCategory = () => {
                 </div>
 
                 {/* show categories */}
-                <div className="showCategories lg:w-[82%] flex flex-wrap bg-white">
-                    {categories && categories.length > 0 && categories.map((category, index) => (
-                        <React.Fragment key={category._id}>
-                            <div className="carousel-item m-2 w-60">
-                                <div
-                                    id={`slide${index + 1}`}
-                                    className={`carousel-item w-60`}
-                                >
-                                    <div className='relative w-full flex flex-col border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
-                                        <Image height={500} width={500} src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} />
-                                        <h3 className={`text-black pl-4 pt-3`}><span className='font-bold'>Title: </span>{category.title}</h3>
-                                        <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
-                                        <FaPen
-                                            title='Update'
-                                            onClick={() => {
-                                                setUpdateId(category._id);
-                                                setUpdateFields({
-                                                    title: category.title,
-                                                    type: category.type,
-                                                    coverImageId: category.coverImageId
-                                                })
-                                                document.getElementById('updateModal').showModal()
-                                            }}
-                                            className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-10 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
-                                        <FaTrash
-                                            onClick={() => {
-                                                setDeleteId(category._id);
-                                                document.getElementById('deleteModal').showModal()
-                                            }}
-                                            title='Delete'
-                                            className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* deletemodal */}
-                            <dialog id="deleteModal" className="modal">
-                                <div className="modal-box">
-                                    <h3 className="font-bold text-lg flex items-center">
-                                        <FaCircleExclamation className="inline-block mr-2 text-2xl text-red-500" />
-                                        <span className='text-xl'>
-                                            Delete Category
-                                        </span>
-                                    </h3>
-                                    <p className="py-4">Are you sure, you want to delete this category?</p>
-                                    <div className="modal-action">
-                                        <form className='flex space-x-2' method="dialog">
-                                            <button onClick={handleDelete} className="btn btn-neutral">
-                                                {loading && <span className="loading loading-spinner loading-sm"></span>}
-                                                <span>Delete</span>
-                                            </button>
-                                            <button onClick={() => setDeleteId('')} className="btn">Close</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </dialog>
-
-                            {/* updatemodal */}
-                            <dialog id="updateModal" className="modal">
-                                <div className="modal-box">
-                                    <h3 className="font-bold text-lg flex items-center">
-                                        <FaCircleExclamation className="inline-block mr-2 text-2xl text-yellow-500" />
-                                        <span className='text-xl'>
-                                            Update Category
-                                        </span>
-                                    </h3>
-                                    <div className="inputs flex flex-col space-y-2 pt-4">
-                                        <input
-                                            required
-                                            type='text'
-                                            placeholder='Enter category name'
-                                            name='title'
-                                            id='title'
-                                            value={updateFields.title}
-                                            onChange={handleUpdateChange}
-                                            className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
-                                        />
-                                        <input
-                                            required
-                                            type='text'
-                                            placeholder='Enter category type'
-                                            name='type'
-                                            id='type'
-                                            value={updateFields.type}
-                                            onChange={handleUpdateChange}
-                                            className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
-                                        />
-                                        <input
-                                            onChange={(e) => handleFileChange(e)}
-                                            type='file'
-                                            name='replaceFile'
-                                            id='replaceFile'
-                                            className='hidden' />
-                                        <div className="image relative w-fit">
-                                            <RiLoopRightFill
-                                                title='Replace Image'
-                                                onClick={handleImageUpdate}
-                                                className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer"
-                                            />
-                                            <Image src={`${updateFields.coverImageId}`} alt={updateFields.title} width={200} height={200} />
+                <div className="showCategories lg:w-[82%] justify-center flex flex-col flex-wrap bg-white">
+                    {/* <h2 className='font-roboto block pl-20 text-lg'>Category count: <span className='font-bold'>{count}</span></h2> */}
+                    <div className="categories flex justify-center flex-wrap">
+                        {categories && categories.length > 0 && categories.map((category, index) => (
+                            <React.Fragment key={category._id}>
+                                <div className="carousel-item m-2 w-60">
+                                    <div
+                                        id={`slide${index + 1}`}
+                                        className={`carousel-item w-60`}
+                                    >
+                                        <div className='relative w-full flex flex-col border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
+                                            <Image height={500} width={500} src={`${category.coverImageId}`} className="w-full h-[18rem] object-cover" alt={`Slide ${index + 1}`} />
+                                            <h3 className={`text-black pl-4 pt-3`}><span className='font-bold'>Title: </span>{category.title}</h3>
+                                            <h3 className={`text-black pl-4 pb-3`}><span className='font-bold'>Type: </span> {category.type}</h3>
+                                            <FaPen
+                                                title='Update'
+                                                onClick={() => {
+                                                    setUpdateId(category._id);
+                                                    setUpdateFields({
+                                                        title: category.title,
+                                                        type: category.type,
+                                                        coverImageId: category.coverImageId
+                                                    })
+                                                    document.getElementById('updateModal').showModal()
+                                                }}
+                                                className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-10 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
+                                            <FaTrash
+                                                onClick={() => {
+                                                    setDeleteId(category._id);
+                                                    document.getElementById('deleteModal').showModal()
+                                                }}
+                                                title='Delete'
+                                                className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer" />
                                         </div>
                                     </div>
-                                    <div className="modal-action">
-                                        <form className='flex space-x-2' method="dialog">
-                                            <button onClick={handleUpdate} className="btn btn-neutral">
-                                                {loading && <span className="loading loading-spinner loading-sm"></span>}
-                                                <span>Update</span>
-                                            </button>
-                                            <button onClick={() => setUpdateId('')} className="btn">Close</button>
-                                        </form>
-                                    </div>
                                 </div>
-                            </dialog>
-                        </React.Fragment>
-                    ))}
+
+                                {/* deletemodal */}
+                                <dialog id="deleteModal" className="modal">
+                                    <div className="modal-box">
+                                        <h3 className="font-bold text-lg flex items-center">
+                                            <FaCircleExclamation className="inline-block mr-2 text-2xl text-red-500" />
+                                            <span className='text-xl'>
+                                                Delete Category
+                                            </span>
+                                        </h3>
+                                        <p className="py-4">Are you sure, you want to delete this category?</p>
+                                        <div className="modal-action">
+                                            <form className='flex space-x-2' method="dialog">
+                                                <button onClick={handleDelete} className="btn btn-neutral">
+                                                    {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                                    <span>Delete</span>
+                                                </button>
+                                                <button onClick={() => setDeleteId('')} className="btn">Close</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+
+                                {/* updatemodal */}
+                                <dialog id="updateModal" className="modal">
+                                    <div className="modal-box">
+                                        <h3 className="font-bold text-lg flex items-center">
+                                            <FaCircleExclamation className="inline-block mr-2 text-2xl text-yellow-500" />
+                                            <span className='text-xl'>
+                                                Update Category
+                                            </span>
+                                        </h3>
+                                        <div className="inputs flex flex-col space-y-2 pt-4">
+                                            <input
+                                                required
+                                                type='text'
+                                                placeholder='Enter category name'
+                                                name='title'
+                                                id='title'
+                                                value={updateFields.title}
+                                                onChange={handleUpdateChange}
+                                                className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
+                                            />
+                                            <input
+                                                required
+                                                type='text'
+                                                placeholder='Enter category type'
+                                                name='type'
+                                                id='type'
+                                                value={updateFields.type}
+                                                onChange={handleUpdateChange}
+                                                className='outline-none placeholder:text-white bg-transparent border p-2 border-gray-500 rounded-lg'
+                                            />
+                                            <input
+                                                onChange={(e) => handleFileChange(e)}
+                                                type='file'
+                                                name='replaceFile'
+                                                id='replaceFile'
+                                                className='hidden' />
+                                            <div className="image relative w-fit">
+                                                <RiLoopRightFill
+                                                    title='Replace Image'
+                                                    onClick={handleImageUpdate}
+                                                    className="text-3xl text-gray-600 bg-white p-[0.38rem] rounded-md absolute right-1 top-2 hover:scale-110 transition-all duration-300 cursor-pointer"
+                                                />
+                                                <Image src={`${updateFields.coverImageId}`} alt={updateFields.title} width={200} height={200} />
+                                            </div>
+                                        </div>
+                                        <div className="modal-action">
+                                            <form className='flex space-x-2' method="dialog">
+                                                <button onClick={handleUpdate} className="btn btn-neutral">
+                                                    {loading && <span className="loading loading-spinner loading-sm"></span>}
+                                                    <span>Update</span>
+                                                </button>
+                                                <button onClick={() => setUpdateId('')} className="btn">Close</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div className="join w-full flex justify-center my-10">
+                        <button
+                            onClick={() => handlePageChange(page - 1)}
+                            disabled={page === 1}
+                            className="join-item btn">
+                            «
+                        </button>
+                        <button className="join-item btn">Page {page}</button>
+                        <button
+                            onClick={() => handlePageChange(page + 1)}
+                            disabled={page >= totalPages}
+                            className="join-item btn">
+                            »
+                        </button>
+                    </div>
                 </div>
             </div>
         </>

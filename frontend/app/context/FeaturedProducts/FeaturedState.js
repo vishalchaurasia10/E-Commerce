@@ -5,18 +5,16 @@ import { useState } from "react";
 
 const FeaturedState = (props) => {
 
-    const [featuredProducts, setFeaturedProducts] = useState([]);
+    // const [featuredProducts, setFeaturedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const getFeaturedProducts = async () => {
+    const getFeaturedProducts = async (page) => {
         try {
             setLoading(true);
-            const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/featured`);
+            const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/featured?page=${page}`);
             const data = await result.json();
-            if (result.status === 200) {
-                setFeaturedProducts(data);
-            }
             setLoading(false);
+            return data;
         } catch (error) {
             toast.error(error.message)
             setLoading(false);
@@ -28,7 +26,7 @@ const FeaturedState = (props) => {
             <Toaster />
             <FeaturedContext.Provider
                 value={{
-                    featuredProducts, getFeaturedProducts, loading
+                    getFeaturedProducts, loading
                 }}
             >
                 {props.children}

@@ -228,11 +228,22 @@ exports.uploadProductImages = async (req, res) => {
 
 exports.getFeaturedProducts = async (req, res) => {
     try {
-        const featuredProducts = await Products.find({ featured: true });
+        const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+        const perPage = 12; // Set the number of products per page
+        const skip = (page - 1) * perPage;
+        const limit = perPage;
+        const featuredProducts = await Products.find({ featured: true }).skip(skip).limit(limit);
+        const totalCount = await Products.countDocuments({ featured: true });
         if (!featuredProducts) {
             return res.status(404).json({ message: 'Featured products not found' });
         }
-        return res.status(200).json(featuredProducts);
+        return res.status(200).json({
+            featuredProducts,
+            totalProducts: totalCount,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / perPage),
+        
+        });
     } catch (error) {
         return res.status(500).json({ message: 'Error fetching featured products' });
     }

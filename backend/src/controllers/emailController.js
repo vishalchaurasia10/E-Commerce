@@ -57,9 +57,11 @@ const sendEmail = async (req, res) => {
 
         // Send the email
         const info = await transporter.sendMail(mailOptions);
-
-        console.log('Email sent:', info.response);
-        res.status(200).json({ message: 'Email sent successfully' });
+        if (!info.accepted) {
+            res.status(200).json({ message: 'Email sent successfully' });
+        } else if (info.rejected) {
+            res.status(400).json({ message: 'Email rejected' });
+        }
     } catch (error) {
         console.error('Error sending email:', error);
         res.status(500).json({ message: 'Error sending email' });

@@ -43,12 +43,12 @@ const Contact = () => {
 
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8000/api/sendemail', options);
-
-            if (response.status === 200) {
-                toast.success('Email sent successfully');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sendemail`, options);
+            const resp = await response.json();
+            if (response.status == 200) {
+                toast.success(resp.message);
             } else {
-                toast.error('Something went wrong');
+                toast.error(resp.message);
             }
         } catch (err) {
             console.error(err);

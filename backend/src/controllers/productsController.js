@@ -242,7 +242,7 @@ exports.getProductsByType = async (req, res) => {
     try {
         const type = req.params.type;
         const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
-        const perPage = 1; // Set the number of products per page
+        const perPage = 12; // Set the number of products per page
         const skip = (page - 1) * perPage;
 
         // Find all categories with the specified type

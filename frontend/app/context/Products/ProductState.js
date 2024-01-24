@@ -53,10 +53,10 @@ const ProductState = (props) => {
         }
     }
 
-    const searchProductsByType = async (type) => {
+    const searchProductsByType = async (type,page) => {
         try {
             setLoading(true)
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/type/${type}`
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/type/${type}?page=${page}`
             const response = await fetch(url)
             const data = await response.json()
             return data
@@ -68,10 +68,10 @@ const ProductState = (props) => {
         }
     }
 
-    const searchProductsByCategory = async (categoryId) => {
+    const searchProductsByCategory = async (categoryId,page) => {
         try {
             setLoading(true)
-            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/category/${categoryId}`
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/category/${categoryId}?page=${page}`
             const response = await fetch(url)
             const data = await response.json()
             return data

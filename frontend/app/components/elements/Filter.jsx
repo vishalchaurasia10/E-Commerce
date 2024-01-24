@@ -2,7 +2,7 @@
 import React, { useContext } from 'react'
 import ProductContext from '@/app/context/Products/productContext'
 
-const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategoriesFromType }) => {
+const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategoriesFromType, getAllProducts }) => {
     const { products } = useContext(ProductContext)
     const types = ['men', 'women', 'themes']
 
@@ -38,7 +38,7 @@ const Filter = ({ setLocalData, filterProducts, filterProductsByType, getCategor
                     </div>
                     <div className="collapse-content flex flex-col">
                         <div>
-                            <div onClick={() => setLocalData(products)} className="types flex space-x-4 py-1">
+                            <div onClick={getAllProducts} className="types flex space-x-4 py-1">
                                 <h3 className={`font-roboto font-extrabold capitalize`}>All</h3>
                                 <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="category" id="category" />
                             </div>

@@ -242,7 +242,7 @@ exports.getFeaturedProducts = async (req, res) => {
             totalProducts: totalCount,
             currentPage: page,
             totalPages: Math.ceil(totalCount / perPage),
-        
+
         });
     } catch (error) {
         return res.status(500).json({ message: 'Error fetching featured products' });
@@ -293,11 +293,20 @@ exports.getProductsByType = async (req, res) => {
 exports.getProductsByCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
-        const products = await Products.find({ category: categoryId });
+        const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+        const perPage = 12; // Set the number of products per page
+        const skip = (page - 1) * perPage;
+        const products = await Products.find({ category: categoryId }).skip(skip).limit(perPage);
+        const totalCount = await Products.countDocuments({ category: categoryId });
         if (!products) {
             return res.status(404).json({ message: 'Products not found' });
         }
-        res.status(200).json(products);
+        return res.status(200).json({
+            products,
+            totalProducts: totalCount,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / perPage),
+        });
     } catch (error) {
         console.error('Error fetching products by category:', error);
         res.status(500).json({ message: 'Error fetching products' });

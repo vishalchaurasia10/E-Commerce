@@ -42,17 +42,18 @@ export const categoryFields = [
 export const whyChooseUsData = [
     {
         path: '/assets/whyChoose/1.svg',
-        description: "We design evergreen niche and trending niches and bring them to life by getting printed on our t-shirts, hoodies, and other products. We work for both Men and Women's clothing design.",
+        description: "Creating a unique and eye-catching design is essential when it comes to printed clothing. At our company, we in both evergreen and trending niches, allowing for a wide range of options when it comes to designing t-shirts, hoodies and other products. When it comes to evergreen niches, classic designs that never go out of style are always a great option. On the other hand, when it comes to trending niches, we have the ability to be more current and specific with our designs. These designs may be inspired by pop culture, current events, or other trends that are currently popular.",
         code: null
     },
     {
         path: '/assets/whyChoose/2.svg',
-        description: `We provide Free shipping to our customers on all orders. We provide Pan India delivery. So, feel free to shop and call yourself "Yes, I'm a shopaholic".`,
+        description: `At our store, we believe that shopping should be a hassle-free experience for our customers. That's why we provide <strong>free shipping on all orders,</strong> no matter what the size or value. Whether you're shopping for yourself or for someone else, you can rest assured that you won't have to worry about any extra shipping fees. What's more, our delivery services cover the entire country, so you can shop with confidence no matter where you are in India. So go ahead and indulge in your love for shopping - we won't judge! With our <strong>free shipping and Pan India delivery</strong>, you can shop to your heart's content and proudly proclaim yourself as a shopaholic. Happy shopping!
+        `,
         code: null
     },
     {
         path: '/assets/whyChoose/3.svg',
-        description: `We provide 20% off on all our orders to our customers on orders above Rs.1299.`,
+        description: `Hello there! You may have heard of the exciting offer that we are currently running for our customers. We are offering a <strong>flat discount of 20% on all orders above the value of Rs.1299</strong>. To avail of this offer, all you need to do is use the code <strong>FOREVER20</strong> at the checkout. Browse through our collection and start shopping today!`,
         code: 'Use Code: FOREVER20'
     }
 ]

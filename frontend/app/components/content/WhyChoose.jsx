@@ -16,8 +16,8 @@ const WhyChoose = () => {
                             <div className=' flex flex-col items-center justify-center'>
                                 <Image width={500} height={500} src={item.path} className="w-full h-full object-cover" alt={`Slide ${index + 1}`} />
                                 <div className="detail py-5 space-y-1">
-                                    <p className={`font-roboto px-5 text-black text-base`}>{item.description}</p>
-                                    <p className={`font-roboto px-5 font-bold text-black text-base`}>{item.code}</p>
+                                    <p className={`font-roboto px-5 text-black text-base text-justify`} dangerouslySetInnerHTML={{ __html: item.description }} />
+                                    {item.code && <p className={`font-roboto px-5 font-bold text-black text-base`} dangerouslySetInnerHTML={{ __html: item.code }} />}
                                 </div>
                             </div>
                         </div>

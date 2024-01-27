@@ -4,6 +4,28 @@ import React from 'react'
 import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from 'react-icons/fa'
 
 const Footer = () => {
+    const footerLinks = [
+        {
+            title: 'Home',
+            link: '/'
+        },
+        {
+            title: 'Collection',
+            link: '/collection'
+        },
+        {
+            title: 'Terms And Conditions',
+            link: '/termsandcondition'
+        },
+        {
+            title: 'Shipping and Tracking',
+            link: '/trackorder'
+        },
+        {
+            title: 'About Us',
+            link: '/aboutus'
+        },
+    ]
     return (
         <div>
             <h1 className={`font-bebas_neue py-10 text-5xl lg:text-6xl text-center`}>Follow Us @forevertrendin</h1>
@@ -18,42 +40,34 @@ const Footer = () => {
                 </Link>
                 <div className="linkWrapper w-[60%] lg:w-auto order-1 lg:order-2 flex flex-col space-y-4 lg:space-y-0 lg:space-x-12 lg:flex-row lg:items-center justify-center">
                     <ul className='flex flex-col lg:flex-row lg:list-disc lg:space-x-8 space-y-2 lg:space-y-0  font-bold lg:font-medium'>
-                        <li>
-                            <Link href='/'>
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href='/collection'>
-                                Collection
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href='/termsandcondition'>
-                                Terms And Conditions
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href='/trackorder'>
-                                Shipping and Tracking
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href='/aboutus'>
-                                About Us
-                            </Link>
-                        </li>
+                        {
+                            footerLinks.map((item, index) => (
+                                <li key={index}>
+                                    <Link href={item.link}>
+                                        {item.title}
+                                    </Link>
+                                </li>
+                            ))
+                        }
                     </ul>
                     <div className="icons flex lg:items-center lg:justify-center space-x-2 text-[#528289]">
-                        <FaFacebook className='text-lg' />
-                        <FaInstagram className='text-lg' />
-                        <FaPinterest className='text-lg' />
-                        <FaTwitter className='text-lg' />
+                        <Link target='_blank' href=' https://www.facebook.com/profile.php?viewas=100000686899395&id=100087734374405'>
+                            <FaFacebook className='text-lg' />
+                        </Link>
+                        <Link target='_blank' href='https://www.instagram.com/forevertrendin/'>
+                            <FaInstagram className='text-lg' />
+                        </Link>
+                        <Link target='_blank' href='https://www.pinterest.com/forevertrendin/'>
+                            <FaPinterest className='text-lg' />
+                        </Link>
+                        <Link target='_blank' href='https://twitter.com/forevertrendin'>
+                            <FaTwitter className='text-lg' />
+                        </Link>
                     </div>
                 </div>
             </div>
-            <div className="copyright bg-[#528289] w-full py-1 text-sm text-white text-center">
-                COPYRIGHT © 2023 FOREVER TRENDIN - ALL RIGHTS RESERVED.
+            <div className="copyright font-roboto tracking-wider bg-[#528289] w-full py-1 text-sm text-white text-center">
+                COPYRIGHT © {new Date().getFullYear()} FOREVER TRENDIN - ALL RIGHTS RESERVED.
             </div>
         </div>
     )

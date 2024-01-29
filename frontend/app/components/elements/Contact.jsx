@@ -45,6 +45,7 @@ const Contact = () => {
             setLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sendemail`, options);
             const resp = await response.json();
+            console.log(resp);
             if (response.status == 200) {
                 toast.success(resp.message);
             } else {

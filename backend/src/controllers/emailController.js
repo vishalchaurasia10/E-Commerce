@@ -48,10 +48,8 @@ const sendEmail = async (req, res) => {
 
         const info = await transport.sendMail(mailOptions);
         if (info.accepted.length > 0) {
-            console.log('Email sent successfully');
             return res.status(200).send({ message: 'Email sent successfully' });
         } else {
-            console.log('Email not sent');
             return res.status(500).send({ message: 'Email not sent' });
         }
     } catch (error) {
@@ -59,4 +57,97 @@ const sendEmail = async (req, res) => {
     }
 };
 
-module.exports = { sendEmail };
+const sendOrderConfirmationEmail = async (orderDetails) => {
+    try {
+        const { customerName, customerEmail, customerPhone, orderNumber, totalPrice, adminOrderId } = orderDetails;
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        const transport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: process.env.EMAIL_USER,
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken,
+            },
+        });
+
+        // const productIds = cartData.map(item => item.productId);
+        // // Fetch product details from the database for the product IDs in the cart
+        // const products = await Products.find({ _id: { $in: productIds } });
+        // const productDetails = products.map(product => `Product: ${product.name}, Quantity: ${product.quantity}, Price: ${product.price}`).join('\n');
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: customerEmail,
+            subject: `Order Confirmation - Order #${orderNumber}`,
+            text: `Hi ${customerName}!\n\nThank you for your order!\n\nOrder Number: ${orderNumber}\n\nTotal Price: ${totalPrice}\n\nWe will process your order soon.`,
+        };
+
+        const mailOptions2 = {
+            from: process.env.EMAIL_USER,
+            to: process.env.ADMIN_EMAIL,
+            subject: `New order from ${customerName}`,
+            text: `Name: ${customerName}\nEmail: ${customerEmail}\nPhone: ${customerPhone}\nOrderId for Admin: ${adminOrderId}\nTotal Price: ${totalPrice}`,
+        };
+
+        transport.sendMail(mailOptions2);
+
+        const info = await transport.sendMail(mailOptions);
+        if (info.accepted.length > 0) {
+            console.log('Order confirmation email sent successfully');
+        } else {
+            console.log('Order confirmation email not sent');
+        }
+    } catch (error) {
+        console.error('Error sending order confirmation email:', error);
+    }
+};
+
+const sendOrderCancellationEmail = async (orderDetails) => {
+    try {
+        const { customerName, customerEmail, customerPhone, orderNumber, adminOrderId } = orderDetails;
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        const transport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: process.env.EMAIL_USER,
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken,
+            },
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: customerEmail,
+            subject: `Order Cancellation - Order #${orderNumber}`,
+            text: `Hi ${customerName}!\n\nWe regret to inform you that your order with Order Number ${orderNumber} has been canceled.\n\nIf you have any questions or concerns, please contact our customer support.`,
+        };
+
+        const mailOptions2 = {
+            from: process.env.EMAIL_USER,
+            to: process.env.ADMIN_EMAIL,
+            subject: `Order Cancellation - Order #${orderNumber}`,
+            text: `Order from ${customerName} with Order Number ${orderNumber} has been canceled.\n\nCustomer Email: ${customerEmail}\n\nCustomer Phone: ${customerPhone}\nAdmin Order ID: ${adminOrderId}`,
+        };
+
+        transport.sendMail(mailOptions2);
+
+        const info = await transport.sendMail(mailOptions);
+        if (info.accepted.length > 0) {
+            console.log('Order cancellation email sent successfully');
+        } else {
+            console.log('Order cancellation email not sent');
+        }
+    } catch (error) {
+        console.error('Error sending order cancellation email:', error);
+    }
+};
+
+module.exports = { sendEmail, sendOrderConfirmationEmail, sendOrderCancellationEmail };

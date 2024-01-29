@@ -5,6 +5,7 @@ const AppliedPromoCode = require('../models/AppliedPromoCode'); // Import your A
 const crypto = require('crypto');
 const axios = require('axios');
 const ShippingPrice = require('../models/ShippingPrice');
+const { sendOrderConfirmationEmail } = require('./emailController')
 
 exports.checkout = async (req, res) => {
     try {
@@ -49,6 +50,7 @@ exports.checkout = async (req, res) => {
         res.status(500).send(error);
     }
 }
+
 exports.codCheckout = async (req, res) => {
     try {
         const cartData = req.body.cart; // Assuming it's an array of objects with productId and quantity
@@ -139,11 +141,23 @@ exports.codCheckout = async (req, res) => {
 
         const shiprocketDetails = await createShiprocketOrder(accessToken, shiprocketOrder);
 
-        await Order.findByIdAndUpdate(
+        const updatedOrder = await Order.findByIdAndUpdate(
             createdOrder._id,
             { $set: { shiprocketOrderId: shiprocketDetails.order_id, shiprocketShipmentId: shiprocketDetails.shipment_id } },
             { new: true }
         );
+
+        const orderDetails = {
+            customerName: updatedOrder.firstName + " " + updatedOrder.lastName,
+            customerEmail: updatedOrder.email,
+            customerPhone: updatedOrder.phoneNumber,
+            orderNumber: updatedOrder.shiprocketOrderId,
+            totalPrice: updatedOrder.amountToBePaid / 100,
+            adminOrderId: createdOrder._id
+            // products: req.body.cart,
+        };
+
+        await sendOrderConfirmationEmail(orderDetails);
 
         res.status(200).json({ status: "Success", message: "Order placed successfully" });
     } catch (error) {
@@ -215,11 +229,23 @@ exports.verifyTransaction = async (req, res) => {
 
             const shiprocketDetails = await createShiprocketOrder(accessToken, shiprocketOrder);
 
-            await Order.findByIdAndUpdate(
+            const updatedOrder = await Order.findByIdAndUpdate(
                 createdOrder._id,
                 { $set: { shiprocketOrderId: shiprocketDetails.order_id, shiprocketShipmentId: shiprocketDetails.shipment_id } },
                 { new: true }
             );
+
+            const orderDetails = {
+                customerName: updatedOrder.firstName + " " + updatedOrder.lastName,
+                customerEmail: updatedOrder.email,
+                customerPhone: updatedOrder.phoneNumber,
+                orderNumber: updatedOrder.shiprocketOrderId,
+                totalPrice: updatedOrder.paidAmount / 100,
+                adminOrderId: createdOrder._id
+                // products: req.body.cart,
+            };
+
+            await sendOrderConfirmationEmail(orderDetails);
 
             res.status(200).json({ status: "Success", message: "Order placed successfully" });
         } else {

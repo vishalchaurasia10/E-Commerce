@@ -3,7 +3,7 @@ const Products = require('../models/Products');
 const User = require('../models/User');
 const razorpayInstance = require('../middlewares/razorpay');
 const axios = require('axios');
-
+const { sendOrderCancellationEmail } = require('./emailController')
 // Fetch all the orders in reverse order of creation for a particular user
 exports.getOrders = async (req, res) => {
     try {
@@ -49,8 +49,21 @@ exports.cancelOrder = async (req, res) => {
         await cancelShiprocketOrder(accessToken, order.shiprocketOrderId);
 
         await order.save();
+
+        const orderDetails = {
+            customerName: order.firstName + " " + order.lastName,
+            customerEmail: order.email,
+            customerPhone: order.phoneNumber,
+            orderNumber: order.shiprocketOrderId,
+            adminOrderId: order._id
+        };
+
+        // send order cancellation email
+        await sendOrderCancellationEmail(orderDetails);
+
         res.status(200).json({ status: 'Success', message: 'Order cancelled successfully' });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Error cancelling order' });
     }
 }

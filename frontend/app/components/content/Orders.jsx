@@ -89,7 +89,7 @@ const Orders = ({ user, setShowSidebar, showSidebar }) => {
                                                                 </span>
                                                             </span>
                                                         </p>
-                                                        <p><span className='font-bold'>OrderId:</span> {order.orderId}</p>
+                                                        <p><span className='font-bold'>OrderId:</span> {order.shiprocketOrderId}</p>
                                                         <p><span className='font-bold'>Shipping Address:</span> {order.address}</p>
                                                         <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                                                         <Link href={`/myorders/${order._id}`}>

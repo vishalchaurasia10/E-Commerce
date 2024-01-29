@@ -155,6 +155,9 @@ const SearchForProduct = () => {
                                         <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
                                         <p><span className='font-bold'>Shipping Address:</span> {order.address}, {order.city}, {order.state}, {order.pinCode}</p>
                                         <p><span className='font-bold'>Amount Paid:</span> ₹{order.paidAmount / 100}</p>
+                                        <p><span className='font-bold'>Amount To Be Paid:</span> ₹{order.amountToBePaid / 100}</p>
+                                        <p><span className='font-bold'>Discount of:</span> ₹{order.discount}</p>
+                                        <p className='font-bold'><span className='font-bold'>Payment Mode:</span> {order.paymentMode}</p>
                                     </div>
                                     {
                                         products.length > 0 && products.map((product, index) => {

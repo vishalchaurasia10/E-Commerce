@@ -11,6 +11,7 @@ const CheckoutComponent = () => {
     const { user } = useContext(authContext)
     const { cart, clearCart, discount, setDiscount } = useContext(CartContext)
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const [localState, setLocalState] = useState({
         firstName: '',
         lastName: '',
@@ -161,6 +162,67 @@ const CheckoutComponent = () => {
         }
     }
 
+    const codCheckoutHandler = async () => {
+        if (!user) {
+            toast.error('Please login first')
+            return
+        }
+        if (cart.length === 0) {
+            toast.error('Please add items to cart')
+            return
+        }
+        if (!localState.firstName || !localState.lastName || !localState.phoneNumber || !localState.email || !localState.address || !localState.city || !localState.state || !localState.pinCode) {
+            toast.error('Please fill all the fields')
+            return
+        }
+        if (!localState.pinCode.match(/^\d{6}$/)) {
+            toast.error('Please enter a valid pin code')
+            return
+        }
+        try {
+            const cartData = cart.map(item => ({
+                productId: item.product._id,
+                color: item.color,
+                size: item.size,
+                quantity: item.quantity,
+            }));
+            setLoading(true)
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/cod`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user._id,
+                    cart: cartData,
+                    firstName: localState.firstName,
+                    lastName: localState.lastName,
+                    email: localState.email,
+                    address: `${localState.address}, ${localState.apartment}`,
+                    city: localState.city,
+                    state: localState.state,
+                    pinCode: localState.pinCode,
+                    phoneNumber: localState.phoneNumber,
+                    discount: discount,
+                }),
+            });
+            const data = await res.json();
+            if (data.status === 'Success') {
+                toast.success('Order Placed successfully')
+                clearCart()
+                router.push('/myorders')
+            } else {
+                toast.error('Something went wrong')
+            }
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error.message)
+        } finally {
+            setLoading(false)
+            setDiscount({ amount: 0, code: '' })
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -254,6 +316,12 @@ const CheckoutComponent = () => {
                 </div>
                 <div className="buttons w-full flex space-x-2">
                     <button onClick={checkoutHandler} className={`px-10 py-2 bg-[#2C3E50] text-white flex items-center`}>Pay Now</button>
+                    <button onClick={codCheckoutHandler} className={`px-5 py-2 bg-[#2C3E50] text-white flex space-x-2 items-center`}>
+                        {loading && <span className="loading loading-spinner loading-sm"></span>}
+                        <span>
+                            COD
+                        </span>
+                    </button>
                     <button onClick={autofill} className={`px-10 py-2 bg-[#2C3E50] text-white flex items-center`}>Autofill</button>
                 </div>
             </div>

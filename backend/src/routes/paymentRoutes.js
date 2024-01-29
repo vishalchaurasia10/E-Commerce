@@ -6,4 +6,6 @@ router.post('/checkout', paymentController.checkout);
 
 router.post('/callback', paymentController.verifyTransaction);
 
+router.post('/cod', paymentController.codCheckout);
+
 module.exports = router;

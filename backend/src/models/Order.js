@@ -40,15 +40,12 @@ const orderSchema = new mongoose.Schema({
     }],
     paymentId: {
         type: String,
-        required: true
     },
     orderId: {
         type: String,
-        required: true
     },
     signature: {
         type: String,
-        required: true
     },
     status: {
         type: String,
@@ -87,7 +84,16 @@ const orderSchema = new mongoose.Schema({
     discount: {
         type: Number,
         default: 0
-    }
+    },
+    paymentMode: {
+        type: String,
+        enum: ['COD', 'PREPAID'],
+        required: true
+    },
+    amountToBePaid: {
+        type: Number,
+        required: true
+    },
 }, {
     timestamps: true
 });

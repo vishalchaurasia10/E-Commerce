@@ -49,6 +49,108 @@ exports.checkout = async (req, res) => {
         res.status(500).send(error);
     }
 }
+exports.codCheckout = async (req, res) => {
+    try {
+        const cartData = req.body.cart; // Assuming it's an array of objects with productId and quantity
+        const discount = req.body.discount; // Assuming it's an object with amount and code
+        const productIds = cartData.map(item => item.productId);
+
+        // Fetch product details from the database for the product IDs in the cart
+        const products = await Products.find({ _id: { $in: productIds } });
+
+        // Create a map to store quantities based on _id
+        const quantityMap = new Map();
+        cartData.forEach(item => {
+            const productIdString = item.productId;
+            if (quantityMap.has(productIdString)) {
+                quantityMap.set(productIdString, quantityMap.get(productIdString) + item.quantity);
+            } else {
+                quantityMap.set(productIdString, item.quantity);
+            }
+        });
+
+        // Calculate the total amount based on the product prices and aggregated quantities
+        const totalAmount = products.reduce((total, product) => {
+            const productIdString = product._id.toString();
+            const cartQuantity = quantityMap.get(productIdString) || 0;
+            const itemPrice = product.price; // You may need to adjust this based on your database schema
+            total += itemPrice * cartQuantity;
+            return total;
+        }, 0);
+
+        const shippingPrice = await getShippingPrice();
+
+        const actualAmount = (totalAmount - discount.amount + shippingPrice) * 100;
+
+        // const options = {
+        //     amount: (totalAmount - discount.amount + shippingPrice) * 100, // amount in smallest currency unit (assuming INR)
+        //     currency: "INR",
+        // };
+
+        if (req.body.discount.code.length > 0) {
+
+            const appliedPromoCode = await AppliedPromoCode.findOne({ userId: req.body.userId });
+
+            if (appliedPromoCode) {
+                const promoCode = appliedPromoCode.appliedCodes.find(code => code.code === req.body.discount.code);
+                if (promoCode) {
+                    promoCode.usageCount += 1;
+                } else {
+                    appliedPromoCode.appliedCodes.push({ code: req.body.discount.code, usageCount: 1 });
+                }
+                await appliedPromoCode.save();
+            } else {
+                const appliedPromoCode = new AppliedPromoCode({
+                    userId: req.body.userId,
+                    appliedCodes: [{ code: req.body.discount.code, usageCount: 1 }],
+                });
+                await appliedPromoCode.save();
+            }
+        }
+
+        const orderItems = req.body.cart.map(item => ({
+            quantity: item.quantity,
+            size: item.size,
+            color: item.color,
+            _id: item.productId // Use the productId as the _id
+        }));
+
+        const order = new Order({
+            user: req.body.userId,
+            paidAmount: 0,
+            amountToBePaid: actualAmount,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            products: orderItems,
+            address: req.body.address,
+            state: req.body.state,
+            city: req.body.city,
+            pinCode: req.body.pinCode,
+            phoneNumber: req.body.phoneNumber,
+            discount: req.body.discount.amount,
+            paymentMode: "COD",
+        });
+
+        const createdOrder = await order.save();
+
+        const accessToken = await getShiprocketAccessToken();
+        const shiprocketOrder = await mapOrderToShiprocketFormat(createdOrder, "COD");
+
+        const shiprocketDetails = await createShiprocketOrder(accessToken, shiprocketOrder);
+
+        await Order.findByIdAndUpdate(
+            createdOrder._id,
+            { $set: { shiprocketOrderId: shiprocketDetails.order_id, shiprocketShipmentId: shiprocketDetails.shipment_id } },
+            { new: true }
+        );
+
+        res.status(200).json({ status: "Success", message: "Order placed successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
 
 exports.verifyTransaction = async (req, res) => {
     try {
@@ -89,6 +191,7 @@ exports.verifyTransaction = async (req, res) => {
             const order = new Order({
                 user: req.body.userId,
                 paidAmount: req.body.paidAmount,
+                amountToBePaid: 0,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,
@@ -102,12 +205,13 @@ exports.verifyTransaction = async (req, res) => {
                 pinCode: req.body.pinCode,
                 phoneNumber: req.body.phoneNumber,
                 discount: req.body.discount.amount,
+                paymentMode: "PREPAID",
             });
 
             const createdOrder = await order.save();
 
             const accessToken = await getShiprocketAccessToken();
-            const shiprocketOrder = await mapOrderToShiprocketFormat(createdOrder);
+            const shiprocketOrder = await mapOrderToShiprocketFormat(createdOrder, "PREPAID");
 
             const shiprocketDetails = await createShiprocketOrder(accessToken, shiprocketOrder);
 
@@ -153,7 +257,7 @@ async function getShiprocketAccessToken() {
     }
 }
 
-async function mapOrderToShiprocketFormat(createdOrder) {
+async function mapOrderToShiprocketFormat(createdOrder, paymentMode) {
     const productIds = createdOrder.products.map(item => item._id);
     // Fetch product details from the database for the product IDs in the cart
     const products = await Products.find({ _id: { $in: productIds } });
@@ -228,12 +332,12 @@ async function mapOrderToShiprocketFormat(createdOrder) {
             color: item.color,
             size: item.size,
         })),
-        payment_method: "Prepaid",
+        payment_method: paymentMode,
         shipping_charges: 0,
         giftwrap_charges: 0,
         transaction_charges: 0,
         total_discount: 0,
-        sub_total: createdOrder.paidAmount / 100,
+        sub_total: paymentMode === "COD" ? createdOrder.amountToBePaid / 100 : createdOrder.paidAmount / 100,
         length: 29.0,
         breadth: 18.0,
         height: 4.0,

@@ -34,12 +34,14 @@ exports.cancelOrder = async (req, res) => {
         if (order.status !== 'confirmed') {
             return res.status(400).json({ error: 'Order cannot be cancelled' });
         }
-        const response = razorpayInstance.payments.refund(order.paymentId, {
-            amount: order.paidAmount,
-            speed: 'normal'
-        });
-        const razorpayRefundResponse = await response;
-        order.refundId = razorpayRefundResponse.id;
+        if (order.paymentMode === 'PREPAID') {
+            const response = razorpayInstance.payments.refund(order.paymentId, {
+                amount: order.paidAmount,
+                speed: 'normal'
+            });
+            const razorpayRefundResponse = await response;
+            order.refundId = razorpayRefundResponse.id;
+        }
         order.status = 'Canceled';
 
         // cancel the order on shiprocket as well

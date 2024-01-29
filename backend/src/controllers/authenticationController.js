@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs/promises');
 const aws = require('aws-sdk');
 const { Readable } = require('stream');
+const crypto = require('crypto');
+const { sendVerificationEmail } = require('./emailController');
 
 // AWS S3 Configuration
 const s3 = new aws.S3({
@@ -40,21 +42,45 @@ exports.createUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const userAlreadyExists = await User.findOne({ email });
-        if (userAlreadyExists) {
-            return res.status(400).json({ error: 'User already exists' });
+        // Check if the user with the email exists and is unverified
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            if (existingUser.isVerified) {
+                return res.status(400).json({ error: 'User already exists' });
+            } else {
+                // Generate a new verification token and update the expiration time
+                existingUser.verificationToken = crypto.randomBytes(20).toString('hex');
+                existingUser.verificationTokenExpires = Date.now() + 3600000; // Update expiration time to 1 hour
+                await existingUser.save();
+
+                // Send a new verification email
+                await sendVerificationEmail(existingUser.email, existingUser.verificationToken);
+
+                return res.status(200).json({ message: 'Verification email resent. Please verify your email address to continue' });
+            }
         }
+
+        // Generate a verification token
+        const verificationToken = crypto.randomBytes(20).toString('hex');
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Create a new user with the hashed password
-        const user = new User({ email, password: hashedPassword });
+        // Create a new user with the hashed password and verification token
+        const user = new User({
+            email,
+            password: hashedPassword,
+            verificationToken,
+            verificationTokenExpires: Date.now() + 3600000, // Token expires in 1 hour
+        });
 
         // Save the user to the database
         const savedUser = await user.save();
 
-        res.status(201).json(savedUser);
+        // Send a verification email
+        await sendVerificationEmail(savedUser.email, verificationToken);
+
+        res.status(201).json({ message: 'Verification email sent. Please verify your email address to continue' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -130,6 +156,11 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the user has verified their email address
+        if (!user.isVerified) {
+            return res.status(401).json({ error: 'Please verify your email address to continue' });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -217,5 +248,35 @@ exports.uploadProfileImage = async (req, res) => {
     } catch (error) {
         console.error('Error uploading file:', error);
         res.status(500).json({ message: 'Error uploading file' });
+    }
+};
+
+exports.verifyUser = async (req, res) => {
+    try {
+        const { token } = req.query;
+
+        // Find the user by the verification token
+        const user = await User.findOne({
+            verificationToken: token,
+            verificationTokenExpires: { $gt: Date.now() }, // Check if the token is not expired
+        });
+
+        if (!user) {
+            // Token is invalid or expired
+            return res.status(400).json({ error: 'Invalid or expired verification token.' });
+        }
+
+        // Update the user's status to "verified" and remove the verification token
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpires = undefined;
+
+        await user.save();
+
+        // Redirect or respond with a success message
+        res.status(200).json({ message: 'Email verification successful. You can now log in.' });
+    } catch (error) {
+        console.error('Error verifying email:', error);
+        res.status(500).json({ error: 'Error verifying email.' });
     }
 };

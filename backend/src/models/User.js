@@ -54,6 +54,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         minlength: 3,
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+    },
+    verificationTokenExpires: {
+        type: Date,
+    },
 });
 
 // Define a static method to find a user by email and password

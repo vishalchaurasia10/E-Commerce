@@ -30,8 +30,8 @@ const AuthState = (props) => {
                 body: JSON.stringify(user),
             });
             const data = await response.json();
-            if (data._id) {
-                toast.success('User created successfully!');
+            if (response.status === 201 || response.status === 200) {
+                toast.success(data.message);
                 router.push('/sign-in');
             } else {
                 toast.error(data.error)

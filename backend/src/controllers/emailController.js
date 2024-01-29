@@ -150,4 +150,32 @@ const sendOrderCancellationEmail = async (orderDetails) => {
     }
 };
 
-module.exports = { sendEmail, sendOrderConfirmationEmail, sendOrderCancellationEmail };
+const sendVerificationEmail = async (email, verificationToken) => {
+    const verificationLink = `${process.env.FRONTEND_URL}/verify?token=${verificationToken}`;
+
+    const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: process.env.EMAIL_USER,
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            refreshToken: REFRESH_TOKEN,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Account Verification',
+        text: `Click on the following link to verify your account: ${verificationLink}`,
+        html: `<p><a href="${verificationLink}">Click here</a> to verify your account. This link will expire in an 1 hour.</p>
+        <p>If the link doesn't work, copy and paste the following link in your browser's address bar:</p>
+        <p><a href="${verificationLink}">${verificationLink}</a></p>
+        `,
+    };
+
+    await transport.sendMail(mailOptions);
+};
+
+module.exports = { sendEmail, sendOrderConfirmationEmail, sendOrderCancellationEmail, sendVerificationEmail };

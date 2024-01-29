@@ -31,6 +31,7 @@ passport.use(new GoogleStrategy({
                 email: profile.emails[0].value,
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
+                isVerified: true
                 // You can add more user data from the Google profile if needed
             });
 

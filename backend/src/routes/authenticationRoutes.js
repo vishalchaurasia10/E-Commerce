@@ -15,6 +15,8 @@ router.post('/register', authenticationController.createUser);
 // Login a user
 router.post('/login', authenticationController.loginUser);
 
+router.get('/verify', authenticationController.verifyUser);
+
 // Get all users
 router.get('/', authenticationController.getAllUsers);
 

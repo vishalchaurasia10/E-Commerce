@@ -13,7 +13,7 @@ const SignUp = () => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (credentials.password === '' || credentials.email === '' || credentials.confirmPassword === '') {
             toast.error('Please fill all the details')
             return
@@ -24,7 +24,7 @@ const SignUp = () => {
             toast.error('Password must be at least 8 characters')
             return
         }
-        signUp(credentials.email, credentials.password)
+        await signUp(credentials.email, credentials.password)
         setCredentials({ email: '', password: '', confirmPassword: '' })
     }
 

@@ -6,7 +6,7 @@ const fs = require('fs/promises');
 const aws = require('aws-sdk');
 const { Readable } = require('stream');
 const crypto = require('crypto');
-const { sendVerificationEmail } = require('./emailController');
+const { sendVerificationEmail, sendPasswordResetEmail } = require('./emailController');
 
 // AWS S3 Configuration
 const s3 = new aws.S3({
@@ -278,5 +278,81 @@ exports.verifyUser = async (req, res) => {
     } catch (error) {
         console.error('Error verifying email:', error);
         res.status(500).json({ error: 'Error verifying email.' });
+    }
+};
+
+exports.sendResetPasswordEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+        const resetPasswordTokenExpires = Date.now() + 3600000;
+
+        user.resetPasswordToken = resetPasswordToken;
+        user.resetPasswordTokenExpires = resetPasswordTokenExpires;
+
+        await user.save();
+
+        await sendPasswordResetEmail(user.email, user.resetPasswordToken);
+
+        res.status(200).json({ message: 'Password reset email sent successfully' });
+    } catch (error) {
+        console.error('Error sending reset password email:', error);
+        res.status(500).json({ error: 'Error sending reset password email' });
+    }
+};
+
+exports.verifyResetToken = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordTokenExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'Invalid or expired reset token.' });
+        }
+
+        res.status(200).json({ message: 'Reset token is valid.' });
+    } catch (error) {
+        console.error('Error verifying reset token:', error);
+        res.status(500).json({ error: 'Error verifying reset token.' });
+    }
+};
+
+exports.updatePasswordWithResetToken = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { newPassword } = req.body;
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordTokenExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'Invalid or expired reset token.' });
+        }
+
+        // Update the password
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        user.password = hashedPassword;
+
+        // Clear the reset token and expiration
+        user.resetPasswordToken = undefined;
+        user.resetPasswordTokenExpires = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: 'Password updated successfully.' });
+    } catch (error) {
+        console.error('Error updating password with reset token:', error);
+        res.status(500).json({ error: 'Error updating password with reset token.' });
     }
 };

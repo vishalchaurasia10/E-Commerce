@@ -17,6 +17,12 @@ router.post('/login', authenticationController.loginUser);
 
 router.get('/verify', authenticationController.verifyUser);
 
+router.post('/send-reset-password-email', authenticationController.sendResetPasswordEmail);
+
+router.get('/verify-reset-token/:token', authenticationController.verifyResetToken);
+
+router.put('/update-password-with-reset-token/:token', authenticationController.updatePasswordWithResetToken);
+
 // Get all users
 router.get('/', authenticationController.getAllUsers);
 

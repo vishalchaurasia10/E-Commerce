@@ -169,7 +169,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
         to: email,
         subject: 'Account Verification',
         text: `Click on the following link to verify your account: ${verificationLink}`,
-        html: `<p><a href="${verificationLink}">Click here</a> to verify your account. This link will expire in an 1 hour.</p>
+        html: `<p><a href="${verificationLink}">Click here</a> to verify your account. This link will expire in an hour.</p>
         <p>If the link doesn't work, copy and paste the following link in your browser's address bar:</p>
         <p><a href="${verificationLink}">${verificationLink}</a></p>
         `,
@@ -178,4 +178,32 @@ const sendVerificationEmail = async (email, verificationToken) => {
     await transport.sendMail(mailOptions);
 };
 
-module.exports = { sendEmail, sendOrderConfirmationEmail, sendOrderCancellationEmail, sendVerificationEmail };
+const sendPasswordResetEmail = async (email, resetPasswordToken) => {
+    const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetPasswordToken}`;
+
+    const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: process.env.EMAIL_USER,
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            refreshToken: REFRESH_TOKEN,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Password Reset',
+        text: `Click on the following link to reset your password: ${resetPasswordLink}`,
+        html: `<p>Hey there,</p><p>We received a request to reset your password. Click the following link to reset your password:</p><p><a href="${resetPasswordLink}">Reset Password</a></p><p>If you didn't request this, you can ignore this email. This link will expire in an hour.</p><p>
+        <p>If the link doesn't work, copy and paste the following link in your browser's address bar:</p>
+        <p><a href="${resetPasswordLink}">${resetPasswordLink}</a>
+        </p>`,
+    };
+
+    await transport.sendMail(mailOptions);
+}
+
+module.exports = { sendEmail, sendOrderConfirmationEmail, sendOrderCancellationEmail, sendVerificationEmail, sendPasswordResetEmail };

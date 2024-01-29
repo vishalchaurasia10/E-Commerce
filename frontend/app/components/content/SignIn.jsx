@@ -57,7 +57,7 @@ const SignIn = () => {
                     id='password'
                     placeholder='Password' />
                 <p className='text-sm'>
-                    <Link className='hover:underline hover:text-[#4D7E86]' href='/sign-up'>
+                    <Link className='hover:underline hover:text-[#4D7E86]' href='/forgot-password'>
                         Forgot Password?
                     </Link>
                 </p>

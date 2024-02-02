@@ -12,7 +12,6 @@ const FeaturedProduct = () => {
     useEffect(() => {
         const fetchFeaturedProducts = async () => {
             const data = await getFeaturedProducts(1)
-            console.log(data)
             setFeaturedProducts(data.featuredProducts)
         }
         fetchFeaturedProducts()
@@ -29,9 +28,7 @@ const FeaturedProduct = () => {
                     :
                     <div className="carousel carousel-end w-full space-x-4 py-5">
                         {featuredProducts && featuredProducts.map((product, index) => (
-                            <Link href={`/collection/${product._id}`} key={product._id}>
-                                <ProductCard product={product} index={index} />
-                            </Link>
+                            <ProductCard product={product} index={index} />
                         ))}
                     </div>}
                 <div className="button flex items-center justify-center py-5">

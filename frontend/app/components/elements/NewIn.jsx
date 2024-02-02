@@ -37,9 +37,7 @@ const NewIn = ({ type }) => {
                     :
                     <div className="carousel carousel-end w-full space-x-4 py-5">
                         {products.length > 0 && products.map((product, index) => (
-                            <Link href={`/collection/${product._id}`} key={product._id}>
-                                <ProductCard product={product} index={index} />
-                            </Link>
+                            <ProductCard product={product} index={index} />
                         ))}
                     </div>
                 }

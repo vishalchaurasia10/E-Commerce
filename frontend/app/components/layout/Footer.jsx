@@ -33,7 +33,7 @@ const Footer = () => {
                 {[1, 2, 3, 4, 5].map((item, index) => (
                     <img
                         key={index}
-                        className={`${item === 5 ? 'hidden md:block' : ''} ${item === 2 ? 'bg-[#C9F7FF]' : ''} w-1/2 md:w-1/5 h-[20rem] object-cover`}
+                        className={`${item === 5 ? 'hidden md:block' : ''} ${item === 2 ? 'bg-[#C9F7FF]' : ''} w-1/2 md:w-1/5 h-[22rem] object-cover`}
                         src={`/assets/footer/${item}.png`}
                         alt={`image${index}`} />
                 ))}

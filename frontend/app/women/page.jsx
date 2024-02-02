@@ -3,6 +3,7 @@ import Banner from '../components/content/Banner'
 import Grid from '../components/elements/Grid'
 import { womenData } from '../utils/constants'
 import NewIn from '../components/elements/NewIn'
+import CategoryCarousel from '../components/elements/CategoryCarousel'
 
 export const metadata = {
     metadataBase: new URL('https://forever-trendin.vercel.app/'),
@@ -46,6 +47,7 @@ const page = () => {
         <>
             <Banner url='bannerWomen.png' />
             <Grid initialUrl='/assets/women/' data={womenData} />
+            <CategoryCarousel type='women' />
             <NewIn type='women' />
         </>
     )

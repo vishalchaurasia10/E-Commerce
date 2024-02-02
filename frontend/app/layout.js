@@ -8,6 +8,7 @@ import ProductState from './context/Products/ProductState'
 import SearchState from './context/search/SearchState'
 import { Roboto, Bebas_Neue, Jost } from 'next/font/google'
 import './globals.css'
+import CartNotification from './components/layout/CartNotification'
 
 export const roboto = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
                 <CartState>
                   <Announcement />
                   <Navbar />
+                  <CartNotification />
                   {children}
                   <Footer />
                 </CartState >

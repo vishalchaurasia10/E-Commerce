@@ -5,6 +5,15 @@ import { toast, Toaster } from "react-hot-toast";
 
 const CartState = (props) => {
     const [cart, setCart] = useState([]);
+    const [cartNotification, setCartNotification] = useState({
+        visible: false,
+        message: {
+            title: '',
+            imageLink: '',
+            price: 549,
+            quantity: 1
+        }
+    });
     const [cartCount, setCartCount] = useState(0);
     const [discount, setDiscount] = useState({
         amount: 0,
@@ -21,7 +30,32 @@ const CartState = (props) => {
         setCartCount(totalCount);
     }, []);
 
+    const showCartNotification = (title, imageLink, price, quantity) => {
+        setCartNotification({
+            visible: true,
+            message: {
+                title,
+                imageLink,
+                price,
+                quantity
+            }
+        });
+
+        setTimeout(() => {
+            setCartNotification({
+                visible: false,
+                message: {
+                    title: '',
+                    imageLink: '',
+                    price: 0,
+                    quantity: 0
+                }
+            });
+        }, 3500);
+    }
+
     const addToCart = (product, size, quantity, color) => {
+        showCartNotification(product.title, product.imageId[0], product.price, quantity);
         // Retrieve the current cart data from local storage or initialize an empty array
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -135,7 +169,8 @@ const CartState = (props) => {
                     cartCount,
                     clearCart,
                     discount,
-                    setDiscount
+                    setDiscount,
+                    cartNotification
                 }}>
                 {props.children}
             </CartContext.Provider>

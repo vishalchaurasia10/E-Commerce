@@ -31,7 +31,11 @@ const Footer = () => {
             <h1 className={`font-bebas_neue py-10 text-5xl lg:text-6xl text-center`}>Follow Us @forevertrendin</h1>
             <div className="images flex flex-wrap">
                 {[1, 2, 3, 4, 5].map((item, index) => (
-                    <img key={index} className={`${item === 5 ? 'hidden md:block' : ''} w-1/2 md:w-1/5`} src={`/assets/footer/${item}.png`} alt="" />
+                    <img
+                        key={index}
+                        className={`${item === 5 ? 'hidden md:block' : ''} ${item === 2 ? 'bg-[#C9F7FF]' : ''} w-1/2 md:w-1/5 h-[20rem] object-cover`}
+                        src={`/assets/footer/${item}.png`}
+                        alt={`image${index}`} />
                 ))}
             </div>
             <div className="links px-4 lg:px-20 flex items-center lg:justify-center lg:space-x-12 space-y-4 lg:space-y-0 py-5">

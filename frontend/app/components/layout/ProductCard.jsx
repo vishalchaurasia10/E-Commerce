@@ -15,7 +15,6 @@ const ProductCard = ({ product, index }) => {
     };
 
     const handleAddToCart = (product,selectedSize,quantity,selectedColor) => {
-        console.log(product,selectedSize,quantity,selectedColor)
         addToCart(product, selectedSize, quantity, selectedColor)
     }
 

@@ -47,7 +47,7 @@ export const metadata = {
 
 export default function Home() {
 
-  const images = ['bannerHome.svg', 'bannerMen.png', 'bannerWomen.png', 'bannerTheme.png']
+  const images = ['bannerHome.svg', 'homeBannerWomen.png', 'homeBannerTheme.png']
 
   return (
     <>

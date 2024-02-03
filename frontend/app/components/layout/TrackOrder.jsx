@@ -16,7 +16,7 @@ const TrackOrder = () => {
     const getTrackingDetails = async (shipmentId) => {
         setLoading(true)
         try {
-            const response = await axios.post(`http://localhost:8000/webhooks/get-tracking-details/${shipmentId}`);
+            const response = await axios.post(`https://forever-trendin.onrender.com/webhooks/get-tracking-details/${shipmentId}`);
             setTrackingDetails(response.data.tracking_data)
         } catch (error) {
             console.error("Error getting Shiprocket tracking details:", error.response ? error.response.data : error.message);
@@ -107,10 +107,10 @@ const TrackOrder = () => {
                     </div>
                     {shipmentId && trackingDetails &&
                         <>
-                            <h2 className={`font-roboto font-extrabold text-xl md:text-2xl pt-5 pb-3`}>
+                            <h2 className={`font-roboto font-bold text-xl md:text-2xl pt-5 pb-3`}>
                                 {trackingDetails.track_status !== 0 ? trackingDetails?.shipment_track[0]?.current_status : 'Confirmed'}
                             </h2>
-                            <h1 className='font-medium text-2xl md:text-3xl text-center'>
+                            <h1 className='text-2xl md:text-3xl text-center'>
                                 {
                                     trackingDetails.track_status !== 0 ? (trackingDetails?.shipment_track[0]?.edd === null ?
                                         (trackingDetails?.shipment_track[0]?.delivered_date ?
@@ -162,7 +162,7 @@ const TrackOrder = () => {
                                 </div>
                             </div>}
                             <div className="shipmentHistory w-full mb-5 md:mb-10 md:px-6 lg:px-40">
-                                <h1 className='font-bold text-xl pb-2'>Shipment History</h1>
+                                <h1 className='font-semibold text-xl pb-2'>Shipment History</h1>
                                 <div className="history flex flex-col space-y-6 w-full">
                                     {
                                         groupedDetails ?

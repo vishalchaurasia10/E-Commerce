@@ -10,7 +10,7 @@ import SearchContext from '../context/search/searchContext'
 
 const page = () => {
 
-    const { products, searchProducts, searchProductsByType, searchProductsByCategory, getProductsWithPagination } = useContext(ProductContext)
+    const { searchProductsByPriceRange, searchProducts, searchProductsByType, searchProductsByCategory, getProductsWithPagination } = useContext(ProductContext)
     const [localProductsData, setLocalProductsData] = useState([])
     const [categories, setCategories] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
@@ -21,6 +21,7 @@ const page = () => {
     const paramCategoryId = searchParams.get('categoryId')
     const paramType = searchParams.get('type')
     const { searchQuery } = useContext(SearchContext)
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 0 })
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -46,6 +47,14 @@ const page = () => {
             }
 
         }
+        const searchByRange = async () => {
+            document.getElementById('category').checked = false 
+            console.log('searching by range')
+            const data = await searchProductsByPriceRange(priceRange.min, priceRange.max, currentPage)
+            setLocalProductsData(data.products)
+            setCurrentPage(data.currentPage)
+            setTotalPages(data.totalPages)
+        }
         const getSearchedProducts = async () => {
             const data = await searchProducts(searchQuery)
             setLocalProductsData(data)
@@ -60,6 +69,8 @@ const page = () => {
             searchByCategory(paramCategoryId, currentPage)
         } else if (paramType) {
             searchByType(paramType, currentPage)
+        } else if (priceRange.min > 0 && priceRange.max > 0) {
+            searchByRange()
         } else {
             fetchProducts()
         }
@@ -116,6 +127,16 @@ const page = () => {
         setCurrentPage(newPage);
     };
 
+    const handleSearchPriceRange = async (min, max) => {
+        if (min === 0 && max === 0) {
+            return
+        }
+        const data = await searchProductsByPriceRange(min, max, currentPage)
+        setLocalProductsData(data.products)
+        setCurrentPage(data.currentPage)
+        setTotalPages(data.totalPages)
+    }
+
     return (
         <>
             <Banner url='bannerCollection.png' />
@@ -128,6 +149,11 @@ const page = () => {
                         filterProductsByType={filterProductsByType}
                         getCategoriesFromType={getCategoriesFromType}
                         categories={categories}
+                        setPriceRange={setPriceRange}
+                        priceRange={priceRange}
+                        handleSearchPriceRange={handleSearchPriceRange}
+                        setType={setType}
+                        setCategoryId={setCategoryId}
                     />
                 </div>
                 <div className='lg:w-[82%] min-h-[35rem]'>

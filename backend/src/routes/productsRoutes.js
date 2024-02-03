@@ -19,6 +19,8 @@ router.get('/page', productsController.getProductsByPage);
 
 router.get('/featured', productsController.getFeaturedProducts)
 
+router.get('/range', productsController.getProductsByPriceRange)
+
 // Search products
 router.get('/search', productsController.searchProducts);
 

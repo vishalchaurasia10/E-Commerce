@@ -24,7 +24,7 @@ const ProductState = (props) => {
     }
 
     const getProductsWithPagination = async (page) => {
-        try{
+        try {
             setLoading(true)
             const url = `${process.env.NEXT_PUBLIC_API_URL}/products/page?page=${page}`
             const response = await fetch(url)
@@ -53,7 +53,7 @@ const ProductState = (props) => {
         }
     }
 
-    const searchProductsByType = async (type,page) => {
+    const searchProductsByType = async (type, page) => {
         try {
             setLoading(true)
             const url = `${process.env.NEXT_PUBLIC_API_URL}/products/type/${type}?page=${page}`
@@ -68,10 +68,25 @@ const ProductState = (props) => {
         }
     }
 
-    const searchProductsByCategory = async (categoryId,page) => {
+    const searchProductsByCategory = async (categoryId, page) => {
         try {
             setLoading(true)
             const url = `${process.env.NEXT_PUBLIC_API_URL}/products/category/${categoryId}?page=${page}`
+            const response = await fetch(url)
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.log(error)
+            toast.error('Error searching products')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const searchProductsByPriceRange = async (min, max, page) => {
+        try {
+            setLoading(true)
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/products/range?min=${min}&max=${max}&page=${page}`
             const response = await fetch(url)
             const data = await response.json()
             return data
@@ -95,7 +110,8 @@ const ProductState = (props) => {
                     searchProducts,
                     searchProductsByType,
                     searchProductsByCategory,
-                    getProductsWithPagination
+                    getProductsWithPagination,
+                    searchProductsByPriceRange
                 }}>
                 {props.children}
             </ProductContext.Provider>

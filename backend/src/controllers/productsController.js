@@ -326,3 +326,27 @@ exports.searchProducts = async (req, res) => {
         res.status(500).json({ message: 'Error searching products' });
     }
 }
+
+// Get products by price range
+exports.getProductsByPriceRange = async (req, res) => {
+    try {
+        const { min, max } = req.query;
+        const page = parseInt(req.query.page) || 1; // Get the requested page or default to 1
+        const perPage = 12; // Set the number of products per page
+        const skip = (page - 1) * perPage;
+        const products = await Products.find({ price: { $gte: min, $lte: max } }).skip(skip).limit(perPage);
+        const totalCount = await Products.countDocuments({ price: { $gte: min, $lte: max } });
+        if (!products) {
+            return res.status(404).json({ message: 'Products not found' });
+        }
+        return res.status(200).json({
+            products,
+            totalProducts: totalCount,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / perPage),
+        });
+    } catch (error) {
+        console.error('Error fetching products by price range:', error);
+        res.status(500).json({ message: 'Error fetching products' });
+    }
+}

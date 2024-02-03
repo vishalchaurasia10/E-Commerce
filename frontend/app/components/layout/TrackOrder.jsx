@@ -17,7 +17,7 @@ const TrackOrder = () => {
     const getAccessToken = async () => {
         setLoading(true)
         try {
-            const response = await axios.post('https://apiv2.shiprocket.in/v1/external/auth/login', {
+            const response = await axios.post(`https://forever-trendin.onrender.com/webhooks/access-token`, {
                 email: process.env.NEXT_PUBLIC_SHIPROCKET_EMAIL,
                 password: process.env.NEXT_PUBLIC_SHIPROCKET_PASSWORD
             });

@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const axios = require('axios');
 
 exports.updateOrderStatus = async (req, res) => {
     try {
@@ -16,6 +17,21 @@ exports.updateOrderStatus = async (req, res) => {
         } else {
             res.status(404).json({ message: 'Order not found' });
         }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// get access token from shiprocket
+exports.getAccessToken = async (req, res) => {
+    try {
+        const response = await axios.post('https://apiv2.shiprocket.in/v1/external/auth/login', {
+            email: req.body.email,
+            password: req.body.password
+        });
+        console.log(response.data);
+        res.json(response.data);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal server error' });

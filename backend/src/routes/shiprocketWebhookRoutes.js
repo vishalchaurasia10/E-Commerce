@@ -5,6 +5,6 @@ const shiprocketWebhooks = require('../controllers/shiprocketWebhookController')
 
 router.post('/', shiprocketWebhooks.updateOrderStatus);
 
-router.post('/access-token', shiprocketWebhooks.getAccessToken);
+router.post('/get-tracking-details/:shipmentId', shiprocketWebhooks.getTrackingDetails);
 
 module.exports = router;

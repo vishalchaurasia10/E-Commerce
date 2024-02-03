@@ -8,37 +8,15 @@ const TrackOrder = () => {
 
     const [trackingDetails, setTrackingDetails] = useState(null)
     const [groupedDetails, setGroupedDetails] = useState(null)
-    const [token, setToken] = useState(null)
     const [loading, setLoading] = useState(false)
     const [shipmentId, setShipmentId] = useState(null)
     const searchParams = useSearchParams()
     const search = searchParams.get('shipmentId')
 
-    const getAccessToken = async () => {
+    const getTrackingDetails = async (shipmentId) => {
         setLoading(true)
         try {
-            const response = await axios.post(`https://forever-trendin.onrender.com/webhooks/access-token`, {
-                email: process.env.NEXT_PUBLIC_SHIPROCKET_EMAIL,
-                password: process.env.NEXT_PUBLIC_SHIPROCKET_PASSWORD
-            });
-            setToken(response.data.token)
-            console.log(response.data.token)
-            await getTrackingDetails(response.data.token)
-        } catch (error) {
-            console.error("Error getting Shiprocket access token:", error.response ? error.response.data : error.message);
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const getTrackingDetails = async (token) => {
-        setLoading(true)
-        try {
-            const response = await axios.get(`https://apiv2.shiprocket.in/v1/external/courier/track/shipment/${shipmentId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await axios.post(`http://localhost:8000/webhooks/get-tracking-details/${shipmentId}`);
             setTrackingDetails(response.data.tracking_data)
         } catch (error) {
             console.error("Error getting Shiprocket tracking details:", error.response ? error.response.data : error.message);
@@ -50,19 +28,11 @@ const TrackOrder = () => {
     useEffect(() => {
         if (search) {
             setShipmentId(search)
-            getAccessToken()
+            getTrackingDetails(search)
         }
     }, [])
 
-    // useEffect(() => {
-    //     if (token)
-    //         getTrackingDetails(token)
-    //     else if (shipmentId)
-    //         getAccessToken()
-    // }, [shipmentId])
-
     useEffect(() => {
-        console.log(trackingDetails)
         if (trackingDetails && trackingDetails.track_status !== 0 && !trackingDetails.error) groupActivitiesByDate(trackingDetails?.shipment_track_activities)
     }, [trackingDetails])
 
@@ -128,10 +98,7 @@ const TrackOrder = () => {
                         <button
                             onClick={() => {
                                 if (shipmentId) {
-                                    if (token)
-                                        getTrackingDetails(token)
-                                    else
-                                        getAccessToken()
+                                    getTrackingDetails(shipmentId)
                                 }
                             }}
                             className='bg-[#4D7E86] text-4xl py-[0.36rem] pr-2 text-white'>

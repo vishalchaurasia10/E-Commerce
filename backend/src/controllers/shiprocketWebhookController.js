@@ -23,14 +23,31 @@ exports.updateOrderStatus = async (req, res) => {
     }
 }
 
-// get access token from shiprocket
-exports.getAccessToken = async (req, res) => {
+const getAccessToken = async () => {
     try {
         const response = await axios.post('https://apiv2.shiprocket.in/v1/external/auth/login', {
-            email: req.body.email,
-            password: req.body.password
+            email: process.env.SHIPROCKET_EMAIL,
+            password: process.env.SHIPROCKET_PASSWORD
         });
-        console.log(response.data);
+        return response.data.token;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+exports.getTrackingDetails = async (req, res) => {
+    try {
+        const token = await getAccessToken();
+        console.log(req.params.shipmentId, token)
+        if (!token) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        const response = await axios.get(`https://apiv2.shiprocket.in/v1/external/courier/track/shipment/${req.params.shipmentId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         res.json(response.data);
     } catch (error) {
         console.log(error);

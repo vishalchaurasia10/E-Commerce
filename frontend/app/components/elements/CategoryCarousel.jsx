@@ -21,7 +21,7 @@ const CategoryCarousel = ({ type }) => {
 
     return (
         <>
-            <div className='overflow-x-hidden px-40'>
+            <div className='overflow-x-hidden lg:px-40'>
                 <h2 className={`font-bebas_neue text-6xl w-full text-center py-5 lg:py-10`}>{type === 'themes' ? 'theme' : `${type}'s`} Category</h2>
                 <div className="carousel carousel-end w-full space-x-4 py-5">
                     {

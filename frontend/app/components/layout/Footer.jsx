@@ -58,13 +58,13 @@ const Footer = () => {
                         <Link target='_blank' href=' https://www.facebook.com/profile.php?viewas=100000686899395&id=100087734374405'>
                             <FaFacebook className='text-lg' />
                         </Link>
-                        <Link target='_blank' href='https://www.instagram.com/forevertrendin/'>
+                        <Link target='_blank' href='https://www.instagram.com/forevertrendin?igsh=aXVzdzBicWNzeW9y'>
                             <FaInstagram className='text-lg' />
                         </Link>
-                        <Link target='_blank' href='https://www.pinterest.com/forevertrendin/'>
+                        <Link target='_blank' href='https://in.pinterest.com/forevertrendin/'>
                             <FaPinterest className='text-lg' />
                         </Link>
-                        <Link target='_blank' href='https://twitter.com/forevertrendin'>
+                        <Link target='_blank' href='https://x.com/ForeverTrendin?t=1nVfE4YmuAA8KT3t4k-Dgw&s=09'>
                             <FaTwitter className='text-lg' />
                         </Link>
                     </div>

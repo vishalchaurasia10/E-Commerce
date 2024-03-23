@@ -1,10 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { FaCircleExclamation } from 'react-icons/fa6'
 import Image from 'next/image'
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import ProductContext from '@/app/context/Products/productContext'
 
 const ListAllProducts = ({ categoryOption }) => {
     const [localData, setLocalData] = useState([])
@@ -16,6 +17,7 @@ const ListAllProducts = ({ categoryOption }) => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
     const [productType, setProductType] = useState('all')
+    const [categoryType, setCategoryType] = useState('')
     const [updateFields, setUpdateFields] = useState({
         title: '',
         category: '',
@@ -28,7 +30,8 @@ const ListAllProducts = ({ categoryOption }) => {
         imageId: []
     })
     const sizes = ['XS', 'Small', 'Medium', 'Large', 'XL', 'XXL'];
-    const types = ['all', 'men', 'women', 'themes']
+    const types = ['men', 'women', 'themes']
+    const { searchProductsByCategory } = useContext(ProductContext)
 
     const handleUpdateChange = (e) => {
         const { name, value } = e.target;
@@ -121,12 +124,12 @@ const ListAllProducts = ({ categoryOption }) => {
     };
 
     useEffect(() => {
-        if (productType === 'all') {
-            getProductsWithPagination(currentPage)
+        if (productType === null) {
+            getProductsWithCategory(categoryType, currentPage)
         } else {
-            getProductsWithPaginationAndType(currentPage, productType)
+            getProductWithType(productType, currentPage)
         }
-    }, [currentPage, productType])
+    }, [currentPage])
 
     const truncateStyle = {
         display: '-webkit-box',
@@ -202,8 +205,6 @@ const ListAllProducts = ({ categoryOption }) => {
         }
     };
 
-
-
     const handleImageDelete = async (index) => {
         setUpdateFields({
             ...updateFields,
@@ -252,8 +253,27 @@ const ListAllProducts = ({ categoryOption }) => {
         }
     };
 
-    const handleProductTypeChange = async (e) => {
-        setProductType(e.target.value)
+    const getProductWithType = async (type, currentPage) => {
+        setProductType(type)
+        if (type === 'all') {
+            getProductsWithPagination(currentPage)
+        } else {
+            getProductsWithPaginationAndType(currentPage, type)
+        }
+    }
+
+    const getCategoriesFromType = (type) => {
+        if (categoryOption && categoryOption.length > 0)
+            return categoryOption.filter((category) => category.type === type)
+    }
+
+    const getProductsWithCategory = async (categoryId, currentPage) => {
+        setProductType(null)
+        setCategoryType(categoryId)
+        const data = await searchProductsByCategory(categoryId, currentPage)
+        setLocalData(data.products)
+        setCurrentPage(data.currentPage)
+        setTotalPages(data.totalPages)
     }
 
 
@@ -262,16 +282,41 @@ const ListAllProducts = ({ categoryOption }) => {
             <Toaster />
             <div className="mainContainer min-h-[35rem] flex flex-col lg:flex-row lg:space-x-4 bg-white justify-center px-10">
                 <div className="filter lg:w-[18%] border-2 border-gray-400 my-16 p-4 h-fit lg:sticky lg:top-20">
+                    <div onClick={() => getProductWithType('all')} className="types flex space-x-4 py-1">
+                        <h3 className={`font-roboto font-extrabold capitalize`}>All</h3>
+                        <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="categoryType" id="categoryType" />
+                    </div>
                     {
                         types.map((type, index) => {
                             return (
-                                <div onClick={handleProductTypeChange} key={index} className="types flex space-x-4 py-1">
+                                <div onClick={() => getProductWithType(type)} key={index} className="types flex space-x-4 py-1">
                                     <h3 className={`font-roboto font-extrabold capitalize`}>{type}</h3>
                                     <input className='radio h-4 w-4 ml-2 mt-2' type="radio" name="categoryType" id="categoryType" value={type} />
                                 </div>
                             )
                         })
                     }
+                    <div>
+                        {
+                            types.map((type, index) => {
+                                return (
+                                    <div key={index} className="types flex flex-col">
+                                        <h3 className={`font-roboto font-extrabold capitalize`}>{type}</h3>
+                                        {
+                                            getCategoriesFromType(type) && getCategoriesFromType(type).map((category) => (
+                                                <ul className='list-disc pl-8 cursor-pointer' key={category._id}>
+                                                    <li className='' htmlFor={category.title}>{category.title}
+                                                        <input onClick={() => getProductsWithCategory(category._id, currentPage)} className='radio h-4 w-4 ml-2 mt-2' type="radio" name="categoryType" id="categoryType" />
+                                                    </li>
+
+                                                </ul>
+                                            ))
+                                        }
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <div id='products' className="collection lg:w-[82%] flex flex-col justify-center py-5 lg:py-10">
                     <div className=' min-h-[35rem]'>

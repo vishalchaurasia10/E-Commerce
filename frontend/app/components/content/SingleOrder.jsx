@@ -63,7 +63,19 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
         }
     };
 
+    function isOrderCancelable(createdAt) {
+        // Convert createdAt to a Date object
+        const createdAtDate = new Date(createdAt);
 
+        // Calculate the time difference in milliseconds
+        const timeDifference = new Date() - createdAtDate;
+
+        // Calculate the number of days
+        const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        // If the difference is greater than 15 days, return true (order can be canceled)
+        return daysDifference <= 15;
+    }
 
     useEffect(() => {
         if (!user) {
@@ -88,7 +100,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                         </div>
                         <div className="description flex flex-col space-y-1 pb-10">
                             <p className='text-sm'><span className='font-bold'>OrderedAt:</span> {formatDate(order.createdAt)}</p>
-                            <p><span className='font-bold'>Order Status:</span> {order.status}</p>
+                            <p className='capitalize'><span className='font-bold'>Order Status:</span> {order.status}</p>
                             <p><span className='font-bold'>Name:</span> {order.firstName} {order.lastName}</p>
                             <p><span className='font-bold'>Email:</span> {user.email}</p>
                             <p><span className='font-bold'>Phone:</span> {order.phoneNumber}</p>
@@ -99,7 +111,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                             <p className='font-bold'><span className='font-bold'>Payment Mode:</span> {order.paymentMode}</p>
                             <div className="buttons space-x-2">
                                 <button
-                                    disabled={order.status === 'Canceled' || order.status === 'Delivered'}
+                                    disabled={order.status === 'Canceled' || !isOrderCancelable(order.createdAt)}
                                     onClick={() => document.getElementById('cancelModal').showModal()}
                                     className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
                                     Cancel Order
@@ -116,7 +128,8 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                                             Cancel Order
                                         </span>
                                     </h3>
-                                    <p className="py-4">Are you sure, you want to cancel the order?</p>
+                                    <p className="pt-4 pb-1">Are you sure, you want to cancel the order?</p>
+                                    <p className="pb-4 font-bold">Our team will reach you as soon as possible once the cancellation is requested.</p>
                                     <div className="modal-action">
                                         <form className='space-x-2' method="dialog">
                                             {/* if there is a button in form, it will close the modal */}

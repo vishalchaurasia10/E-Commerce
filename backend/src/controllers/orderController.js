@@ -31,22 +31,25 @@ exports.cancelOrder = async (req, res) => {
         if (order.status === 'Canceled') {
             return res.status(400).json({ error: 'Order already cancelled' });
         }
+        if (order.status === 'requested') {
+            return res.status(400).json({ error: 'Cancellation already requested' });
+        }
         if (order.status !== 'confirmed') {
             return res.status(400).json({ error: 'Order cannot be cancelled' });
         }
-        if (order.paymentMode === 'PREPAID') {
-            const response = razorpayInstance.payments.refund(order.paymentId, {
-                amount: order.paidAmount,
-                speed: 'normal'
-            });
-            const razorpayRefundResponse = await response;
-            order.refundId = razorpayRefundResponse.id;
-        }
-        order.status = 'Canceled';
+        // if (order.paymentMode === 'PREPAID') {
+        //     const response = razorpayInstance.payments.refund(order.paymentId, {
+        //         amount: order.paidAmount,
+        //         speed: 'normal'
+        //     });
+        //     const razorpayRefundResponse = await response;
+        //     order.refundId = razorpayRefundResponse.id;
+        // }
+        order.status = 'requested';
 
         // cancel the order on shiprocket as well
-        const accessToken = await getShiprocketAccessToken();
-        await cancelShiprocketOrder(accessToken, order.shiprocketOrderId);
+        // const accessToken = await getShiprocketAccessToken();
+        // await cancelShiprocketOrder(accessToken, order.shiprocketOrderId);
 
         await order.save();
 
@@ -61,7 +64,7 @@ exports.cancelOrder = async (req, res) => {
         // send order cancellation email
         await sendOrderCancellationEmail(orderDetails);
 
-        res.status(200).json({ status: 'Success', message: 'Order cancelled successfully' });
+        res.status(200).json({ status: 'Success', message: 'Order cancellation requested successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error cancelling order' });

@@ -34,7 +34,7 @@ const Products = ({ localData }) => {
                                     >
                                         <div className='flex h-full flex-col space-y-1 border border-gray-400 border-opacity-25 shadow-lg shadow-gray-400'>
                                             <Image height={500} width={500} src={`${product.imageId[0]}`} className="w-full h-[20rem] object-cover" alt={`Slide ${index + 1}`} />
-                                            <h3 className={`font-roboto} px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
+                                            <h3 className={`font-roboto px-4 pt-2 h-14 text-black font-bold`} style={truncateStyle}>{product.title}</h3>
                                             <p className={`font-roboto px-4 pb-3 text-black`}>₹{product.price}</p>
                                         </div>
                                     </div>

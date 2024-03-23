@@ -127,14 +127,14 @@ const sendOrderCancellationEmail = async (orderDetails) => {
             from: process.env.EMAIL_USER,
             to: customerEmail,
             subject: `Order Cancellation - Order #${orderNumber}`,
-            text: `Hi ${customerName}!\n\nWe regret to inform you that your order with Order Number ${orderNumber} has been canceled.\n\nIf you have any questions or concerns, please contact our customer support.`,
+            text: `Hi ${customerName}!\n\nWe regret to inform you that your order with Order Number ${orderNumber} has been requested for cancellation.\n\nOur team will reach you soon regarding product cancellation.\n\nIf you have any questions or concerns, please contact our customer support.`,
         };
 
         const mailOptions2 = {
             from: process.env.EMAIL_USER,
             to: process.env.ADMIN_EMAIL,
             subject: `Order Cancellation - Order #${orderNumber}`,
-            text: `Order from ${customerName} with Order Number ${orderNumber} has been canceled.\n\nCustomer Email: ${customerEmail}\n\nCustomer Phone: ${customerPhone}\nAdmin Order ID: ${adminOrderId}`,
+            text: `Order from ${customerName} with Order Number ${orderNumber} has been requested for cancellation.\n\nCustomer Email: ${customerEmail}\n\nCustomer Phone: ${customerPhone}\nAdmin Order ID: ${adminOrderId}`,
         };
 
         transport.sendMail(mailOptions2);

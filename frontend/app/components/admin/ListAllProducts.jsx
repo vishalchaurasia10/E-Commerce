@@ -31,7 +31,35 @@ const ListAllProducts = ({ categoryOption }) => {
     const types = ['all', 'men', 'women', 'themes']
 
     const handleUpdateChange = (e) => {
-        setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
+        const { name, value } = e.target;
+        if (name === 'category') {
+            if (updateFields.category.includes(value)) {
+                return;
+            }
+            setUpdateFields({
+                ...updateFields,
+                category: [...updateFields.category, value]
+            });
+        } else {
+            // For other fields, update the state as usual
+            setUpdateFields({ ...updateFields, [e.target.name]: e.target.value })
+        }
+    }
+
+    const getTitleById = (id) => {
+        for (let i = 0; i < categoryOption.length; i++) {
+            if (categoryOption[i]._id === id) {
+                return categoryOption[i].title;
+            }
+        }
+        return '';
+    }
+
+    const removeCategory = (id) => {
+        setUpdateFields({
+            ...updateFields,
+            category: updateFields.category.filter((categoryId) => categoryId !== id)
+        });
     }
 
     const handleRadioChange = (e) => {
@@ -133,6 +161,10 @@ const ListAllProducts = ({ categoryOption }) => {
     const handleUpdate = async () => {
         if (updateFields.imageId.length === 0) {
             toast.error('There should be at least one image for the product');
+            return;
+        }
+        if (updateFields.category.length === 0) {
+            toast.error('Please select at least one category');
             return;
         }
 
@@ -329,7 +361,6 @@ const ListAllProducts = ({ categoryOption }) => {
                                                             name='category'
                                                             id='category'
                                                             onChange={handleUpdateChange}
-                                                            value={updateFields.category}
                                                             className="outline-none bg-transparent border p-2 border-gray-500 rounded-lg">
                                                             <option disabled value=''>Select the category</option>
                                                             {categoryOption.map((category) => {
@@ -341,6 +372,21 @@ const ListAllProducts = ({ categoryOption }) => {
                                                                 )
                                                             })}
                                                         </select>
+                                                        {
+                                                            updateFields.category.length > 0 &&
+                                                            <div className="selectedCategories flex flex-wrap items-center ">
+                                                                {updateFields.category.map((id, index) => (
+                                                                    <button
+                                                                        key={index}
+                                                                        className={`btn btn-neutral rounded-3xl mr-2 mb-2 `}
+                                                                        onClick={() => removeCategory(id)}
+                                                                        title={`Remove ${id}`}
+                                                                    >
+                                                                        {getTitleById(id)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        }
                                                         <div className="featured">
                                                             <div className="form-control">
                                                                 <label className="label cursor-pointer">

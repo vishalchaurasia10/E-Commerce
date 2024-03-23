@@ -10,10 +10,11 @@ import ListAllProducts from './ListAllProducts'
 const UploadProduct = () => {
     const [inputFields, setInputFields] = useState([{ id: 1 }]);
     const [categoryOption, setCategoryOption] = useState([]);
-    const sizes = ['XS','Small', 'Medium', 'Large', 'XL', 'XXL'];
+    const sizes = ['XS', 'Small', 'Medium', 'Large', 'XL', 'XXL'];
+    const [categoryTitles, setCategoryTitles] = useState([]);
     const [productDetails, setProductDetails] = useState({
         title: '',
-        category: '',
+        category: [],
         price: '',
         featured: false,
         size: [],
@@ -24,10 +25,34 @@ const UploadProduct = () => {
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'category') {
+            const [categoryId, categoryTitle] = value.split(',');
+            if (productDetails.category.includes(categoryId)) {
+                return;
+            }
+            setCategoryTitles([...categoryTitles, categoryTitle])
+            setProductDetails({
+                ...productDetails,
+                category: [...productDetails.category, categoryId]
+            });
+        } else {
+            // For other fields, update the state as usual
+            setProductDetails({
+                ...productDetails,
+                [name]: value
+            });
+        }
+    }
+
+    const removeCategory = (id) => {
+        const updatedCategories = categoryTitles.filter((category, index) => index !== id);
+        const updatedCategoryIds = productDetails.category.filter((categoryId, index) => index !== id);
+        setCategoryTitles(updatedCategories);
         setProductDetails({
             ...productDetails,
-            [e.target.name]: e.target.value
-        })
+            category: updatedCategoryIds
+        });
     }
 
     const handleRadioChange = (e) => {
@@ -40,9 +65,10 @@ const UploadProduct = () => {
     const checkValidity = () => {
         if (document.getElementById('uploadFile').files.length === 0) {
             toast.error('Please select images by clicking on the cloud icon')
-        } else if (productDetails.title.length < 3 || productDetails.category === '' || productDetails.price === 0 || productDetails.color === '' || productDetails.size.length === 0 || productDetails.description === '') {
+        } else if (productDetails.title.length < 3 || productDetails.category.length == 0 || productDetails.price === 0 || productDetails.color === '' || productDetails.size.length === 0 || productDetails.description === '') {
             toast.error('Please fill all the fields')
         } else {
+            console.log('productDetails', productDetails)
             handleFileUpload()
         }
     }
@@ -109,18 +135,20 @@ const UploadProduct = () => {
             return
         }
         if (fileIds.length !== 0) {
+            console.log('categories:', productDetails.category)
             const result = await uploadProductDocument(productDetails.title, productDetails.category, fileIds, productDetails.price, productDetails.size, productDetails.color, productDetails.description, productDetails.otherDetails, productDetails.featured)
             if (result.status === 'success') {
                 toast.success(result.message)
                 setProductDetails({
                     title: '',
-                    category: '',
+                    category: [],
                     price: '',
                     size: [],
                     color: '',
                     description: '',
                     otherDetails: []
                 })
+                setCategoryTitles([])
                 setInputFields([{ id: 1 }])
                 fileInput.value = ''
             } else {
@@ -161,25 +189,39 @@ const UploadProduct = () => {
                                 name='title'
                                 id='title'
                                 onChange={handleChange}
-                                value={productDetails.title}
                                 className='outline-none placeholder:text-white bg-transparent border-b p-2 border-[rgba(255,255,255,0.5)]'
                             />
                             <select
                                 name='category'
                                 id='category'
                                 onChange={handleChange}
-                                value={productDetails.category}
                                 className="p-2 border-b border-[rgba(255,255,255,0.5)] w-full outline-none bg-transparent">
                                 <option disabled value=''>Select the category</option>
                                 {categoryOption.map((category) => {
+                                    const valueString = `${category._id},${category.title}`; // Concatenate ID and title
                                     return (
-                                        <option className='text-black' key={category._id} value={category._id}>
+                                        <option className='text-black' key={category._id} value={valueString}>
                                             <span>{category.type} : </span>
                                             <span>{category.title}</span>
                                         </option>
                                     )
                                 })}
                             </select>
+                            {
+                                categoryTitles.length > 0 &&
+                                <div className="selectedCategories flex flex-wrap items-center ">
+                                    {categoryTitles.map((title, index) => (
+                                        <button
+                                            key={index}
+                                            className={`btn btn-neutral rounded-3xl mr-2 mb-2 `}
+                                            onClick={() => removeCategory(index)}
+                                            title={`Remove ${title}`}
+                                        >
+                                            {title}
+                                        </button>
+                                    ))}
+                                </div>
+                            }
                             <div className="featured">
                                 <div className="form-control">
                                     <label className="label cursor-pointer">

@@ -114,7 +114,7 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                                     disabled={order.status === 'Canceled' || !isOrderCancelable(order.createdAt)}
                                     onClick={() => document.getElementById('cancelModal').showModal()}
                                     className={`bg-[#4D7E86] hover:bg-red-500 btn text-white rounded-sm px-3`}>
-                                    Cancel Order
+                                    Return Order
                                 </button>
                                 <Link href={`/trackorder?shipmentId=${order.shiprocketShipmentId}`}>
                                     <button className='bg-[#4D7E86] btn hover:bg-black text-white rounded-sm px-3'>Track Order</button>
@@ -129,11 +129,12 @@ const SingleOrder = ({ order, setShowSidebar, showSidebar }) => {
                                         </span>
                                     </h3>
                                     <p className="pt-4 pb-1">Are you sure, you want to cancel the order?</p>
-                                    <p className="pb-4 font-bold">Our team will reach you as soon as possible once the cancellation is requested.</p>
+                                    <p className="pb-4">Our team will reach you as soon as possible once the cancellation is requested.</p>
+                                    <p className="pb-4 font-bold">Return option is available upto 15 days!</p>
                                     <div className="modal-action">
                                         <form className='space-x-2' method="dialog">
                                             {/* if there is a button in form, it will close the modal */}
-                                            <button onClick={() => cancelOrder(order._id)} className="btn btn-neutral">Cancel Order</button>
+                                            <button onClick={() => cancelOrder(order._id)} className="btn btn-neutral">Return Order</button>
                                             <button className="btn">Close</button>
                                         </form>
                                     </div>

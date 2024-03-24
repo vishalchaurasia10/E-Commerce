@@ -25,6 +25,9 @@ router.get('/search', categoryController.searchCategories);
 // Get all categories
 router.get('/', categoryController.getAllCategories);
 
+// Get all categories without pagination
+router.get('/all', categoryController.getAllCategoriesWithoutPagination);
+
 // Get categories by type
 router.get('/type/:type', categoryController.getCategoriesByType);
 
@@ -32,7 +35,7 @@ router.get('/type/:type', categoryController.getCategoriesByType);
 router.get('/:categoryId', categoryController.getCategoryById);
 
 // Update a category by ID
-router.put('/:categoryId',upload.single('coverImage'), categoryController.updateCategory);
+router.put('/:categoryId', upload.single('coverImage'), categoryController.updateCategory);
 
 // Delete a category by ID
 router.delete('/:categoryId', categoryController.deleteCategory);

@@ -90,3 +90,17 @@ export const getAllCategories = async (page) => {
         return { status: 'failure', message: error.message };
     }
 }
+
+export const getAllCategoriesWithoutPagination = async () => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/all`);
+        const data = await response.json();
+        if (response.status === 200) {
+            return { status: 'success', message: 'Categories fetched successfully', categories: data.categories };
+        } else {
+            return { status: 'failure', message: data.message };
+        }
+    } catch (error) {
+        return { status: 'failure', message: error.message };
+    }
+}

@@ -23,6 +23,19 @@ exports.createCategory = async (req, res) => {
     }
 };
 
+//get all categories withoug pagination
+exports.getAllCategoriesWithoutPagination = async (req, res) => {
+    try {
+        const categories = await Category.find();
+        if (!categories) {
+            return res.status(404).json({ error: 'Categories not found' });
+        }
+        res.status(200).json({ categories: categories });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching categories' });
+    }
+};
+
 // Get all categories
 exports.getAllCategories = async (req, res) => {
     try {

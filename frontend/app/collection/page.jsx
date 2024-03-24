@@ -4,7 +4,7 @@ import Banner from '../components/content/Banner'
 import Filter from '../components/elements/Filter'
 import Products from '../components/elements/Products'
 import ProductContext from '../context/Products/productContext'
-import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions'
+import { getAllCategoriesWithoutPagination } from '@/app/utils/apiFunctions/categoryFunctions'
 import { useSearchParams } from 'next/navigation'
 import SearchContext from '../context/search/searchContext'
 
@@ -48,7 +48,7 @@ const page = () => {
 
         }
         const searchByRange = async () => {
-            document.getElementById('category').checked = false 
+            document.getElementById('category').checked = false
             console.log('searching by range')
             const data = await searchProductsByPriceRange(priceRange.min, priceRange.max, currentPage)
             setLocalProductsData(data.products)
@@ -78,7 +78,7 @@ const page = () => {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const data = await getAllCategories(currentPage)
+            const data = await getAllCategoriesWithoutPagination(currentPage)
             setCategories(data.categories)
         }
         fetchCategories()

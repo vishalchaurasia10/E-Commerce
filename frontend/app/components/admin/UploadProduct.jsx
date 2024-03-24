@@ -1,5 +1,5 @@
 'use client'
-import { getAllCategories } from '@/app/utils/apiFunctions/categoryFunctions'
+import { getAllCategoriesWithoutPagination } from '@/app/utils/apiFunctions/categoryFunctions'
 import { uploadProductDocument, uploadProductImages } from '@/app/utils/apiFunctions/productFunctions'
 import React, { useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
@@ -162,8 +162,8 @@ const UploadProduct = () => {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const categories = await (await getAllCategories()).categories;
-            setCategoryOption(categories)
+            const categories = await getAllCategoriesWithoutPagination()
+            setCategoryOption(categories.categories)
         }
         fetchCategories()
     }, [])
@@ -197,7 +197,7 @@ const UploadProduct = () => {
                                 onChange={handleChange}
                                 className="p-2 border-b border-[rgba(255,255,255,0.5)] w-full outline-none bg-transparent">
                                 <option disabled value=''>Select the category</option>
-                                {categoryOption.map((category) => {
+                                {categoryOption.length > 0 && categoryOption.map((category) => {
                                     const valueString = `${category._id},${category.title}`; // Concatenate ID and title
                                     return (
                                         <option className='text-black' key={category._id} value={valueString}>

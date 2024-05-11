@@ -50,7 +50,7 @@ const Category = () => {
                 <div className="first lg:w-1/2 flex space-x-4">
                     {themeCategories && themeCategories.length > 0 && themeCategories.slice(0, 2).map((category, index) => (
                         <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
-                            <div className="pagesThumbnail w-full h-full justify-center flex relative overflow-hidden">
+                            <div className="pagesThumbnail w-full h-60 md:h-96 justify-center flex relative overflow-hidden">
                                 <Image
                                     className="h-full w-full transition-all object-cover duration-300 hover:scale-105"
                                     src={`${category.coverImageId}`}
@@ -69,9 +69,9 @@ const Category = () => {
                 <div className="second lg:w-1/2 flex space-x-4">
                     {themeCategories && themeCategories.length > 0 && themeCategories?.slice(2, 4).map((category, index) => (
                         <Link className="w-full" key={index} href={`/collection?categoryId=${category._id}`}>
-                            <div className="bg-cover w-full bg-center pagesThumbnail justify-center flex relative overflow-hidden">
+                            <div className="w-full h-60 md:h-96 pagesThumbnail justify-center flex relative overflow-hidden">
                                 <Image
-                                    className="h-full w-full transition-all duration-300 hover:scale-105"
+                                    className="h-full w-full transition-all object-cover duration-300 hover:scale-105"
                                     src={`${category.coverImageId}`}
                                     height={500}
                                     width={500}

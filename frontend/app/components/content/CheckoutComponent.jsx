@@ -89,7 +89,7 @@ const CheckoutComponent = () => {
                     "amount": orderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                     "currency": "INR",
                     "name": "Forever Trendin",
-                    "description": "Test Transaction",
+                    "description": `Transaction for ${user?.firstName} ${user?.lastName} - order id: ${orderData.id}`,
                     "image": "https://img1.wsimg.com/isteam/ip/f32f6f8b-4f61-4964-b9ab-cdadde45b2da/full%20logo.png/:/rs=w:200,h:200,cg:true,m/cr=w:200,h:200/qt=q:95",
                     "order_id": orderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     "handler": async function (response) {

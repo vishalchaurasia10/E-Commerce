@@ -53,8 +53,8 @@ export const whyChooseUsData = [
     },
     {
         path: '/assets/whyChoose/3.svg',
-        description: `Hello there! You may have heard of the exciting offer that we are currently running for our customers. We are offering a <strong>flat discount of 20% on all orders above the value of Rs.1299</strong>. To avail of this offer, all you need to do is use the code <strong>FOREVER20</strong> at the checkout. Browse through our collection and start shopping today!`,
-        code: 'Use Code: FOREVER20'
+        description: `Hello there! You may have heard of the exciting offer that we are currently running for our customers. We are offering a <strong>flat discount of 15% on all orders above the value of Rs.1299</strong>. To avail of this offer, all you need to do is use the code <strong>FOREVER15</strong> at the checkout. Browse through our collection and start shopping today!`,
+        code: 'Use Code: FOREVER15'
     }
 ]
 

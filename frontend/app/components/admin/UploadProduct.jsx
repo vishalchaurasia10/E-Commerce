@@ -56,11 +56,12 @@ const UploadProduct = () => {
     }
 
     const handleRadioChange = (e) => {
+        const newValue = e.target.value === 'true';
         setProductDetails({
             ...productDetails,
-            [e.target.name]: e.target.value === 'true' // Convert the string value to a boolean
+            featured: newValue
         });
-    }
+    };
 
     const checkValidity = () => {
         if (document.getElementById('uploadFile').files.length === 0) {
@@ -168,6 +169,10 @@ const UploadProduct = () => {
         fetchCategories()
     }, [])
 
+    useEffect(() => {
+        console.log('productDetails:', productDetails)
+    }, [productDetails])
+
     return (
         <>
             <Toaster />
@@ -223,29 +228,33 @@ const UploadProduct = () => {
                                 </div>
                             }
                             <div className="featured">
-                                <div className="form-control">
-                                    <label className="label cursor-pointer">
+                                <div className="flex items-center justify-between">
+                                    <label for='Ftrue' className="label cursor-pointer">
                                         <span className="label-text text-white">Featured Product</span>
-                                        <input
-                                            type="radio"
-                                            name="featured"
-                                            value='true'
-                                            onChange={handleRadioChange}
-                                            className="radio checked:bg-[#607c84]"
-                                            checked={productDetails.featured === true} />
                                     </label>
+                                    <input
+                                        type="checkbox"
+                                        name="featured"
+                                        id='Ftrue'
+                                        value='true'
+                                        onChange={handleRadioChange}
+                                        className="checkbox bg-[#607c84]"
+                                        checked={productDetails.featured === true}
+                                    />
                                 </div>
-                                <div className="form-control">
-                                    <label className="label cursor-pointer">
+                                <div className="flex items-center justify-between">
+                                    <label for='Ffalse' className="label cursor-pointer">
                                         <span className="label-text text-white">Not a Featured a Product</span>
-                                        <input
-                                            type="radio"
-                                            name="featured"
-                                            value='false'
-                                            className="radio checked:bg-[#607c84]"
-                                            onChange={handleRadioChange}
-                                            checked={productDetails.featured === false} />
                                     </label>
+                                    <input
+                                        type="checkbox"
+                                        name="featured"
+                                        id='Ffalse'
+                                        value='false'
+                                        className="checkbox bg-[#607c84]"
+                                        onChange={handleRadioChange}
+                                        checked={productDetails.featured === false}
+                                    />
                                 </div>
                             </div>
                             <div className="priceColor flex w-full space-x-4">

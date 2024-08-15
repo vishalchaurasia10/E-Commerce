@@ -1,7 +1,7 @@
+import { footerSocialLinks } from '@/app/utils/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from 'react-icons/fa'
 
 const Footer = () => {
     const footerLinks = [
@@ -55,18 +55,15 @@ const Footer = () => {
                         }
                     </ul>
                     <div className="icons flex lg:items-center lg:justify-center space-x-2 text-[#528289]">
-                        <Link target='_blank' href=' https://www.facebook.com/profile.php?viewas=100000686899395&id=100087734374405'>
-                            <FaFacebook className='text-lg' />
-                        </Link>
-                        <Link target='_blank' href='https://www.instagram.com/forevertrendin?igsh=aXVzdzBicWNzeW9y'>
-                            <FaInstagram className='text-lg' />
-                        </Link>
-                        <Link target='_blank' href='https://in.pinterest.com/forevertrendin/'>
-                            <FaPinterest className='text-lg' />
-                        </Link>
-                        <Link target='_blank' href='https://x.com/ForeverTrendin?t=1nVfE4YmuAA8KT3t4k-Dgw&s=09'>
-                            <FaTwitter className='text-lg' />
-                        </Link>
+                        {
+                            footerSocialLinks.map((item, index) => {
+                                return (
+                                    <Link key={index} target='_blank' href={item.link}>
+                                        {item.icon}
+                                    </Link>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>

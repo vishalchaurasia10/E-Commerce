@@ -1,3 +1,5 @@
+import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from "react-icons/fa"
+
 export const navbarData = [
     {
         title: 'Home',
@@ -225,3 +227,37 @@ export const termsAndConditions = [
         description: ['In addition to other limitations and exclusions mentioned at ForeverTrendin.com, in no event will Forever Trendin or our owner, officers, employees, agents, or other representatives be liable for any direct, indirect, special, incidental, consequential, or punitive damages, or any other damages of any kind, arising out of or related to Forever Trendin. Our total liability, whether in contract, warranty, tort (including negligence), or otherwise, will not exceed the last membership fee you paid. These exclusions and limitations of liability will apply to the fullest extent permitted by law and will survive cancellation or termination of your Forever Trendin membership.']
     },
 ]
+
+export const teamData = [
+    {
+        heading: 'Our team',
+        description: `Welcome to our Clothing and Apparel Store! Our passion for design has inspired us to create a collection of unique and creative t-shirts that are sure to make a statement. Our team is dedicated to bringing new and exciting designs to life, and we are proud to offer a variety of options for our customers. Our t-shirts are made from organic 100% cotton, ensuring that they are both comfortable and environmentally friendly. We believe in using high-quality materials to create products that are not only stylish but also sustainable.`
+    },
+    {
+        heading: 'Our Style',
+        description: `At our shop, we believe that fashion should be comfortable and accessible to everyone. That's why we prioritize using high-quality materials in our clothing, without sacrificing affordability. Whether you're looking for a casual and cozy outfit or something more polished, we have something for you. We also strive to be as eco-friendly as possible, using sustainable fabrics and packaging materials. Our goal is to make you feel good about your purchase, both in terms of style and environmental impact. So come on in and browse our latest collection - we're confident you'll find something you love!`
+    }
+]
+
+export const footerSocialLinks = [
+    {
+        link: 'https://www.facebook.com/profile.php?viewas=100000686899395&id=100087734374405',
+        icon: <FaFacebook className='text-lg' />
+    },
+    {
+        link: 'https://www.instagram.com/forevertrendin?igsh=aXVzdzBicWNzeW9y',
+        icon: <FaInstagram className='text-lg' />
+    },
+    {
+        link: 'https://in.pinterest.com/forevertrendin/',
+        icon: <FaPinterest className='text-lg' />
+    },
+    {
+        link: 'https://x.com/ForeverTrendin?t=1nVfE4YmuAA8KT3t4k-Dgw&s=09',
+        icon: <FaTwitter className='text-lg' />
+    }
+]
+
+export const announcementInfo = {
+    title: 'GET 10% OFF ON ALL ORDERS ON YOUR 1ST PURCHASE. USE CODE: FOREVER10',
+}

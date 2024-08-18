@@ -9,6 +9,7 @@ import SearchState from './context/search/SearchState'
 import { Roboto, Bebas_Neue, Jost } from 'next/font/google'
 import './globals.css'
 import CartNotification from './components/layout/CartNotification'
+import Script from 'next/script'
 
 export const roboto = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -28,6 +29,32 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${roboto.className}`}>
+        <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '1234202434674429');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1234202434674429&ev=PageView&noscript=1"
+          />
+        </noscript>
         <AuthState>
           <SearchState>
             <ProductState>
@@ -38,7 +65,7 @@ export default function RootLayout({ children }) {
                   <CartNotification />
                   {children}
                   <Footer />
-                </CartState >
+                </CartState>
               </FeaturedState>
             </ProductState>
           </SearchState>
